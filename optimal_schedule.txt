@@ -1,0 +1,6 @@
+Final Timetable:
+Course: Math, Room: Room 2, Teacher: Mr. A, Timeslot: 11 AM
+Course: Physics, Room: Room 1, Teacher: Ms. B, Timeslot: 11 AM
+Course: Business Analytics, Room: Room 1, Teacher: Mr. C, Timeslot: 9 AM
+Course: Computer Science, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
+Course: English, Room: Room 3, Teacher: Mr. E, Timeslot: 11 AM
