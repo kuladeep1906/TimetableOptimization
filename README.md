@@ -22,19 +22,10 @@ Clone this repository to your local machine:
 
 ```bash
 git clone https://github.com/kuladeep1906/Heuristic_search_project.git
-cd timetable-generator
+cd Heuristic_Search_Project
 ```
 
-### **Step 2: Set Up a Virtual Environment**
-
-It's recommended to use a virtual environment for the project. To create and activate a virtual environment, run:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
-
-### **Step 3: Install Required Dependencies**
+### **Step 2: Install Required Dependencies**
 
 Install the dependencies listed in the `requirements.txt` file:
 
@@ -42,7 +33,7 @@ Install the dependencies listed in the `requirements.txt` file:
 pip install -r requirements.txt
 ```
 
-### **Step 4: Running the Project**
+### **Step 3: Running the Project**
 
 Run the `main.py` script to generate and refine the timetable:
 
@@ -68,11 +59,20 @@ After running the program, the final timetable will be saved to a text file name
 
 ```plaintext
 Final Timetable:
-Course: Math, Room: Room 1, Teacher: Mr. A, Timeslot: 10 AM
-Course: Physics, Room: Room 1, Teacher: Ms. B, Timeslot: 12 PM
-Course: Chemistry, Room: Room 2, Teacher: Mr. C, Timeslot: 12 PM
-Course: History, Room: Room 3, Teacher: Ms. B, Timeslot: 11 AM
-Course: English, Room: Room 1, Teacher: Ms. D, Timeslot: 9 AM
+Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 11 AM
+Course: Artificial Intelligence, Room: Room 1, Teacher: Mr. A, Timeslot: 9 AM
+Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 11 AM
+Course: Computer Science, Room: Room 3, Teacher: Mr. C, Timeslot: 12 PM
+Course: Cyber Security, Room: Room 3, Teacher: Mr. C, Timeslot: 1 PM
+Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 10 AM
+Course: Data Mining Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 1 PM
+Course: Big Data Analytics, Room: Room 2, Teacher: Mr. E, Timeslot: 1 PM
+Course: Heuristic Search, Room: Room 5, Teacher: Mr. E, Timeslot: 12 PM
+Course: Real Time Systems, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Reinforcement Learning, Room: Room 5, Teacher: Mr. F, Timeslot: 1 PM
+Course: Machine Learning Design, Room: Room 4, Teacher: Mr. F, Timeslot: 12 PM
+Course: Cloud Computing, Room: Room 4, Teacher: Mr. G, Timeslot: 10 AM
+Course: Computer Networking, Room: Room 4, Teacher: Mr. G, Timeslot: 1 PM
 ```
 
 ## **Project Structure**
@@ -83,17 +83,18 @@ The project is structured as follows:
 timetable-generator/
 │
 ├── src/                  # Source code files
+│   ├── main.py                 # Main script to run the timetable generator
 │   ├── genetic_algorithm.py    # Genetic Algorithm implementation
 │   ├── rta_star.py             # Real-Time A* Algorithm implementation
 │   ├── fitness.py              # Fitness function and constraints
 │   ├── timetable.py            # Timetable class definition
-│
-├── data/                 # Input data for courses, rooms, teachers
-│   └── input_data.py          # Teacher, course, and timeslot data
-│
-├── main.py               # Main script to run the timetable generator
-├── requirements.txt      # Project dependencies
-└── README.md             # Project documentation (this file)
+├── data/                       # Input data for courses, rooms, teachers
+│   └── input_data.py           # Teacher, course, and timeslot data
+├── requirements.txt            # Project dependencies
+├── optimal_schedule.txt        # Final output with optimized timetable
+└── README.md                   # Project documentation (this file)
+
+optimal_schedule
 ```
 
 ## **Key Algorithms**
