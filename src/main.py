@@ -1,7 +1,6 @@
-from src.genetic_algorithm import run_genetic_algorithm  # Import the function
-from src.rta_star import rta_star
-from src.timetable import Timetable
-
+from .genetic_algorithm import run_genetic_algorithm  # Import the function
+from .rta_star import rta_star
+from .timetable import Timetable
 
 def save_timetable_to_file(timetable_object, filename):
     """
@@ -31,6 +30,8 @@ if __name__ == "__main__":
         mutation_prob=0.2, 
         elite_size=3
     )
+    
+    # Debugging: Print GA output
     print("\nBest Genetic Algorithm Timetable:")
     print(best_ga_solution)
 
@@ -41,9 +42,10 @@ if __name__ == "__main__":
         max_depth=15, 
         max_iterations=700
     )
+
+    # Debugging: Print RTA* output
     print("\nRefined RTA* Timetable:")
     print(best_rta_solution)
 
-
-    # Save the final RTA* timetable to kuladeep.txt
+    # Save the final RTA* timetable to optimal_schedule.txt
     save_timetable_to_file(best_rta_solution, 'optimal_schedule.txt')
