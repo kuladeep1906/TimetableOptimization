@@ -1,123 +1,99 @@
-# **Timetable Generator Using Genetic Algorithm and Real-Time A\***
+```markdown
+# Timetable Generator
 
-This project is a timetable generation system that uses a **Genetic Algorithm (GA)** and **Real-Time A\*** (RTA\*) to create an optimized schedule for courses, teachers, rooms, and timeslots. The system ensures that the schedule adheres to several constraints, including teacher-course pairings, room availability, and teacher workload balance.
+This project is an optimized timetable generator built using various heuristic and AI-based algorithms. It generates a feasible timetable by taking into account constraints like teacher availability, room capacity, and preferred timeslots for courses. The project also includes a web-based user interface to visualize the optimized timetable and access detailed logs.
 
-## **Features**
+## Features
 
-- **Genetic Algorithm Optimization**: Produces a near-optimal timetable by evolving solutions over multiple generations.
-- **Real-Time A\* Refinement**: Refines the generated timetable to further reduce conflicts and improve the overall quality.
-- **Advanced Constraints**:
-  - **Teacher-Course Pairing**: Ensures specific teachers are always paired with certain courses.
-  - **Room and Teacher Conflicts**: Avoids scheduling multiple classes in the same room or assigning teachers to more than one course in the same timeslot.
-  - **Teacher Workload Optimization**: Balances the number of courses assigned to each teacher, avoiding overloads.
-- **Output Saved to File**: The final timetable is saved to a text file for easy access.
+- **Multiple Optimization Algorithms**: Uses Genetic Algorithm, Simulated Annealing, Real-Time A* (RTA*), and Tabu Search to optimize timetables.
+- **Customizable Constraints**: Configurable fitness functions to account for room capacity, teacher availability, preferred rooms, and course load.
+- **Web Interface**: Visualize the timetable and access detailed optimization logs.
+- **Log Management**: Generates log files for each run, retaining only the latest logs to save storage.
 
-## **Installation**
+## How It Works
 
-To run this project, ensure that you have Python 3.x installed. You will also need to install the required dependencies.
+1. **Generate Initial Population**: Using constraint programming, an initial population of timetables is created to satisfy the hard constraints.
+2. **Genetic Algorithm**: Optimizes the initial population to improve the timetable based on the fitness score.
+3. **Simulated Annealing**: Further refines the solution by exploring other feasible solutions and reducing penalties.
+4. **Real-Time A\***: Addresses specific constraint violations by generating alternative solutions for problematic entries.
+5. **Tabu Search**: Final optimization stage to further improve the timetable and avoid previous solutions.
 
-### **Step 1: Clone the Repository**
-
-Clone this repository to your local machine:
-
-```bash
-git clone https://github.com/kuladeep1906/Heuristic_search_project.git
-cd Heuristic_Search_Project
-```
-
-### **Step 2: Install Required Dependencies**
-
-Install the dependencies listed in the `requirements.txt` file:
-
-```bash
-pip install -r requirements.txt
-```
-
-### **Step 3: Running the Project**
-
-Run the `main.py` script to generate and refine the timetable:
-
-```bash
-python3 main.py
-```
-
-The program will:
-
-1. Generate an initial timetable using a **Genetic Algorithm**.
-2. Refine the timetable using **Real-Time A\*** to further optimize the solution.
-3. Save the final timetable to a file called `final_timetable.txt`.
-
-### **Example Command**:
-
-```bash
-python3 main.py
-```
-
-## **Usage**
-
-After running the program, the final timetable will be saved to a text file named `final_timetable.txt` in the project directory. The format of the saved timetable will look something like this:
-
-```plaintext
-Final Timetable:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 11 AM
-Course: Artificial Intelligence, Room: Room 1, Teacher: Mr. A, Timeslot: 9 AM
-Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 11 AM
-Course: Computer Science, Room: Room 3, Teacher: Mr. C, Timeslot: 12 PM
-Course: Cyber Security, Room: Room 3, Teacher: Mr. C, Timeslot: 1 PM
-Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 10 AM
-Course: Data Mining Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 1 PM
-Course: Big Data Analytics, Room: Room 2, Teacher: Mr. E, Timeslot: 1 PM
-Course: Heuristic Search, Room: Room 5, Teacher: Mr. E, Timeslot: 12 PM
-Course: Real Time Systems, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
-Course: Reinforcement Learning, Room: Room 5, Teacher: Mr. F, Timeslot: 1 PM
-Course: Machine Learning Design, Room: Room 4, Teacher: Mr. F, Timeslot: 12 PM
-Course: Cloud Computing, Room: Room 4, Teacher: Mr. G, Timeslot: 10 AM
-Course: Computer Networking, Room: Room 4, Teacher: Mr. G, Timeslot: 1 PM
-```
-
-## **Project Structure**
+## Project Structure
 
 The project is structured as follows:
-
 ```
+
 timetable-generator/
 │
-├── src/                  # Source code files
-│   ├── main.py                 # Main script to run the timetable generator
-│   ├── genetic_algorithm.py    # Genetic Algorithm implementation
-│   ├── rta_star.py             # Real-Time A* Algorithm implementation
-│   ├── fitness.py              # Fitness function and constraints
-│   ├── timetable.py            # Timetable class definition
-├── data/                       # Input data for courses, rooms, teachers
-│   └── input_data.py           # Teacher, course, and timeslot data
-├── requirements.txt            # Project dependencies
-├── optimal_schedule.txt        # Final output with optimized timetable
-└── README.md                   # Project documentation (this file)
+├── src/ # Source code files
+│ ├── main.py # Main script to run the timetable generator
+│ ├── genetic*algorithm.py # Genetic Algorithm implementation
+│ ├── rta_star.py # Real-Time A\* Algorithm implementation
+│ ├── fitness.py # Fitness function and constraints
+│ ├── simulated_annealing.py # Simulated Annealing implementation
+│ ├── tabu_search.py # Tabu Search optimization
+│ ├── constraint_programming.py# Initial feasible timetable generation
+│ ├── timetable.py # Timetable class definition
+│ └── app.py # Flask application for UI
+│
+├── data/ # Input data for courses, rooms, teachers
+│ └── input_data.py # Teacher, course, and timeslot data
+│
+├── templates/ # HTML templates for the web interface
+│ └── index.html # Main UI template
+│
+├── static/ # Static files like CSS and JS for the web interface
+│ └── styles.css # CSS file for styling the UI
+│
+├── logs/ # Logs directory for optimization process logs
+│ └── timetable_optimization*<timestamp>.txt # Log files with details of each run
+│
+├── output/ # Directory for final output files
+│ └── final_output.txt # Final optimized timetable
+│
+├── requirements.txt # Project dependencies
+└── README.md # Project documentation (this file)
 
-optimal_schedule
-```
+````
 
-## **Key Algorithms**
+## Installation
 
-1. **Genetic Algorithm (GA)**:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/Heuristic_search_project.git
+   cd timetable-generator
+````
 
-   - A population-based optimization technique.
-   - Uses crossover and mutation to evolve solutions over several generations.
-   - Ensures valid schedules by checking room availability and teacher conflicts.
+2. **Install dependencies**:
+   ```bash
+   pip3 install -r requirements.txt
+   ```
 
-2. **Real-Time A\* (RTA\*)**:
-   - A local optimization algorithm.
-   - Refines the timetable produced by GA to improve the overall schedule by exploring neighbouring solutions.
-   - Ensures minimal conflicts and adheres to specific teacher-course pairings.
+## Usage
 
-## **Configuration**
+1. **Run the main script**:
+   This will generate the optimized timetable and save the output in `output/final_output.txt`.
 
-You can modify the constraints, teacher-course pairings, room preferences, and more by editing the source files. For example:
+   ```bash
+   python3 -m src/main.py
+   ```
 
-- To change the **Teacher-Course Pairing** constraints, edit the `teacher_course_pairings` dictionary in `fitness.py`.
+2. **Launch the web interface**:
+   The Flask web application displays the final timetable and allows users to view logs.
 
-## **Further Development**
+   ```bash
+   python3 -m src/app.py
+   ```
 
-- Add additional constraints such as course sequence requirements or more complex room preferences.
-- Visualize the generated timetable using a graphical interface.
-- Integrate additional optimization techniques for better performance on larger datasets.
+3. **Access the interface**:
+   Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000) to view the timetable.
+
+## Configuration
+
+- **Data**: Modify `data/input_data.py` to adjust the courses, teachers, rooms, and timeslots.
+- **Constraints**: Adjust constraints in `src/fitness.py` as needed to prioritize different scheduling rules.
+- **Log Retention**: Set the number of logs to retain in `src/main.py` in the `clean_old_logs` function.
+
+## License
+
+This project is licensed under the MIT License.

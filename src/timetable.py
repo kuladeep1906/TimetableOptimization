@@ -1,5 +1,5 @@
 import random
-from data.input_data import COURSES, ROOMS, TEACHERS, TIMESLOTS  # Import data
+from data.input_data import COURSES, ROOMS,TEACHERS
 
 class Timetable:
     def __init__(self, existing_timetable=None):

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timetable Optimization</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      /* Page Background */
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f8fb;
+          color: #333;
+          margin: 0;
+          padding: 0;
+      }
+
+      /* Header Styling */
+      .header {
+          background-color: #007acc;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+          border-bottom: 4px solid #005f99;
+      }
+      .header h1 {
+          margin: 0;
+          font-size: 2.5rem;
+          font-weight: bold;
+      }
+      .header p {
+          margin: 10px 0 0;
+          font-size: 1.1rem;
+      }
+
+      /* Table Styling */
+      .timetable-section {
+          margin: 20px auto;
+          width: 90%;
+          max-width: 800px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          padding: 20px;
+      }
+      .timetable-section h2 {
+          text-align: center;
+          font-size: 1.8rem;
+          color: #007acc;
+          margin-bottom: 10px;
+      }
+      .timetable {
+          width: 100%;
+          border-collapse: collapse;
+          overflow: hidden;
+          border-radius: 8px;
+      }
+      .timetable th, .timetable td {
+          padding: 12px;
+          text-align: center;
+      }
+      .timetable th {
+          background-color: #007acc;
+          color: white;
+          font-weight: bold;
+      }
+      .timetable tr {
+          transition: background 0.2s ease;
+      }
+      .timetable tr:hover {
+          background-color: #eaf4fb;
+      }
+
+      /* Teacher Colors */
+      {% set teacher_colors = {
+          'Teacher A': '#ffdddd', 'Teacher B': '#ddffdd', 'Teacher C': '#ddddff',
+          'Teacher D': '#ffffdd', 'Teacher E': '#ffddee', 'Teacher F': '#ddffff',
+          'Teacher G': '#f4e1ff', 'Teacher H': '#e8e8e8', 'Teacher I': '#d5f5e3',
+          'Teacher J': '#d7bde2', 'Teacher K': '#aed6f1', 'Teacher L': '#f9e79f',
+          'Teacher M': '#f5b7b1', 'Teacher N': '#fad7a0', 'Teacher O': '#d1f2eb',
+          'Teacher P': '#fcf3cf', 'Teacher Q': '#f5cba7', 'Teacher R': '#c5cae9',
+          'Teacher S': '#b3e5fc', 'Teacher T': '#b2dfdb', 'Teacher U': '#ffe0b2',
+          'Teacher V': '#c8e6c9', 'Teacher W': '#ffccbc', 'Teacher X': '#dcedc8',
+          'Teacher Y': '#f8bbd0', 'Teacher Z': '#f0f4c3'
+      } %}
+
+      {% for teacher, color in teacher_colors.items() %}
+      .teacher-{{ teacher | lower | replace(' ', '-') }} {
+          background-color: {{ color }};
+      }
+      {% endfor %}
+
+      /* Dropdown Styling */
+      .filter-container {
+          text-align: center;
+          margin: 20px;
+      }
+
+      /* Info Text */
+      .info-text {
+          text-align: center;
+          font-size: 1rem;
+          margin: 10px 0;
+          color: #555;
+      }
+
+      /* Logs Button Styling */
+      .logs-button-container {
+          text-align: center;
+          margin-top: 10px;
+      }
+      .logs-button-container button {
+          padding: 12px 20px;
+          font-size: 1rem;
+          background-color: #007acc;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+      .logs-button-container button:hover {
+          background-color: #005f99;
+      }
+
+      /* Logs Section Styling */
+      .logs-section {
+          width: 100%;
+          max-width: 100%;
+          margin: 20px auto;
+          padding: 15px;
+          background-color: #f9f9f9;
+          border-left: 4px solid #007acc;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          display: none;
+      }
+      #logs-content {
+          font-size: 0.95rem;
+          color: #333;
+          white-space: pre-wrap;
+          padding: 10px;
+          background: #f1f1f1;
+          border-radius: 4px;
+          overflow-y: auto;
+          max-height: 60vh;
+      }
+
+      /* Slide-down Animation */
+      .show {
+          display: block;
+          animation: slideDown 0.4s ease forwards;
+      }
+      @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <header class="header">
+        <h1>Welcome to Timetable Optimization</h1>
+        <p>Your optimized timetable is presented below.</p>
+      </header>
+
+      <!-- Dropdown Filters -->
+      <div class="filter-container">
+        <label for="course-filter">Filter by Course:</label>
+        <select id="course-filter" onchange="applyFilter()">
+          <option value="">All Courses</option>
+          {% for course in unique_courses %}
+          <option value="{{ course }}">{{ course }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="teacher-filter">Filter by Teacher:</label>
+        <select id="teacher-filter" onchange="applyFilter()">
+          <option value="">All Teachers</option>
+          {% for teacher in unique_teachers %}
+          <option value="{{ teacher }}">{{ teacher }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Optimized Timetable Table -->
+      <section class="timetable-section">
+        <h2>Optimized Timetable</h2>
+        <table class="timetable">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Room</th>
+              <th>Timeslot</th>
+              <th>Teacher</th>
+            </tr>
+          </thead>
+          <tbody id="timetable-body">
+            {% for entry in timetable %}
+            <tr
+              class="teacher-{{ entry['teacher'] | lower | replace(' ', '-') }}"
+            >
+              <td>{{ entry['course'] }}</td>
+              <td>{{ entry['room'] }}</td>
+              <td>{{ entry['timeslot'] }}</td>
+              <td>{{ entry['teacher'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Info Text -->
+      <p class="info-text">
+        Click "Show Logs" for more details on the optimization process.
+      </p>
+
+      <!-- Logs Button -->
+      <div class="logs-button-container">
+        <button onclick="toggleLogs()">Show Logs</button>
+      </div>
+
+      <!-- Logs Section (Hidden by Default) -->
+      <section id="logs-section" class="logs-section">
+        <h2>Optimization Logs</h2>
+        <pre id="logs-content">Click "Show Logs" to fetch logs...</pre>
+      </section>
+    </div>
+
+    <script>
+      // Toggle display for logs and load via AJAX
+      function toggleLogs() {
+        console.log("Toggle Logs button clicked"); // Debugging line
+        var logsSection = document.getElementById("logs-section");
+        var logsContent = document.getElementById("logs-content");
+
+        if (logsSection.classList.contains("show")) {
+          logsSection.classList.remove("show");
+        } else {
+          logsSection.classList.add("show");
+          console.log("Fetching logs..."); // Debugging line
+
+          // Fetch logs only when logs section is displayed
+          fetch("/logs")
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Logs fetched successfully"); // Debugging line
+              logsContent.textContent = data.logs || "No logs available.";
+            })
+            .catch((error) => {
+              logsContent.textContent =
+                "Error loading logs. Please try again later.";
+              console.error("Error fetching logs:", error);
+            });
+        }
+      }
+
+      // Apply filter based on course and teacher selections
+      function applyFilter() {
+        console.log("Filter function triggered"); // Debugging line
+        const course = document.getElementById("course-filter").value;
+        const teacher = document.getElementById("teacher-filter").value;
+
+        fetch(`/filter_timetable?course=${course}&teacher=${teacher}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Filter data received:", data); // Debugging line
+            const timetableBody = document.getElementById("timetable-body");
+            timetableBody.innerHTML = "";
+
+            data.timetable.forEach((entry) => {
+              const row = document.createElement("tr");
+              row.classList.add(
+                `teacher-${entry.teacher.toLowerCase().replace(/ /g, "-")}`
+              );
+              row.innerHTML = `
+                <td>${entry.course}</td>
+                <td>${entry.room}</td>
+                <td>${entry.timeslot}</td>
+                <td>${entry.teacher}</td>
+              `;
+              timetableBody.appendChild(row);
+            });
+          })
+          .catch((error) => console.error("Error applying filter:", error));
+      }
+    </script>
+  </body>
+</html>

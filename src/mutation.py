@@ -1,15 +1,34 @@
-from deap import creator
-from src.timetable import Timetable
+import logging
+import random
+from data.input_data import ROOMS, TIMESLOTS, TEACHERS, COURSES
 
-def mutate_timetable(individual, indpb=0.1):
+logging.basicConfig(filename='timetable_optimization_output.txt', level=logging.INFO, format='%(message)s')
+
+def validate_entry(entry):
+    required_keys = {'course', 'room', 'timeslot', 'teacher'}
+    return isinstance(entry, dict) and required_keys.issubset(entry.keys())
+
+def mutate(individual, mutation_rate=0.05):
     """
-    Mutate the timetable by changing room, teacher, or timeslot randomly for some courses.
-    The result should still be an instance of creator.Individual.
+    Mutates an individual timetable solution.
     """
-    # Mutate the individual by creating a new Timetable
-    mutated_timetable = Timetable()
-    mutated_timetable.mutate(indpb=indpb)
-    
-    # Return the mutated timetable as a creator.Individual
-    new_individual = creator.Individual(mutated_timetable.timetable)
-    return new_individual,
+    if isinstance(individual, dict):
+        individual = [individual]
+
+    for entry in individual:
+        if not validate_entry(entry):
+            continue
+
+        students = next((c['students'] for c in COURSES if c['name'] == entry['course']), 0)
+
+        if random.random() < mutation_rate:
+            entry['room'] = random.choice([room['name'] for room in ROOMS if room['capacity'] >= students])
+        if random.random() < mutation_rate:
+            entry['timeslot'] = random.choice(TIMESLOTS)
+        if random.random() < mutation_rate:
+            available_teachers = [t['name'] for t in TEACHERS if entry['timeslot'] in t['availability']]
+            if available_teachers:
+                entry['teacher'] = random.choice(available_teachers)
+
+    logging.info("Mutated Individual: " + str(individual))
+    return individual

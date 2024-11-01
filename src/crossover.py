@@ -1,12 +1,16 @@
 import random
-from deap import creator
+import logging
 
 def crossover(parent1, parent2):
-    """
-    Perform a one-point crossover between two timetables (parents).
-    The offspring should also be of type creator.Individual.
-    """
-    index = random.randint(1, len(parent1) - 1)
-    child1 = creator.Individual(parent1[:index] + parent2[index:])
-    child2 = creator.Individual(parent2[:index] + parent1[index:])
+    logging.info("Parent 1 before crossover: " + str(parent1))
+    logging.info("Parent 2 before crossover: " + str(parent2))
+    
+    split_point = random.randint(1, len(parent1) - 1)
+    child1 = parent1[:split_point] + parent2[split_point:]
+    child2 = parent2[:split_point] + parent1[split_point:]
+
+    # Log the structure of the offspring
+    logging.info("Child 1 after crossover: " + str(child1))
+    logging.info("Child 2 after crossover: " + str(child2))
+
     return child1, child2

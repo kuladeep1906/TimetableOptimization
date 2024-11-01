@@ -1,80 +1,57 @@
+import logging
 import random
-from deap import base, creator, tools, algorithms
-from src.fitness import evaluate  # Use the updated fitness function
-from src.mutation import mutate_timetable
-from src.selection import select_best
-from src.timetable import Timetable
-from data.input_data import TIMESLOTS  # Import TIMESLOTS for room/teacher checks
+from concurrent.futures import ThreadPoolExecutor
+from .fitness import evaluate_fitness
+from .crossover import crossover
+from .mutation import mutate
 
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMax)
+logging.basicConfig(filename='timetable_optimization_output.txt', level=logging.INFO, format='%(message)s', force=True)
 
-# Check if the generated timetable is conflict-free
-def is_valid_schedule(timetable):
+def select_population(population, fitness_scores, num_selected=20):
     """
-    Check the generated timetable for room and teacher conflicts.
+    Selects a subset of the population based on fitness scores.
     """
-    room_usage = {timeslot: [] for timeslot in TIMESLOTS}
-    teacher_usage = {timeslot: [] for timeslot in TIMESLOTS}
+    scored_population = list(zip(population, fitness_scores))
+    scored_population.sort(key=lambda x: x[1])  # Sort by fitness score
+    selected_population = [ind for ind, _ in scored_population[:num_selected]]
+    return selected_population
 
-    for course, room, teacher, timeslot in timetable:
-        if room in room_usage[timeslot] or teacher in teacher_usage[timeslot]:
-            return False  # Conflict detected
-        room_usage[timeslot].append(room)
-        teacher_usage[timeslot].append(teacher)
+def run_genetic_algorithm(initial_population, generations=20, population_size=30, mutation_rate=0.05):
+    """
+    Runs the genetic algorithm to evolve a full timetable solution.
+    """
+    population = initial_population
+
+    for generation in range(generations):
+        logging.info(f"Generation {generation + 1}")
+
+        # Evaluate fitness in parallel for the entire timetable
+        with ThreadPoolExecutor() as executor:
+            fitness_scores = list(executor.map(evaluate_fitness, population))
+
+        # Select top-performing individuals (full timetables)
+        selected_population = select_population(population, fitness_scores, num_selected=population_size // 2)
+
+        # Generate offspring through crossover
+        offspring = []
+        for i in range(0, len(selected_population), 2):
+            if i + 1 < len(selected_population):
+                parent1 = selected_population[i]
+                parent2 = selected_population[i + 1]
+                child1, child2 = crossover(parent1, parent2)
+                offspring.extend([child1, child2])
+
+        # Apply mutation on each offspring
+        mutated_offspring = [mutate(individual, mutation_rate=mutation_rate) for individual in offspring]
+
+        # Form the new population, keeping population size constant
+        population = selected_population + mutated_offspring
+        population = population[:population_size]
+
+    # Final evaluation to find the best solution (full timetable)
+    final_fitness_scores = list(map(evaluate_fitness, population))
+    best_solution = population[final_fitness_scores.index(min(final_fitness_scores))]
     
-    return True
-
-toolbox = base.Toolbox()
-toolbox.register("individual", tools.initIterate, creator.Individual, lambda: Timetable().timetable)
-toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-toolbox.register("evaluate", evaluate)
-toolbox.register("mate", tools.cxTwoPoint)
-toolbox.register("mutate", mutate_timetable)
-toolbox.register("select", tools.selTournament, tournsize=3)
-
-def adaptive_mutation(gen, max_gen):
-    """
-    Dynamically adjust the mutation rate. Start high and decrease over generations.
-    """
-    initial_mutation_rate = 0.3
-    final_mutation_rate = 0.05
-    return initial_mutation_rate - ((initial_mutation_rate - final_mutation_rate) * (gen / max_gen))
-
-def run_genetic_algorithm(population_size=200, generations=100, crossover_prob=0.8, mutation_prob=0.2, elite_size=2):
-    """
-    Run the Genetic Algorithm with Elitism.
-    """
-    population = toolbox.population(n=population_size)
-
-    # Add Elitism: Preserve the best individuals
-    for gen in range(generations):
-        offspring = toolbox.select(population, len(population) - elite_size)
-        offspring = list(map(toolbox.clone, offspring))
-
-        # Apply crossover and mutation on the offspring
-        for child1, child2 in zip(offspring[::2], offspring[1::2]):
-            if random.random() < crossover_prob:
-                toolbox.mate(child1, child2)
-                del child1.fitness.values
-                del child2.fitness.values
-
-        for mutant in offspring:
-            if random.random() < mutation_prob:
-                toolbox.mutate(mutant)
-                del mutant.fitness.values
-
-        # Evaluate invalid offspring
-        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        fitnesses = map(toolbox.evaluate, invalid_ind)
-        for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit
-
-        # Select elite individuals and replace them in the population
-        elite_individuals = tools.selBest(population, elite_size)
-        population[:] = offspring + elite_individuals
-
-        # Optional: Log progress or stats
-
-    return tools.selBest(population, 1)[0]  # Return the best individual
-
+    # Log final solution for review
+    logging.info("Final GA Solution (full timetable): " + str(best_solution))
+    return best_solution

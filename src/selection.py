@@ -1,7 +1,21 @@
-from deap import tools # type: ignore
+import random
+from .fitness import evaluate_fitness
 
-def select_best(individuals, k=3):
+def select_population(population, num_selected=20):
     """
-    Tournament selection to pick the best individuals.
+    Select a subset of the population for crossover based on their fitness.
+    Uses a tournament selection mechanism where the fittest individuals are more likely to be chosen.
     """
-    return tools.selTournament(individuals, k, tournsize=3)
+    selected = []
+    for _ in range(num_selected):
+        # Randomly select a few individuals for the tournament.
+        tournament = random.sample(population, k=5)
+
+        # Evaluate fitness for each tournament participant.
+        tournament_fitness = [(individual, evaluate_fitness(individual)) for individual in tournament]
+
+        # Choose the winner of the tournament (individual with the lowest fitness score).
+        winner = min(tournament_fitness, key=lambda x: x[1])[0]
+        selected.append(winner)
+    
+    return selected

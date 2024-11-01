@@ -1,51 +1,73 @@
+from .fitness import evaluate_fitness
+from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
 import random
-from src.fitness import evaluate  # Use the updated fitness function
-from src.timetable import Timetable
-from data.input_data import TIMESLOTS
 
-def is_valid_schedule(timetable):
-    """
-    Check if the room and teacher are available at the given timeslot.
-    """
-    room_usage = {timeslot: [] for timeslot in TIMESLOTS}
-    teacher_usage = {timeslot: [] for timeslot in TIMESLOTS}
-
-    for course, room, teacher, timeslot in timetable:
-        if room in room_usage[timeslot] or teacher in teacher_usage[timeslot]:
-            return False  # Conflict found (either room or teacher conflict)
-        room_usage[timeslot].append(room)
-        teacher_usage[timeslot].append(teacher)
-
-    return True
-
-def rta_star(initial_solution, max_depth=5, max_iterations=1000):
-    """
-    Real-Time A* (RTA*) Algorithm to optimize the timetable scheduling problem.
-    """
-    current_solution = initial_solution
-    best_solution = current_solution
-    best_fitness = evaluate(current_solution.get_timetable_entries())[0]
+def refine_with_rta_star(individual, max_iterations=100):
+    current_solution = individual
+    current_score = evaluate_fitness(current_solution)
 
     for iteration in range(max_iterations):
-        neighbors = []
-        for _ in range(max_depth):
-            neighbor = Timetable()
-            neighbor.mutate()
+        problem_entries = identify_problems(current_solution)
+        if not problem_entries:
+            break
 
-            # Validate if the new schedule is conflict-free
-            if is_valid_schedule(neighbor.get_timetable_entries()):
-                fitness = evaluate(neighbor.get_timetable_entries())[0]
-                neighbors.append((neighbor, fitness))
+        problem_entry = random.choice(problem_entries)
+        alternatives = generate_alternatives(problem_entry, current_solution)
+        best_alternative = min(alternatives, key=evaluate_fitness)
+        best_score = evaluate_fitness(best_alternative)
 
-        # Sort neighbors by fitness (highest first)
-        if neighbors:
-            neighbors.sort(key=lambda x: x[1], reverse=True)
-            best_neighbor = neighbors[0]
+        if best_score < current_score:
+            current_solution = best_alternative
+            current_score = best_score
 
-            # Only accept if the best neighbor improves the fitness
-            if best_neighbor[1] > best_fitness:
-                current_solution = best_neighbor[0]
-                best_fitness = best_neighbor[1]
-                best_solution = current_solution
+    return current_solution
 
-    return best_solution
+def identify_problems(solution):
+    problems = []
+    for entry in solution:
+        course = entry['course']
+        room = entry['room']
+        timeslot = entry['timeslot']
+        teacher = entry['teacher']
+        students = next(c['students'] for c in COURSES if c['name'] == course)
+
+        room_data = next(r for r in ROOMS if r['name'] == room)
+        if students > room_data['capacity']:
+            problems.append(entry)
+
+        teacher_data = next(t for t in TEACHERS if t['name'] == teacher)
+        if timeslot not in teacher_data['availability']:
+            problems.append(entry)
+
+    return problems
+
+def generate_alternatives(entry, solution):
+    alternatives = []
+    course = entry['course']
+    students = next(c['students'] for c in COURSES if c['name'] == course)
+
+    # Generate room alternatives
+    for room in [r['name'] for r in ROOMS if r['capacity'] >= students]:
+        new_solution = [e.copy() for e in solution]
+        for e in new_solution:
+            if e['course'] == course:
+                e['room'] = room
+        alternatives.append(new_solution)
+
+    # Generate timeslot alternatives
+    for timeslot in TIMESLOTS:
+        new_solution = [e.copy() for e in solution]
+        for e in new_solution:
+            if e['course'] == course:
+                e['timeslot'] = timeslot
+        alternatives.append(new_solution)
+
+    # Generate teacher alternatives
+    for teacher in [t['name'] for t in TEACHERS if timeslot in t['availability']]:
+        new_solution = [e.copy() for e in solution]
+        for e in new_solution:
+            if e['course'] == course:
+                e['teacher'] = teacher
+        alternatives.append(new_solution)
+
+    return alternatives

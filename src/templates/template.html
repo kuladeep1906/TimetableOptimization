@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Optimized Timetable</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+      }
+      h1 {
+        color: #4caf50;
+      }
+      table {
+        width: 80%;
+        margin: 20px 0;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ddd;
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+      .teacher-a {
+        background-color: #ffdddd;
+      }
+      .teacher-b {
+        background-color: #ddffdd;
+      }
+      .teacher-c {
+        background-color: #ddddff;
+      }
+      .teacher-d {
+        background-color: #ffffdd;
+      }
+      .teacher-e {
+        background-color: #ffddee;
+      }
+      .teacher-f {
+        background-color: #ddffff;
+      }
+      .teacher-g {
+        background-color: #f4e1ff;
+      }
+      .teacher-h {
+        background-color: #e8e8e8;
+      }
+      /* Add more colors for additional teachers as needed */
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Optimized Timetable</h1>
+    <table>
+      <tr>
+        <th>Course</th>
+        <th>Room</th>
+        <th>Timeslot</th>
+        <th>Teacher</th>
+      </tr>
+      {% for entry in output %} {% if entry.get('message') %}
+      <tr>
+        <td colspan="4">{{ entry.message }}</td>
+      </tr>
+      {% else %}
+      <tr class="teacher-{{ entry.teacher | lower | replace(' ', '-') }}">
+        <td>{{ entry.course }}</td>
+        <td>{{ entry.room }}</td>
+        <td>{{ entry.timeslot }}</td>
+        <td>{{ entry.teacher }}</td>
+      </tr>
+      {% endif %} {% endfor %}
+    </table>
+    <a href="/" class="button">Go Back to Home</a>
+  </body>
+</html>

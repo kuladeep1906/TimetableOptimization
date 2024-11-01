@@ -1,0 +1,101 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Header */
+.header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin-bottom: 10px;
+    font-size: 2em;
+}
+
+/* Table Styling */
+.timetable-section {
+    margin: 20px 0;
+}
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.timetable th, .timetable td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.timetable th {
+    background-color: #333;
+    color: white;
+}
+
+.timetable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button Styling */
+.logs-button-container {
+    margin-top: 20px;
+}
+
+.logs-button-container button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.logs-button-container button:hover {
+    background-color: #45a049;
+}
+
+/* Logs Section */
+.logs-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    text-align: left;
+    overflow-x: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Teacher-specific Row Coloring */
+.teacher-teacher-a { background-color: #ffdddd; }
+.teacher-teacher-b { background-color: #ddffdd; }
+.teacher-teacher-c { background-color: #ddddff; }
+/* Add more colors as needed */
