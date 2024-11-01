@@ -48,7 +48,7 @@ timetable-generator/
 │   └── template.html
 │
 ├── static/                      # Static files like CSS and JS for the web interface
-│   └── styles.css               # CSS file for styling the UI
+│   └── style.css                # CSS file for styling the UI
 │
 ├── logs/                        # Logs directory for optimization process logs
 │   └── timetable_optimization_<timestamp>.txt # Log files with details of each run
