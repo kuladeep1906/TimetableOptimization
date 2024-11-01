@@ -1,102 +1,115 @@
-```markdown
-# Timetable Generator
+# Timetable Optimization Project
 
-This project is an optimized timetable generator built using various heuristic and AI-based algorithms. It generates a feasible timetable by taking into account constraints like teacher availability, room capacity, and preferred timeslots for courses. The project also includes a web-based user interface to visualize the optimized timetable and access detailed logs.
+This project is a timetable optimization tool designed to assign courses, rooms, timeslots, and teachers to optimize scheduling based on various constraints. It leverages multiple algorithms like Genetic Algorithm, Real-Time A\*, Simulated Annealing, and Tabu Search for iterative refinement of the timetable. Additionally, a Flask-based UI displays the optimized timetable and provides filtering and log-viewing features.
 
 ## Features
 
-- **Multiple Optimization Algorithms**: Uses Genetic Algorithm, Simulated Annealing, Real-Time A* (RTA*), and Tabu Search to optimize timetables.
-- **Customizable Constraints**: Configurable fitness functions to account for room capacity, teacher availability, preferred rooms, and course load.
-- **Web Interface**: Visualize the timetable and access detailed optimization logs.
-- **Log Management**: Generates log files for each run, retaining only the latest logs to save storage.
+- **Optimization Algorithms**:
 
-## How It Works
+  - **Genetic Algorithm**: Initial population-based search for optimal scheduling.
+  - **Simulated Annealing**: Refines solutions by exploring the solution space while avoiding local optima.
+  - **Real-Time A\***: Identifies issues and iteratively improves the timetable.
+  - **Tabu Search**: Provides a final optimization by avoiding previously visited sub-optimal solutions.
+  - **Constraint Programming** - Generates an initial feasible timetable that satisfies basic constraints like room capacity and teacher availability.
 
-1. **Generate Initial Population**: Using constraint programming, an initial population of timetables is created to satisfy the hard constraints.
-2. **Genetic Algorithm**: Optimizes the initial population to improve the timetable based on the fitness score.
-3. **Simulated Annealing**: Further refines the solution by exploring other feasible solutions and reducing penalties.
-4. **Real-Time A\***: Addresses specific constraint violations by generating alternative solutions for problematic entries.
-5. **Tabu Search**: Final optimization stage to further improve the timetable and avoid previous solutions.
+- **Constraints**:
+
+  - Room capacity limits and preferred rooms for specific courses.
+  - Timeslot availability and teacher preferences.
+  - Avoids scheduling conflicts for rooms and teachers.
+
+- **UI**:
+  - Filter the timetable by course and teacher.
+  - Option to view detailed optimization logs.
 
 ## Project Structure
 
 The project is structured as follows:
-```
 
+```
 timetable-generator/
 │
-├── src/ # Source code files
-│ ├── main.py # Main script to run the timetable generator
-│ ├── genetic*algorithm.py # Genetic Algorithm implementation
-│ ├── rta_star.py # Real-Time A\* Algorithm implementation
-│ ├── fitness.py # Fitness function and constraints
-│ ├── simulated_annealing.py # Simulated Annealing implementation
-│ ├── tabu_search.py # Tabu Search optimization
-│ ├── constraint_programming.py# Initial feasible timetable generation
-│ ├── timetable.py # Timetable class definition
-│ └── app.py # Flask application for UI
+├── src/                         # Source code files
+│   ├── main.py                  # Main script to run the timetable generator
+│   ├── genetic_algorithm.py     # Genetic Algorithm implementation
+│   ├── rta_star.py              # Real-Time A* Algorithm implementation
+│   ├── fitness.py               # Fitness function and constraints
+│   ├── simulated_annealing.py   # Simulated Annealing implementation
+│   ├── tabu_search.py           # Tabu Search optimization
+│   ├── constraint_programming.py# Initial feasible timetable generation
+│   ├── timetable.py             # Timetable class definition
+│   └── app.py                   # Flask application for UI
 │
-├── data/ # Input data for courses, rooms, teachers
-│ └── input_data.py # Teacher, course, and timeslot data
+├── data/                        # Input data for courses, rooms, teachers
+│   └── input_data.py            # Teacher, course, and timeslot data
 │
-├── templates/ # HTML templates for the web interface
-│ └── index.html # Main UI template
+├── templates/                   # HTML templates for the web interface
+│   └── index.html               # Main UI template
 │
-├── static/ # Static files like CSS and JS for the web interface
-│ └── styles.css # CSS file for styling the UI
+├── static/                      # Static files like CSS and JS for the web interface
+│   └── styles.css               # CSS file for styling the UI
 │
-├── logs/ # Logs directory for optimization process logs
-│ └── timetable_optimization*<timestamp>.txt # Log files with details of each run
+├── logs/                        # Logs directory for optimization process logs
+│   └── timetable_optimization_<timestamp>.txt # Log files with details of each run
 │
-├── output/ # Directory for final output files
-│ └── final_output.txt # Final optimized timetable
+├── output/                     # Directory for final output files
+│   └── final_output.txt         # Final optimized timetable
 │
-├── requirements.txt # Project dependencies
-└── README.md # Project documentation (this file)
+├── requirements.txt             # Project dependencies
+└── README.md                    # Project documentation (this file)
+```
 
-## Installation
+## Getting Started
 
-1. **Clone the repository**:
+### Prerequisites
+
+- Python 3.9 or later
+- Ensure you have `pip` installed.
+
+### Installation
+
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/Heuristic_search_project.git
-   cd Heuristic_search_project
-
+   git clone https://github.com/yourusername/timetable-generator.git
+   cd timetable-generator
    ```
 
-2. **Install dependencies**:
+2. Install dependencies:
    ```bash
    pip3 install -r requirements.txt
    ```
 
-````
+### Running the Project
 
-## Usage
-
-1. **Run the main script**:
-   This will generate the optimized timetable and save the output in `output/final_output.txt`.
+1. **Run the Timetable Generator**:
 
    ```bash
    python3 -m src/main.py
    ```
 
-2. **Launch the web interface**:
-   The Flask web application displays the final timetable and allows users to view logs.
+   This will generate an optimized timetable and log the details in `logs/`.
 
+2. **Start the Flask Web UI**:
    ```bash
    python3 -m src/app.py
    ```
+   Visit `http://127.0.0.1:5000` in your browser to view the timetable, apply filters, and view optimization logs.
 
-3. **Access the interface**:
-   Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000) to view the timetable.
+### Using the Filters and Log Viewer
 
-## Configuration
+- **Filtering**: Use the dropdown menus to filter the timetable by specific courses or teachers.
+- **Show Logs**: Click the "Show Logs" button to view detailed logs of the optimization process.
 
-- **Data**: Modify `data/input_data.py` to adjust the courses, teachers, rooms, and timeslots.
-- **Constraints**: Adjust constraints in `src/fitness.py` as needed to prioritize different scheduling rules.
-- **Log Retention**: Set the number of logs to retain in `src/main.py` in the `clean_old_logs` function.
+## Example Data
+
+Example courses, teachers, rooms, and timeslots are included in `data/input_data.py` for testing. You can modify these for your specific requirements.
+
+## Customization
+
+- **Constraints**: Modify constraints in `fitness.py` to add/remove rules or adjust penalties.
+- **Algorithms**: You can adjust algorithm parameters in their respective files (e.g., `genetic_algorithm.py`, `simulated_annealing.py`).
 
 ## License
 
-This project is licensed under the MIT License.
-````
+This project is open-source and available under the MIT License.
