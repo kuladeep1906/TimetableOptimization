@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # Timetable Generator
 
 This project is an optimized timetable generator built using various heuristic and AI-based algorithms. It generates a feasible timetable by taking into account constraints like teacher availability, room capacity, and preferred timeslots for courses. The project also includes a web-based user interface to visualize the optimized timetable and access detailed logs.
@@ -21,7 +21,6 @@ This project is an optimized timetable generator built using various heuristic a
 ## Project Structure
 
 The project is structured as follows:
-```
 
 timetable-generator/
 │
@@ -54,14 +53,15 @@ timetable-generator/
 ├── requirements.txt # Project dependencies
 └── README.md # Project documentation (this file)
 
-````
-
 ## Installation
 
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/yourusername/Heuristic_search_project.git
    cd timetable-generator
+   ```
+````
+
 ````
 
 2. **Install dependencies**:
@@ -97,3 +97,4 @@ timetable-generator/
 ## License
 
 This project is licensed under the MIT License.
+````
