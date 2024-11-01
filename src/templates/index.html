@@ -76,15 +76,12 @@
 
       /* Teacher Colors */
       {% set teacher_colors = {
-          'Teacher A': '#ffdddd', 'Teacher B': '#ddffdd', 'Teacher C': '#ddddff',
-          'Teacher D': '#ffffdd', 'Teacher E': '#ffddee', 'Teacher F': '#ddffff',
-          'Teacher G': '#f4e1ff', 'Teacher H': '#e8e8e8', 'Teacher I': '#d5f5e3',
-          'Teacher J': '#d7bde2', 'Teacher K': '#aed6f1', 'Teacher L': '#f9e79f',
-          'Teacher M': '#f5b7b1', 'Teacher N': '#fad7a0', 'Teacher O': '#d1f2eb',
-          'Teacher P': '#fcf3cf', 'Teacher Q': '#f5cba7', 'Teacher R': '#c5cae9',
-          'Teacher S': '#b3e5fc', 'Teacher T': '#b2dfdb', 'Teacher U': '#ffe0b2',
-          'Teacher V': '#c8e6c9', 'Teacher W': '#ffccbc', 'Teacher X': '#dcedc8',
-          'Teacher Y': '#f8bbd0', 'Teacher Z': '#f0f4c3'
+          'Mr. A': '#ffdddd', 'Ms. B': '#ddffdd', 'Mr. C': '#ddddff',
+          'Ms. D': '#ffffdd', 'Mr. E': '#ffddee', 'Mr. F': '#ddffff',
+          'Mr. G': '#f4e1ff', 'Ms. H': '#e8e8e8', 'Mr. I': '#d5f5e3',
+          'Ms. J': '#d7bde2', 'Mr. K': '#aed6f1', 'Ms. L': '#f9e79f',
+          'Mr. M': '#f5b7b1', 'Ms. N': '#fad7a0', 'Mr. O': '#d1f2eb',
+          'Ms. P': '#fcf3cf'
       } %}
 
       {% for teacher, color in teacher_colors.items() %}
@@ -93,11 +90,24 @@
       }
       {% endfor %}
 
-      /* Dropdown Styling */
-      .filter-container {
-          text-align: center;
-          margin: 20px;
+
+        /* Dropdown Styling */
+        .filter-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+       .filter-container input[type="text"] {
+          padding: 10px;
+          font-size: 1rem; /* Increase font size */
+
+          width: 165px;
+          margin: 0 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
       }
+
+
 
       /* Info Text */
       .info-text {
@@ -105,6 +115,15 @@
           font-size: 1rem;
           margin: 10px 0;
           color: #555;
+      }
+
+      /* No Results Message Styling */
+      .no-results {
+          text-align: center;
+          font-size: 1.2rem;
+          color: #f00;
+          display: none;
+          margin-top: 15px;
       }
 
       /* Logs Button Styling */
@@ -168,24 +187,29 @@
         <p>Your optimized timetable is presented below.</p>
       </header>
 
-      <!-- Dropdown Filters -->
+      <!-- Search_bar Filters -->
       <div class="filter-container">
-        <label for="course-filter">Filter by Course:</label>
-        <select id="course-filter" onchange="applyFilter()">
-          <option value="">All Courses</option>
-          {% for course in unique_courses %}
-          <option value="{{ course }}">{{ course }}</option>
-          {% endfor %}
-        </select>
+        <label for="course-filter">Search Course:</label>
+        <input
+          type="text"
+          id="course-filter"
+          placeholder="Enter Course Name"
+          oninput="applyFilter()"
+        />
 
-        <label for="teacher-filter">Filter by Teacher:</label>
-        <select id="teacher-filter" onchange="applyFilter()">
-          <option value="">All Teachers</option>
-          {% for teacher in unique_teachers %}
-          <option value="{{ teacher }}">{{ teacher }}</option>
-          {% endfor %}
-        </select>
+        <label for="teacher-filter">Search Teacher:</label>
+        <input
+          type="text"
+          id="teacher-filter"
+          placeholder="Enter Teacher Name"
+          oninput="applyFilter()"
+        />
       </div>
+
+      <!-- No Results Message -->
+      <p id="no-results" class="no-results">
+        No results found for the given course and/or teacher.
+      </p>
 
       <!-- Optimized Timetable Table -->
       <section class="timetable-section">
@@ -271,6 +295,14 @@
             console.log("Filter data received:", data); // Debugging line
             const timetableBody = document.getElementById("timetable-body");
             timetableBody.innerHTML = "";
+
+            // Show no-results message if the timetable is empty
+            const noResultsMessage = document.getElementById("no-results");
+            if (data.timetable.length === 0) {
+              noResultsMessage.style.display = "block";
+            } else {
+              noResultsMessage.style.display = "none";
+            }
 
             data.timetable.forEach((entry) => {
               const row = document.createElement("tr");

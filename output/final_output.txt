@@ -1,9 +1,9 @@
-Course: Advanced Data Analytics, Room: Room 2, Timeslot: 2 PM, Teacher: Mr. C
+Course: Advanced Data Analytics, Room: Room 1, Timeslot: 11 AM, Teacher: Mr. A
 Course: Artificial Intelligence, Room: Room 2, Timeslot: 10 AM, Teacher: Mr. A
-Course: Business Analytics, Room: Room 3, Timeslot: 10 AM, Teacher: Ms. B
-Course: Computer Science, Room: Room 3, Timeslot: 12 PM, Teacher: Mr. C
-Course: Cyber Security, Room: Room 5, Timeslot: 9 AM, Teacher: Mr. C
-Course: Data Science, Room: Room 2, Timeslot: 4 PM, Teacher: Ms. P
-Course: Data Mining & Machine Learning, Room: Room 1, Timeslot: 1 PM, Teacher: Ms. D
-Course: Big Data Analytics, Room: Room 6, Timeslot: 12 PM, Teacher: Mr. E
-Course: Heuristic Search, Room: Room 4, Timeslot: 11 AM, Teacher: Mr. E
+Course: Business Analytics, Room: Room 3, Timeslot: 1 PM, Teacher: Ms. B
+Course: Computer Science, Room: Room 4, Timeslot: 9 AM, Teacher: Mr. C
+Course: Cyber Security, Room: Room 6, Timeslot: 12 PM, Teacher: Mr. C
+Course: Data Science, Room: Room 1, Timeslot: 9 AM, Teacher: Ms. D
+Course: Data Mining & Machine Learning, Room: Room 6, Timeslot: 1 PM, Teacher: Ms. D
+Course: Big Data Analytics, Room: Room 3, Timeslot: 12 PM, Teacher: Mr. E
+Course: Heuristic Search, Room: Room 7, Timeslot: 3 PM, Teacher: Mr. E
