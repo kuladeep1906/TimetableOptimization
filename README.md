@@ -45,6 +45,7 @@ timetable-generator/
 │
 ├── templates/                   # HTML templates for the web interface
 │   └── index.html               # Main UI template
+│   └── template.html
 │
 ├── static/                      # Static files like CSS and JS for the web interface
 │   └── styles.css               # CSS file for styling the UI
