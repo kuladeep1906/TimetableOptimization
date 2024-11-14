@@ -1,116 +1,122 @@
 # Timetable Optimization Project
 
-This project is a timetable optimization tool designed to assign courses, rooms, timeslots, and teachers to optimize scheduling based on various constraints. It leverages multiple algorithms like Genetic Algorithm, Real-Time A\*, Simulated Annealing, and Tabu Search for iterative refinement of the timetable. Additionally, a Flask-based UI displays the optimized timetable and provides filtering and log-viewing features.
+This project provides an optimized timetable generator using multiple search algorithms, including Genetic Algorithm, Real-Time A* (RTA*), Simulated Annealing, Hill Climbing, and Tabu Search. Each algorithm applies constraints such as room capacity, teacher availability, and teacher-course assignment limits to generate the most suitable timetable based on a fitness score.
 
 ## Features
 
-- **Optimization Algorithms**:
-
-  - **Genetic Algorithm**: Initial population-based search for optimal scheduling.
-  - **Simulated Annealing**: Refines solutions by exploring the solution space while avoiding local optima.
-  - **Real-Time A\***: Identifies issues and iteratively improves the timetable.
-  - **Tabu Search**: Provides a final optimization by avoiding previously visited sub-optimal solutions.
-  - **Constraint Programming** - Generates an initial feasible timetable that satisfies basic constraints like room capacity and teacher availability.
-
-- **Constraints**:
-
-  - Room capacity limits and preferred rooms for specific courses.
-  - Timeslot availability and teacher preferences.
-  - Avoids scheduling conflicts for rooms and teachers.
-
-- **UI**:
-  - Filter the timetable by course and teacher.
-  - Option to view detailed optimization logs.
+- **Multiple Optimization Algorithms**: Choose between Genetic Algorithm, RTA\*, Simulated Annealing, Hill Climbing, and Tabu Search.
+- **Constraint Handling**:
+  - Room capacity enforcement.
+  - Teacher availability.
+  - Unique teacher-course assignments.
+  - Consecutive class penalties.
+  - Timeslot conflict avoidance.
+- **Fitness Evaluation**: Generates a fitness score based on constraint satisfaction and optimization objectives.
+- **Logging**: Logs detailed information on each algorithm’s performance and comparison results.
 
 ## Project Structure
 
-The project is structured as follows:
-
 ```
-timetable-generator/
-│
-├── src/                         # Source code files
-│   ├── main.py                  # Main script to run the timetable generator
-│   ├── genetic_algorithm.py     # Genetic Algorithm implementation
-│   ├── rta_star.py              # Real-Time A* Algorithm implementation
-│   ├── fitness.py               # Fitness function and constraints
-│   ├── simulated_annealing.py   # Simulated Annealing implementation
-│   ├── tabu_search.py           # Tabu Search optimization
-│   ├── constraint_programming.py# Initial feasible timetable generation
-│   ├── timetable.py             # Timetable class definition
-│   └── app.py                   # Flask application for UI
-│
-├── data/                        # Input data for courses, rooms, teachers
-│   └── input_data.py            # Teacher, course, and timeslot data
-│
-├── templates/                   # HTML templates for the web interface
-│   └── index.html               # Main UI template
-│   └── template.html
-│
-├── static/                      # Static files like CSS and JS for the web interface
-│   └── style.css                # CSS file for styling the UI
-│
-├── logs/                        # Logs directory for optimization process logs
-│   └── timetable_optimization_<timestamp>.txt # Log files with details of each run
-│
-├── output/                     # Directory for final output files
-│   └── final_output.txt         # Final optimized timetable
-│
-├── requirements.txt             # Project dependencies
-└── README.md                    # Project documentation (this file)
+Heuristic_Search_Project/
+├── data/
+│   ├── input_data.py           # Contains course, teacher, room, and timeslot data
+├── logs/
+│   ├── detailed_logs.log       # Logs details of each iteration for all algorithms
+│   ├── final_output.log        # Logs final comparison results and best timetable
+├── src/
+│   ├── main.py                 # Entry point for running algorithms
+│   ├── fitness.py              # Fitness function for timetable evaluation
+│   ├── genetic_algorithm.py    # Genetic Algorithm implementation
+│   ├── rta_star.py             # RTA* Algorithm implementation
+│   ├── simulated_annealing.py  # Simulated Annealing implementation
+│   ├── hill_climbing.py        # Hill Climbing implementation
+│   ├── tabu_search.py          # Tabu Search implementation
+│   ├── app.py                  # Flask application for web UI
+├── templates/
+│   ├── welcome.html            # Welcome page for selecting algorithm
+│   ├── results.html            # Displays results for selected algorithm
+│   ├── comparison.html         # Comparison view for all algorithms
+│   ├── detailed_logs.html      # Detailed logs view
+└── README.md                   # Project documentation
 ```
 
-## Getting Started
-
-### Prerequisites
-
-- Python 3.9 or later
-- Ensure you have `pip` installed.
-
-### Installation
+## Installation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/timetable-generator.git
-   cd timetable-generator
+   git clone https://github.com/your-username/Heuristic_Search_Project.git
+   cd Heuristic_Search_Project
    ```
 
-2. Install dependencies:
+2. Create a virtual environment and install dependencies:
    ```bash
-   pip3 install -r requirements.txt
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   pip install -r requirements.txt
    ```
 
-### Running the Project
+## Usage
 
-1. **Run the Timetable Generator**:
+### 1. Command-Line Interface
 
-   ```bash
-   python3 -m src/main.py
-   ```
+Run the main Python script to choose an algorithm and generate a timetable:
 
-   This will generate an optimized timetable and log the details in `logs/`.
+```bash
+python3 -m src.main
+```
 
-2. **Start the Flask Web UI**:
-   ```bash
-   python3 -m src/app.py
-   ```
-   Visit `http://127.0.0.1:5000` in your browser to view the timetable, apply filters, and view optimization logs.
+### 2. Web Interface
 
-### Using the Filters and Log Viewer
+You can also run the project as a Flask web application:
 
-- **Filtering**: Use the dropdown menus to filter the timetable by specific courses or teachers.
-- **Show Logs**: Click the "Show Logs" button to view detailed logs of the optimization process.
+```bash
+python3 -m src.app
+```
 
-## Example Data
+Navigate to `http://127.0.0.1:5000` in your browser to access the application.
 
-Example courses, teachers, rooms, and timeslots are included in `data/input_data.py` for testing. You can modify these for your specific requirements.
+## Configuration
 
-## Customization
+- **`data/input_data.py`**: Modify this file to add or update courses, teachers, rooms, and timeslots.
+- **Logging**: Logs are stored in the `logs` folder:
+  - `detailed_logs.log` records each iteration’s details.
+  - `final_output.log` records final results and comparison data.
 
-- **Constraints**: Modify constraints in `fitness.py` to add/remove rules or adjust penalties.
-- **Algorithms**: You can adjust algorithm parameters in their respective files (e.g., `genetic_algorithm.py`, `simulated_annealing.py`).
+## Algorithm Descriptions
 
-## License
+Each algorithm aims to optimize the timetable based on defined constraints. Here’s a summary:
 
-This project is open-source and available under the MIT License.
+- **Genetic Algorithm**: Evolves a population of timetables through selection, crossover, and mutation.
+- **RTA\***: Uses a real-time search to evaluate timetables in constrained steps.
+- **Simulated Annealing**: Searches for an optimal solution by exploring neighbors with a decreasing probability of accepting worse solutions.
+- **Hill Climbing**: Starts with an initial solution and iteratively moves to a better neighboring solution.
+- **Tabu Search**: Explores the solution space while avoiding cycles through the use of a tabu list.
+
+## Fitness Calculation
+
+The fitness function is defined in `fitness.py` and calculates a score based on these criteria:
+
+- Room capacity checks (penalty if exceeded)
+- Teacher availability (penalty if violated)
+- Unique timeslot assignments
+- Teacher-course matching
+- Constraints on maximum daily courses per teacher
+- Penalties for consecutive classes and timeslot conflicts
+
+## Example Workflow
+
+1. Run the application.
+2. Select an algorithm or choose "Optimal of All" for a comprehensive comparison.
+3. View the timetable results, logs, and algorithm comparisons through the web interface or log files.
+
+## Additional Notes
+
+- **Dependencies**: Ensure Flask is installed for the web interface.
+- **Logging**: Logs reset on each run. To keep previous logs, back them up before each run.
+
+Enjoy using the Timetable Optimization Project! Feel free to contribute or suggest improvements.
+
+```
+
+```

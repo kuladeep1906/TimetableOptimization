@@ -1,78 +1,167 @@
 import logging
 import os
-from datetime import datetime
-from src.constraint_programming import generate_initial_population_with_cp
-from src.genetic_algorithm import run_genetic_algorithm
-from src.simulated_annealing import run_simulated_annealing
-from src.tabu_search import run_tabu_search
-from src.rta_star import refine_with_rta_star
+import time
+from .genetic_algorithm import genetic_algorithm
+from .rta_star import rta_star_algorithm
+from .simulated_annealing import simulated_annealing
+from .hill_climbing import hill_climbing
+from .tabu_search import tabu_search
 
-# Ensure directories for logs and outputs exist
-os.makedirs('logs/timetable_optimization', exist_ok=True)
-os.makedirs('outputs', exist_ok=True)
+# Ensure the logs folder exists
+if not os.path.exists("logs"):
+    os.makedirs("logs")
 
-# Define log file and final output file paths
-log_file = f'logs/timetable_optimization_{datetime.now().strftime("%Y%m%d_%H%M%S")}.txt'
-final_output_file = 'output/final_output.txt'
+# Clear the log files at the start of each run
+with open("logs/detailed_logs.log", "w") as f:
+    f.write("")  # Clears detailed_logs.log
+with open("logs/final_output.log", "w") as f:
+    f.write("")  # Clears final_output.log
 
-# Set up logging configuration with the log file handler
+# Set up logging for detailed logs
 logging.basicConfig(
+    filename="logs/detailed_logs.log",
     level=logging.INFO,
-    format='%(message)s'
+    format="%(asctime)s - %(message)s"
 )
-file_handler = logging.FileHandler(log_file, mode='a')
-file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(logging.Formatter('%(message)s'))
-logging.getLogger().addHandler(file_handler)
+logger = logging.getLogger()
 
-def clean_old_logs(log_dir='logs/', keep=3):
-    """Keeps only the last `keep` log files, deletes the older ones."""
-    log_files = sorted(
-        [f for f in os.listdir(log_dir) if f.startswith("timetable_optimization_")],
-        key=lambda x: os.path.getmtime(os.path.join(log_dir, x))
-    )
-    if len(log_files) > keep:
-        for old_log in log_files[:-keep]:
-            try:
-                os.remove(os.path.join(log_dir, old_log))
-                print(f"Deleted old log file: {old_log}")
-            except Exception as e:
-                print(f"Error deleting file {old_log}: {e}")
+# Set up logger for final output
+final_output_logger = logging.getLogger("final_output")
+final_output_logger.setLevel(logging.INFO)
+final_output_handler = logging.FileHandler("logs/final_output.log")
+final_output_handler.setFormatter(logging.Formatter("%(message)s"))
+final_output_logger.addHandler(final_output_handler)
 
-def main():
-    # Step 1: Generate initial population using constraint programming
-    initial_population = generate_initial_population_with_cp()
-    logging.info("Initial population generated with constraint programming.")
+def main(algorithm_choice=None):
+    # If algorithm_choice is None, prompt the user for input
+    if algorithm_choice is None:
+        print("Choose an option:")
+        print("1. Run Genetic Algorithm")
+        print("2. Run RTA* Algorithm")
+        print("3. Run Simulated Annealing")
+        print("4. Run Hill Climbing")
+        print("5. Run Tabu Search")
+        print("6. Choose the optimal timetable from all algorithms")
+        algorithm_choice = input("Enter your choice (1/2/3/4/5/6): ")
 
-    # Step 2: Optimize initial population with Genetic Algorithm
-    best_solution = run_genetic_algorithm(initial_population)
-    logging.info("Best solution after Genetic Algorithm:")
-    logging.info(str(best_solution))
+    output_file = "optimal_timetable_output.txt"
+    algorithm_used = "Unknown Algorithm"  # Default initialization
+    best_schedule = []
+    best_fitness = 0
+    elapsed_time = None
 
-    # Step 3: Refine solution using Simulated Annealing
-    annealed_solution = run_simulated_annealing(best_solution, max_iterations=50, initial_temp=100, cooling_rate=0.9)
-    logging.info("Solution refined with Simulated Annealing:")
-    logging.info(str(annealed_solution))
+    if algorithm_choice == '1':
+        logger.info("\n--- Starting Genetic Algorithm ---\n")
+        best_schedule, best_fitness, elapsed_time = genetic_algorithm(logger)
+        algorithm_used = "Genetic Algorithm"
+        logger.info("\n--- Genetic Algorithm Ended ---\n")
+        
+    elif algorithm_choice == '2':
+        logger.info("\n--- Starting RTA* Algorithm ---\n")
+        best_schedule, best_fitness, elapsed_time = rta_star_algorithm(logger)
+        algorithm_used = "RTA* Algorithm"
+        logger.info("\n--- RTA* Algorithm Ended ---\n")
 
-    # Step 4: Further refine solution with RTA*
-    refined_solution = refine_with_rta_star(annealed_solution)
-    logging.info("Solution refined with RTA*:")
-    logging.info(str(refined_solution))
+    elif algorithm_choice == '3':
+        logger.info("\n--- Starting Simulated Annealing ---\n")
+        best_schedule, best_fitness, elapsed_time = simulated_annealing(logger)
+        algorithm_used = "Simulated Annealing"
+        logger.info("\n--- Simulated Annealing Ended ---\n")
 
-    # Step 5: Final optimization using Tabu Search
-    final_solution = run_tabu_search(refined_solution)
-    logging.info("Final optimized solution after Tabu Search:")
+    elif algorithm_choice == '4':
+        logger.info("\n--- Starting Hill Climbing ---\n")
+        best_schedule, best_fitness, elapsed_time = hill_climbing(logger)
+        algorithm_used = "Hill Climbing"
+        logger.info("\n--- Hill Climbing Ended ---\n")
+        
+    elif algorithm_choice == '5':
+        logger.info("\n--- Starting Tabu Search ---\n")
+        best_schedule, best_fitness, elapsed_time = tabu_search(logger)
+        algorithm_used = "Tabu Search"
+        logger.info("\n--- Tabu Search Ended ---\n")
+
+    elif algorithm_choice == '6':
+        logger.info("\n--- Starting All Algorithms for Comparison ---\n")
+
+        # Clear final_output.log once at the beginning
+        with open("logs/final_output.log", "w") as log_file:
+            log_file.write("All Algorithms - Final Comparison Results\n")
+
+        # Start timing the entire comparison process
+        comparison_start_time = time.time()
+        
+        # Run each algorithm and log final results for comparison
+        algorithms = [
+            ("Genetic Algorithm", genetic_algorithm),
+            ("RTA* Algorithm", rta_star_algorithm),
+            ("Simulated Annealing", simulated_annealing),
+            ("Hill Climbing", hill_climbing),
+            ("Tabu Search", tabu_search)
+        ]
+        
+        all_schedules = []
+        
+        for algo_name, algo_func in algorithms:
+            logger.info(f"\n--- Starting {algo_name} ---\n")
+            best_schedule, best_fitness, elapsed_time = algo_func(logger)
+            all_schedules.append((algo_name, best_schedule, best_fitness, elapsed_time))
+            
+            # Log each algorithm's final result in a consistent format
+            with open("logs/final_output.log", "a") as log_file:
+                log_file.write(f"\n{algo_name} - Final Results\n")
+                log_file.write(f"Best Fitness: {best_fitness}\n")
+                log_file.write(f"Time Taken: {elapsed_time:.2f} seconds\n")
+                log_file.write("Best Timetable Configuration:\n")
+                for entry in best_schedule:
+                    log_file.write(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}\n")
+
+        logger.info("\n--- All Algorithms for Comparison Ended ---\n")
+
+        # Calculate total elapsed time for running all algorithms
+        comparison_end_time = time.time()
+        total_comparison_time = comparison_end_time - comparison_start_time
+
+        # Determine the best algorithm based on fitness score (higher is better)
+        best_algorithm, best_schedule, best_fitness, best_time = max(all_schedules, key=lambda x: (x[2], -x[3]))
+
+        # Log the best algorithm and timetable configuration to final_output.log
+        with open("logs/final_output.log", "a") as log_file:
+            log_file.write("\n--- Best Algorithm ---\n")
+            log_file.write(f"Best Algorithm: {best_algorithm}\n")
+            log_file.write(f"Best Fitness: {best_fitness}\n")
+            log_file.write(f"Time Taken: {best_time:.2f} seconds\n")
+            log_file.write("Best Timetable Configuration:\n")
+            for entry in best_schedule:
+                log_file.write(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}\n")
+        
+        # Log total time taken for comparison
+        with open("logs/final_output.log", "a") as log_file:
+            log_file.write("\n--- Total Comparison Time ---\n")
+            log_file.write(f"Total Time Taken to Compare All Algorithms: {total_comparison_time:.2f} seconds\n")
+
     
-    # Log and store the final output in final_output_file
-    with open(final_output_file, 'w') as f_out:
-        logging.info("Final Optimized Timetable:")
-        for entry in final_solution:
-            log_entry = f"Course: {entry['course']}, Room: {entry['room']}, Timeslot: {entry['timeslot']}, Teacher: {entry['teacher']}"
-            logging.info(log_entry)
-            f_out.write(log_entry + '\n')
-    
-    # Clean up old log files
-    clean_old_logs()
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    # Write results to the output file for the selected algorithm
+    with open(output_file, "w") as file:
+        file.write(f"Results from {algorithm_used}:\n")
+        file.write("Best Timetable Configuration:\n")
+        for entry in best_schedule:
+            file.write(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}\n")
+        file.write(f"\nFitness Score: {best_fitness}\n")
+        if elapsed_time:
+            file.write(f"Time taken: {elapsed_time:.2f} seconds\n")
+
 
 if __name__ == "__main__":
     main()

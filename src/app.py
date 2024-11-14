@@ -1,95 +1,78 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, request, redirect, url_for
+from src.main import main as run_main_algorithm
 import os
-from datetime import datetime
 
 app = Flask(__name__)
 
-# Define paths
-log_dir = 'logs'
-output_file = 'output/final_output.txt'
+# Ensure the logs folder exists
+if not os.path.exists("logs"):
+    os.makedirs("logs")
 
+def clear_log_files():
+    """Clear the contents of the log files or create them if they don't exist."""
+    log_files = ["logs/detailed_logs.log", "logs/final_output.log"]
+    for log_file in log_files:
+        with open(log_file, "w") as file:
+            file.write("")  # Clear contents by writing an empty string
 
-def get_latest_log():
-    """Read the latest log file contents."""
-    try:
-        # Check if the log directory exists and contains log files
-        if not os.path.exists(log_dir) or not os.listdir(log_dir):
-            return "No log files available."
+@app.route("/")
+def home():
+    return redirect(url_for("welcome"))
 
-        log_files = sorted(
-            [f for f in os.listdir(log_dir) if f.startswith("timetable_optimization_")],
-            key=lambda x: os.path.getmtime(os.path.join(log_dir, x))
-        )
-        if log_files:
-            latest_log_file = os.path.join(log_dir, log_files[-1])
-            with open(latest_log_file, 'r') as file:
-                logs = file.read()
-            return logs
-        else:
-            return "No log files available."
-    except Exception as e:
-        return f"Error reading log files: {e}"
+@app.route("/welcome", methods=["GET", "POST"])
+def welcome():
+    if request.method == "POST":
+        selected_algorithm = request.form.get("algorithm_choice")
+        if selected_algorithm and selected_algorithm != "choose":
+            # Clear log files whenever a new selection is made
+            clear_log_files()
+            # Redirect to results page with the selected algorithm
+            return redirect(url_for("results", algorithm=selected_algorithm))
+    return render_template("welcome.html", algorithm_choice="choose")
 
+@app.route("/results")
+def results():
+    algorithm_choice = request.args.get("algorithm")
+    if algorithm_choice and algorithm_choice != "choose":
+        # Run the algorithm and generate results
+        run_main_algorithm(algorithm_choice)
+        results = read_output_file()
+    else:
+        results = None
+    return render_template("results.html", results=results, algorithm_choice=algorithm_choice)
 
-@app.route('/')
-def index():
-    # Read the final output file for timetable
-    try:
-        with open(output_file, 'r') as file:
-            timetable = [line.strip().split(', ') for line in file.readlines()]
-            timetable = [
-                {"course": entry[0].split(": ")[1], "room": entry[1].split(": ")[1], 
-                 "timeslot": entry[2].split(": ")[1], "teacher": entry[3].split(": ")[1]}
-                for entry in timetable if len(entry) == 4
-            ]
-    except FileNotFoundError:
-        timetable = []
+@app.route("/comparison")
+def show_comparison():
+    # Try to get algorithm_choice from request arguments; if not present, assume it's "none"
+    algorithm_choice = request.args.get("algorithm_choice", "none")
+    print(f"Algorithm choice received in comparison: {algorithm_choice}")  # Debug print
+    with open("logs/final_output.log", "r") as file:
+        comparison_log = file.read()
+    return render_template("comparison.html", title="Comparison Log", log_content=comparison_log, algorithm_choice=algorithm_choice)
 
-    # Extract unique courses and teachers for display
-    unique_courses = list(set(entry['course'] for entry in timetable))
-    unique_teachers = list(set(entry['teacher'] for entry in timetable))
+@app.route("/logs")
+def show_logs():
+    with open("logs/detailed_logs.log", "r") as file:
+        detailed_log = file.read()
+    return render_template("detailed_logs.html", title="Detailed Logs", log_content=detailed_log)
 
-    return render_template('index.html', timetable=timetable, unique_courses=unique_courses, unique_teachers=unique_teachers)
-
-
-@app.route('/logs')
-def fetch_logs():
-    # Fetch logs when requested
-    logs = get_latest_log()
-    return jsonify(logs=logs)
-
-
-@app.route('/filter_timetable')
-def filter_timetable():
-    # Get filter parameters from request
-    course_query = request.args.get('course', '').lower()
-    teacher_query = request.args.get('teacher', '').lower()
-
-    # Read the final output file
-    try:
-        with open(output_file, 'r') as file:
-            timetable = [line.strip().split(', ') for line in file.readlines()]
-            timetable = [
-                {"course": entry[0].split(": ")[1], "room": entry[1].split(": ")[1], 
-                 "timeslot": entry[2].split(": ")[1], "teacher": entry[3].split(": ")[1]}
-                for entry in timetable if len(entry) == 4
-            ]
-    except FileNotFoundError:
-        timetable = []
-
-    # Filter the timetable based on search queries
-    filtered_timetable = [
-        entry for entry in timetable
-        if (course_query in entry['course'].lower() if course_query else True) and
-           (teacher_query in entry['teacher'].lower() if teacher_query else True)
-    ]
-
-    # Check if no results found and print a message to console
-    if not filtered_timetable:
-        print("No results found for the given course and/or teacher.")
-
-    return jsonify(timetable=filtered_timetable)
-
+def read_output_file():
+    results = []
+    with open("optimal_timetable_output.txt", "r") as file:
+        current_algorithm = file.readline().strip()
+        file.readline()
+        for line in file:
+            if line.startswith("Course:"):
+                parts = line.strip().split(", ")
+                course_data = {part.split(": ")[0]: part.split(": ")[1] for part in parts}
+                results.append(course_data)
+            elif line.startswith("Fitness Score:"):
+                fitness_score = line.strip().split(": ")[1]
+                results.append({"Fitness Score": fitness_score})
+            elif line.startswith("Time taken:"):
+                time_taken = line.strip().split(": ")[1]
+                results.append({"Time taken": time_taken})
+    return results
 
 if __name__ == "__main__":
     app.run(debug=True)

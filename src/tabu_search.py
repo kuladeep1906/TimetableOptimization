@@ -1,67 +1,82 @@
-import logging
 import random
-from .fitness import evaluate_fitness
-from .mutation import mutate
-from data.input_data import ROOMS, TIMESLOTS, TEACHERS
+import time  # Import time to track elapsed time
+from collections import deque
+from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+from .fitness import calculate_fitness
 
-logging.basicConfig(filename='timetable_optimization_output.txt', level=logging.INFO, format='%(message)s')
+def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generate=5):
+    # Start timing
+    start_time = time.time()
+    
+    # Initialize a random solution
+    current_state = [
+        {
+            'course': course['name'],
+            'room': random.choice(course['preferred_rooms']),
+            'teacher': course['teacher'],
+            'timeslot': random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])['availability'])
+        }
+        for course in COURSES
+    ]
+    
+    # Calculate fitness of the initial solution
+    current_fitness = calculate_fitness(current_state)
+    best_state = current_state
+    best_fitness = current_fitness
 
-def run_tabu_search(initial_solution, max_iterations=100, tabu_tenure=10):
-    current_solution = initial_solution[:]  # Make a copy to avoid modifying the original
-    best_solution = initial_solution[:]
-    best_score = evaluate_fitness(current_solution)
-    tabu_list = []
+    # Initialize the tabu list
+    tabu_list = deque(maxlen=tabu_tenure)
 
     for iteration in range(max_iterations):
-        logging.info(f"Iteration {iteration + 1}: Current Best Score = {best_score}")
+        logger.info(f"Iteration {iteration + 1}: Current Fitness = {current_fitness}, Best Fitness = {best_fitness}")
 
-        # Generate neighbors by modifying each course in the full timetable
+        # Generate neighbors and avoid moves in the tabu list
         neighbors = []
-        for entry in current_solution:
-            if not isinstance(entry, dict):
-                logging.info("Invalid course entry format in run_tabu_search: " + str(entry))
-                continue
+        for i in range(neighbors_to_generate):
+            neighbor = current_state.copy()
+            for entry in neighbor:
+                # Randomly assign room and timeslot
+                entry['room'] = random.choice([room['name'] for room in ROOMS if room['capacity'] >= next(course['students'] for course in COURSES if course['name'] == entry['course'])])
+                entry['timeslot'] = random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])['availability'])
 
-            # Create a neighbor by mutating attributes in each entry
-            neighbor_entry = entry.copy()
-            if 'timeslot' in neighbor_entry:
-                neighbor_entry['timeslot'] = random.choice(TIMESLOTS)
-            if 'room' in neighbor_entry:
-                neighbor_entry['room'] = random.choice(
-                    [room['name'] for room in ROOMS if room['capacity'] >= 20]  # Example capacity filter
-                )
-            if 'teacher' in neighbor_entry:
-                neighbor_entry['teacher'] = random.choice(
-                    [teacher['name'] for teacher in TEACHERS if neighbor_entry['timeslot'] in teacher['availability']]
-                )
+            # Skip neighbors that are in the tabu list
+            neighbor_tuple = tuple((entry['course'], entry['room'], entry['timeslot']) for entry in neighbor)
+            if neighbor_tuple not in tabu_list:
+                neighbors.append((neighbor, calculate_fitness(neighbor)))
+        
+        # If no non-tabu neighbors, skip to the next iteration
+        if not neighbors:
+            logger.info("All neighbors are tabu, moving to next iteration.")
+            continue
 
-            # Append the modified entry as part of a new full timetable
-            neighbor_solution = current_solution[:]
-            neighbor_solution[current_solution.index(entry)] = neighbor_entry
-            neighbors.append(neighbor_solution)
+        # Find the best non-tabu neighbor
+        best_neighbor, best_neighbor_fitness = max(neighbors, key=lambda x: x[1])
 
-        # Evaluate each neighbor and find the best one not in the tabu list
-        best_neighbor = None
-        best_neighbor_score = float('inf')
-        for neighbor in neighbors:
-            if neighbor not in tabu_list:
-                neighbor_score = evaluate_fitness(neighbor)
-                if neighbor_score < best_neighbor_score:
-                    best_neighbor = neighbor
-                    best_neighbor_score = neighbor_score
+        # Log details of the best neighbor
+        logger.info(f"Best Neighbor Found: Fitness = {best_neighbor_fitness}")
+        for entry in best_neighbor:
+            logger.info(f"    Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
 
-        # Update current solution if a valid neighbor is found
-        if best_neighbor:
-            current_solution = best_neighbor[:]
-            if len(tabu_list) >= tabu_tenure:
-                tabu_list.pop(0)  # Maintain the size of the tabu list
-            tabu_list.append(best_neighbor)
+        # Update the current state to the best neighbor
+        current_state, current_fitness = best_neighbor, best_neighbor_fitness
 
-            # Update the best solution if the neighbor improves the score
-            if best_neighbor_score < best_score:
-                best_solution = best_neighbor[:]
-                best_score = best_neighbor_score
+        # Update the tabu list with the move just made
+        tabu_list.append(tuple((entry['course'], entry['room'], entry['timeslot']) for entry in current_state))
+        
+        # Update the best global state if an improvement is found
+        if current_fitness > best_fitness:
+            best_state, best_fitness = current_state, current_fitness
+            logger.info(f"Updated Global Best State with Fitness = {best_fitness}")
 
-        logging.info(f"Best solution after iteration {iteration + 1}: {best_solution}")
+    # Calculate elapsed time
+    elapsed_time = time.time() - start_time
 
-    return best_solution
+    # Log the final best state
+    logger.info("Final Best Timetable Configuration (Tabu Search):")
+    for entry in best_state:
+        logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
+
+    logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
+
+   
+    return best_state, best_fitness, elapsed_time  # Return elapsed time as the third value

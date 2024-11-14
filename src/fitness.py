@@ -1,102 +1,83 @@
-from data.input_data import ROOMS, TEACHERS, COURSES, TIMESLOTS
+from data.input_data import COURSES, TEACHERS, ROOMS
+from collections import Counter, defaultdict
 
-def get_preferred_rooms(course_name):
-    for course in COURSES:
-        if isinstance(course, dict) and course.get('name') == course_name:
-            return course.get('preferred_rooms', [])
-    return []
+# Helper function to convert timeslot strings to integers
+def parse_timeslot(timeslot):
+    time_mapping = {
+        '9 AM': 9, '10 AM': 10, '11 AM': 11, '12 PM': 12,
+        '1 PM': 13, '2 PM': 14, '3 PM': 15, '4 PM': 16,
+        '5 PM': 17, '6 PM': 18
+    }
+    return time_mapping.get(timeslot, -1)  # Returns -1 if timeslot is invalid
 
-def get_room_capacity(room_name):
-    for room in ROOMS:
-        if isinstance(room, dict) and room.get('name') == room_name:
-            return room.get('capacity', 0)
-    return 0
-
-def get_course_students(course_name):
-    for course in COURSES:
-        if isinstance(course, dict) and course.get('name') == course_name:
-            return course.get('students', 0)
-    return 0
-
-def evaluate_fitness(solution):
-    if isinstance(solution, dict):  # Wrap in list if single dict
-        solution = [solution]
-
-    fitness_score = 0
+def calculate_fitness(timetable):
+    score = 0
+    # Define penalties and bonuses
+    room_capacity_penalty = 20
+    teacher_availability_penalty = 10
+    preferred_room_bonus = 5
+    primary_preferred_room_bonus = 10
+    incorrect_teacher_penalty = 15
+    max_courses_penalty = 25
     max_courses_per_teacher = 3
-    room_conflicts = 0
-    teacher_conflicts = 0
-    capacity_violations = 0
-    timeslot_penalties = 0
-    preferred_room_penalties = 0
-    teacher_course_limit_penalties = 0
+    consecutive_classes_penalty = 8
+    timeslot_conflict_penalty = 20
 
-    room_usage = {timeslot: [] for timeslot in TIMESLOTS}
-    teacher_schedule = {teacher['name']: {timeslot: [] for timeslot in TIMESLOTS} for teacher in TEACHERS if isinstance(teacher, dict)}
-    teacher_course_count = {teacher['name']: 0 for teacher in TEACHERS if isinstance(teacher, dict)}
-    timeslot_distribution = {timeslot: 0 for timeslot in TIMESLOTS}
-    teacher_course_pairings = {course['name']: course['teacher'] for course in COURSES if isinstance(course, dict) and 'teacher' in course}
+    teacher_course_count = Counter()
+    teacher_timeslots = defaultdict(list)
+    room_timeslots = defaultdict(list)
 
-    print("Evaluating solution structure:", solution)
+    for entry in timetable:
+        course = next(course for course in COURSES if course['name'] == entry['course'])
+        room = next(room for room in ROOMS if room['name'] == entry['room'])
+        
+        # Penalize if room capacity is exceeded
+        if course['students'] > room['capacity']:
+            score -= room_capacity_penalty
 
-    for entry in solution:
-        if not isinstance(entry, dict) or not all(key in entry for key in ['course', 'room', 'timeslot', 'teacher']):
-            print("Invalid entry structure:", entry)
-            continue
+        # Penalize if the course is not assigned to the specified teacher
+        if entry['teacher'] != course['teacher']:
+            score -= incorrect_teacher_penalty
 
-        course = entry['course']
-        room = entry['room']
-        timeslot = entry['timeslot']
-        teacher = entry['teacher']
+        # Track the number of courses assigned to each teacher
+        teacher_course_count[entry['teacher']] += 1
 
-        # Retrieve course details
-        students = get_course_students(course)
+        # Track the timeslot assignment for this teacher and room, using parsed integer timeslots
+        parsed_timeslot = parse_timeslot(entry['timeslot'])
+        if parsed_timeslot != -1:  # Only add valid parsed timeslots
+            teacher_timeslots[entry['teacher']].append(parsed_timeslot)
+            room_timeslots[entry['room']].append(parsed_timeslot)
 
-        # Room capacity check
-        room_capacity = get_room_capacity(room)
-        if room_capacity < students:
-            capacity_violations += 20
+        # Penalize if timeslot does not match teacher availability
+        teacher = next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])
+        if entry['timeslot'] not in teacher['availability']:
+            score -= teacher_availability_penalty
 
-        # Room conflict check
-        if room in room_usage.get(timeslot, []):
-            room_conflicts += 10
-        else:
-            room_usage[timeslot].append(room)
+        # Reward if the assigned room matches the course's preferred rooms
+        if entry['room'] in course['preferred_rooms']:
+            score += preferred_room_bonus
+            if entry['room'] == course['preferred_rooms'][0]:
+                score += primary_preferred_room_bonus
 
-        # Teacher schedule conflict check
-        if teacher in teacher_schedule and timeslot in teacher_schedule[teacher]:
-            if teacher in teacher_schedule[teacher][timeslot]:
-                teacher_conflicts += 10
-            else:
-                teacher_schedule[teacher][timeslot].append(teacher)
-
-        # Track teacher course count
-        teacher_course_count[teacher] += 1
-
-        # Preferred room penalty
-        preferred_rooms = get_preferred_rooms(course)
-        if preferred_rooms and room not in preferred_rooms:
-            preferred_room_penalties += 5
-
-        # Teacher-course pairing penalty
-        if course in teacher_course_pairings and teacher_course_pairings[course] != teacher:
-            teacher_conflicts += 10
-
-        # Timeslot distribution
-        timeslot_distribution[timeslot] += 1
-
-    # Teacher course limit penalty
+    # Penalize if a teacher is assigned more than the maximum courses allowed per day
     for teacher, count in teacher_course_count.items():
         if count > max_courses_per_teacher:
-            teacher_course_limit_penalties += (count - max_courses_per_teacher) * 5
+            score -= (count - max_courses_per_teacher) * max_courses_penalty
 
-    # Timeslot overuse penalty
-    for timeslot, count in timeslot_distribution.items():
-        if count > 3:
-            timeslot_penalties += (count - 3) * 5
+    # Check for consecutive class violations and timeslot conflicts
+    for teacher, timeslots in teacher_timeslots.items():
+        timeslots.sort()  # Sort parsed timeslots to detect consecutive sessions
+        for i in range(1, len(timeslots)):
+            if timeslots[i] == timeslots[i - 1] + 1:
+                score -= consecutive_classes_penalty
 
-    # Calculate total fitness score
-    fitness_score = (room_conflicts + teacher_conflicts + capacity_violations +
-                     preferred_room_penalties + teacher_course_limit_penalties + timeslot_penalties)
-    print(f"Fitness Score: {fitness_score}")
-    return fitness_score
+    # Penalize timeslot conflicts within the same room or teacher
+    for timeslot_list in teacher_timeslots.values():
+        if len(timeslot_list) != len(set(timeslot_list)):
+            score -= timeslot_conflict_penalty
+
+    for timeslot_list in room_timeslots.values():
+        if len(timeslot_list) != len(set(timeslot_list)):
+            score -= timeslot_conflict_penalty
+
+    return score

@@ -1,80 +1,55 @@
 import random
-import logging
-from .fitness import evaluate_fitness
-from data.input_data import TIMESLOTS, ROOMS, TEACHERS, COURSES
+import math
+import time  # Import time to track elapsed time
+from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+from .fitness import calculate_fitness
 
-def run_simulated_annealing(solution, max_iterations=100, initial_temp=100, cooling_rate=0.95):
-    """
-    Performs simulated annealing optimization on a timetable solution.
+def simulated_annealing(logger, initial_temp=1000, cooling_rate=0.95, max_iterations=1000):
+    # Start timing
+    start_time = time.time()
 
-    Args:
-    - solution: list of dict, the initial timetable solution.
-    - max_iterations: int, the maximum number of iterations.
-    - initial_temp: float, the initial temperature.
-    - cooling_rate: float, the rate at which temperature decreases.
-
-    Returns:
-    - best_solution: list of dict, the optimized solution.
-    """
-    current_solution = solution
-    current_score = evaluate_fitness(current_solution)
-    best_solution = current_solution
-    best_score = current_score
+    # Create an initial random solution
+    current_state = [
+        {
+            'course': course['name'],
+            'room': random.choice(course['preferred_rooms']),
+            'teacher': course['teacher'],
+            'timeslot': random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])['availability'])
+        }
+        for course in COURSES
+    ]
+    
+    current_fitness = calculate_fitness(current_state)
+    best_state = current_state
+    best_fitness = current_fitness
     temperature = initial_temp
 
-    logging.info("Starting Simulated Annealing...")
-    logging.info(f"Initial score: {current_score}")
-
     for iteration in range(max_iterations):
-        # Generate a neighbor solution by mutating the current solution
-        neighbor_solution = mutate_solution(current_solution)
-        neighbor_score = evaluate_fitness(neighbor_solution)
+        neighbor = current_state.copy()
+        for entry in neighbor:
+            entry['room'] = random.choice([room['name'] for room in ROOMS if room['capacity'] >= next(course['students'] for course in COURSES if course['name'] == entry['course'])])
+            entry['timeslot'] = random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])['availability'])
+        
+        neighbor_fitness = calculate_fitness(neighbor)
 
-        # Calculate acceptance probability and decide to accept the neighbor
-        delta = neighbor_score - current_score
-        acceptance_prob = min(1, (2.718 ** (-delta / temperature)) if delta > 0 else 1)
+        if neighbor_fitness > current_fitness or math.exp((neighbor_fitness - current_fitness) / temperature) > random.random():
+            current_state, current_fitness = neighbor, neighbor_fitness
+            if current_fitness > best_fitness:
+                best_state, best_fitness = current_state, current_fitness
 
-        if acceptance_prob > random.random():
-            current_solution = neighbor_solution
-            current_score = neighbor_score
-
-            # Update the best solution if the current is better
-            if current_score < best_score:
-                best_solution = current_solution
-                best_score = current_score
-                logging.info(f"New best solution at iteration {iteration + 1}: Score = {best_score}")
-
-        # Decrease temperature
+        logger.info(f"Iteration {iteration + 1}, Temperature: {temperature:.2f}, Current Fitness: {current_fitness}, Best Fitness: {best_fitness}")
+        
         temperature *= cooling_rate
-        logging.info(f"Iteration {iteration + 1}: Current Score = {current_score}, Temperature = {temperature}")
+        if temperature < 1e-3:
+            break
 
-    logging.info("Simulated Annealing completed.")
-    logging.info(f"Final best score: {best_score}")
-    return best_solution
+    elapsed_time = time.time() - start_time
 
-def mutate_solution(solution):
-    """
-    Creates a neighbor solution by modifying a random entry in the timetable.
+    # Logging final results to the logger
+    logger.info("Final Best Timetable Configuration (Simulated Annealing):")
+    for entry in best_state:
+        logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
+    logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-    Args:
-    - solution: list of dict, representing the timetable.
-
-    Returns:
-    - neighbor_solution: list of dict, the modified solution.
-    """
-    neighbor_solution = [entry.copy() for entry in solution]  # Deep copy to avoid altering the original solution
-    entry = random.choice(neighbor_solution)  # Select a random entry to modify
-
-    # Mutate room to one that meets capacity needs
-    students = next((c['students'] for c in COURSES if c['name'] == entry['course']), 0)
-    entry['room'] = random.choice([room['name'] for room in ROOMS if room['capacity'] >= students])
-
-    # Mutate timeslot
-    entry['timeslot'] = random.choice(TIMESLOTS)
-
-    # Mutate teacher based on availability in the new timeslot
-    available_teachers = [teacher['name'] for teacher in TEACHERS if entry['timeslot'] in teacher['availability']]
-    if available_teachers:
-        entry['teacher'] = random.choice(available_teachers)
-
-    return neighbor_solution
+  
+    return best_state, best_fitness, elapsed_time  # Return elapsed time as the third value
