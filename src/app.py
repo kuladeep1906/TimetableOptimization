@@ -1,12 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from src.main import main as run_main_algorithm
+from src.main import plot_progress  # Import the plotting function
 import os
+import matplotlib
+matplotlib.use('Agg')  # Use non-GUI backend for matplotlib
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../static")
 
-# Ensure the logs folder exists
-if not os.path.exists("logs"):
-    os.makedirs("logs")
+
+# Ensure necessary directories exist
+os.makedirs("logs", exist_ok=True)
+os.makedirs("progress", exist_ok=True)
 
 def clear_log_files():
     """Clear the contents of the log files or create them if they don't exist."""
@@ -35,20 +39,46 @@ def results():
     algorithm_choice = request.args.get("algorithm")
     if algorithm_choice and algorithm_choice != "choose":
         # Run the algorithm and generate results
-        run_main_algorithm(algorithm_choice)
+        csv_path, algo_name = run_main_algorithm(algorithm_choice)
         results = read_output_file()
+        # Generate progress graph
+        plot_progress(csv_path, algo_name)
+        graph_path = f"progress/{algo_name}_progress.png"
     else:
         results = None
-    return render_template("results.html", results=results, algorithm_choice=algorithm_choice)
+        graph_path = None
+    return render_template("results.html", results=results, graph_path=graph_path, algorithm_choice=algorithm_choice)
 
 @app.route("/comparison")
 def show_comparison():
-    # Try to get algorithm_choice from request arguments; if not present, assume it's "none"
     algorithm_choice = request.args.get("algorithm_choice", "none")
     print(f"Algorithm choice received in comparison: {algorithm_choice}")  # Debug print
+
+    if algorithm_choice == "6":
+        print("Displaying comparison for all algorithms.")  # Debug message
+
+        # Hardcoded graph paths for comparison
+        graph_paths = {
+            "Genetic Algorithm": "/static/progress/genetic_algorithm_progress.png",
+            "RTA*": "/static/progress/rtastar_algorithm_progress.png",
+            "Simulated Annealing": "/static/progress/simulated_annealing_progress.png",
+            "Hill Climbing": "/static/progress/hill_climbing_progress.png",
+            "Tabu Search": "/static/progress/tabu_search_progress.png",
+        }
+    else:
+        print("Displaying message for a single algorithm.")  # Debug message
+        graph_paths = None  # No graphs for a single algorithm
+
     with open("logs/final_output.log", "r") as file:
         comparison_log = file.read()
-    return render_template("comparison.html", title="Comparison Log", log_content=comparison_log, algorithm_choice=algorithm_choice)
+
+    return render_template(
+        "comparison.html", 
+        title="Comparison Log", 
+        log_content=comparison_log, 
+        algorithm_choice=algorithm_choice,
+        graph_paths=graph_paths,
+    )
 
 @app.route("/logs")
 def show_logs():

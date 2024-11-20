@@ -1,11 +1,36 @@
 import random
 import time
+import csv  # Import CSV for logging
 from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
 from .fitness import calculate_fitness
+
+import csv
+import os
+
+# Ensure the progress folder exists
+if not os.path.exists("progress"):
+    os.makedirs("progress")
+
+# Function to initialize CSV log
+def initialize_csv_log(algorithm_name):
+    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    with open(csv_path, mode='w') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness"])  # Write headers
+    return csv_path
+
+# Function to log progress for each generation to CSV
+def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness):
+    with open(csv_path, mode='a') as file:
+        writer = csv.writer(file)
+        writer.writerow([generation, current_best_fitness, best_fitness])  # Append data to CSV
 
 def hill_climbing(logger, max_iterations=1000, neighbors_to_generate=5, restart_attempts=3):
     # Start timing
     start_time = time.time()
+    
+    # Initialize CSV logging
+    csv_path = initialize_csv_log("hill_climbing")
     
     best_state = None
     best_fitness = float('-inf')
@@ -35,6 +60,9 @@ def hill_climbing(logger, max_iterations=1000, neighbors_to_generate=5, restart_
 
         for iteration in range(max_iterations):
             logger.info(f"Attempt {attempt + 1}, Iteration {iteration + 1}: Current Fitness = {current_fitness}, Best Fitness = {best_fitness}")
+            
+            # Log progress to CSV
+            log_progress_csv(csv_path, iteration + 1, current_fitness, best_fitness)
 
             # Generate multiple neighbors
             neighbors = []
@@ -84,5 +112,4 @@ def hill_climbing(logger, max_iterations=1000, neighbors_to_generate=5, restart_
 
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-   
-    return best_state, best_fitness, elapsed_time
+    return best_state, best_fitness, elapsed_time, csv_path  # Return CSV path

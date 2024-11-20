@@ -1,11 +1,36 @@
 import random
 import time
+import csv  # Import CSV for logging
 from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
 from .fitness import calculate_fitness
+
+import csv
+import os
+
+# Ensure the progress folder exists
+if not os.path.exists("progress"):
+    os.makedirs("progress")
+
+# Function to initialize CSV log
+def initialize_csv_log(algorithm_name):
+    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    with open(csv_path, mode='w') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness"])  # Write headers
+    return csv_path
+
+# Function to log progress for each generation to CSV
+def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness):
+    with open(csv_path, mode='a') as file:
+        writer = csv.writer(file)
+        writer.writerow([generation, current_best_fitness, best_fitness])  # Append data to CSV
 
 def rta_star_algorithm(logger, max_iterations=100):
     # Start timing
     start_time = time.time()
+
+    # Initialize CSV logging
+    csv_path = initialize_csv_log("RTA_Star")
 
     current_state = [
         {
@@ -37,7 +62,10 @@ def rta_star_algorithm(logger, max_iterations=100):
             best_state = best_successor.copy()
             best_fitness = best_successor_fitness
 
-        logger.info(f"Iteration {iteration + 1}: Current Fitness = {best_fitness}")
+        logger.info(f"Iteration {iteration + 1}: Current Fitness = {best_successor_fitness}, Best Fitness = {best_fitness}")
+
+        # Log progress to CSV
+        log_progress_csv(csv_path, iteration + 1, best_successor_fitness, best_fitness)
 
     elapsed_time = time.time() - start_time
 
@@ -47,13 +75,4 @@ def rta_star_algorithm(logger, max_iterations=100):
 
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-    # Append final best results to final_output.log for comparison
-   # with open("logs/final_output.log", "a") as log_file:
-    #    log_file.write("\nRTA* Algorithm - Final Iteration Results\n")
-    #    log_file.write(f"Best Fitness: {best_fitness}\n")
-   #     log_file.write(f"Time Taken: {elapsed_time:.2f} seconds\n")
-   #     log_file.write("Best Timetable Configuration:\n")
-   #     for entry in best_state:
-   #         log_file.write(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}\n")
-
-    return best_state, best_fitness, elapsed_time  # Return elapsed time as the third value
+    return best_state, best_fitness, elapsed_time, csv_path  # Return CSV path as part of the results

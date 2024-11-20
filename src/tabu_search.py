@@ -1,12 +1,37 @@
 import random
-import time  # Import time to track elapsed time
+import time
+import csv  # For progress logging
 from collections import deque
 from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
 from .fitness import calculate_fitness
 
+import csv
+import os
+
+# Ensure the progress folder exists
+if not os.path.exists("progress"):
+    os.makedirs("progress")
+
+# Function to initialize CSV log
+def initialize_csv_log(algorithm_name):
+    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    with open(csv_path, mode='w') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness"])  # Write headers
+    return csv_path
+
+# Function to log progress for each generation to CSV
+def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness):
+    with open(csv_path, mode='a') as file:
+        writer = csv.writer(file)
+        writer.writerow([generation, current_best_fitness, best_fitness])  # Append data to CSV
+
 def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generate=5):
     # Start timing
     start_time = time.time()
+    
+    # Initialize CSV logging
+    csv_path = initialize_csv_log("tabu_search")
     
     # Initialize a random solution
     current_state = [
@@ -29,6 +54,7 @@ def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generat
 
     for iteration in range(max_iterations):
         logger.info(f"Iteration {iteration + 1}: Current Fitness = {current_fitness}, Best Fitness = {best_fitness}")
+        log_progress_csv(csv_path, iteration + 1, current_fitness, best_fitness)
 
         # Generate neighbors and avoid moves in the tabu list
         neighbors = []
@@ -43,7 +69,7 @@ def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generat
             neighbor_tuple = tuple((entry['course'], entry['room'], entry['timeslot']) for entry in neighbor)
             if neighbor_tuple not in tabu_list:
                 neighbors.append((neighbor, calculate_fitness(neighbor)))
-        
+
         # If no non-tabu neighbors, skip to the next iteration
         if not neighbors:
             logger.info("All neighbors are tabu, moving to next iteration.")
@@ -78,5 +104,5 @@ def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generat
 
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-   
-    return best_state, best_fitness, elapsed_time  # Return elapsed time as the third value
+    # Return the best state, fitness, elapsed time, and CSV path
+    return best_state, best_fitness, elapsed_time, csv_path

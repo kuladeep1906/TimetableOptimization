@@ -5,6 +5,7 @@
     <title>Welcome to Timetable Optimization</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Import Google Font */
         body {
             font-family: 'Roboto', sans-serif;
             color: #333;
@@ -15,44 +16,147 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
+            perspective: 1px;
+            animation: colorShift 10s infinite alternate;
         }
+
+        /* Animated gradient background */
+        @keyframes colorShift {
+            0% { background: linear-gradient(to right, #f0f4f8, #d9e3f0); }
+            100% { background: linear-gradient(to right, #c1d7eb, #accbe1); }
+        }
+
+        /* Floating particles */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: particleMove 10s linear infinite;
+            opacity: 0.8;
+        }
+        @keyframes particleMove {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(100vh) translateX(calc(100vw - 20px)); }
+        }
+
+        /* Container for form */
         .container {
             text-align: center;
             padding: 40px;
             background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Heading animation */
         h1 {
             color: #0044cc;
-            font-size: 26px;
+            font-size: 32px;
             margin-bottom: 20px;
+            font-weight: 700;
+            animation: fadeIn 1.5s ease;
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dropdown and button styling */
         select {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             width: 80%;
             max-width: 300px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
             margin-bottom: 20px;
+            background-color: #f8f8f8;
+            transition: border 0.3s ease;
         }
+        select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        /* Button styling with pulse */
         .btn {
             padding: 12px 24px;
             font-size: 16px;
-            background: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 128, 0, 0.3);
         }
         .btn:hover {
+            background: linear-gradient(135deg, #45a049, #388E3C);
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 100, 0, 0.4);
+        }
+        .btn:active {
             transform: scale(1.05);
         }
+        
+        
+        /* Style for "Project by" text in the bottom right corner */
+        .project-by {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            opacity: 0.9;
+        }
+            
+        /* Style for "Project by" title */
+        .project-title {
+            color: #ff6a88; /* Slightly bold, warm color */
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+            
+        /* Style for names with a cooler color and subtle shadow */
+        .person-name {
+            color: black;
+            font-size: 15px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+         
+
     </style>
 </head>
 <body>
+    <!-- Particle background -->
+    <div class="background-animation">
+        <!-- Add particles with randomized styles for animation -->
+        {% for i in range(50) %}
+            <div class="particle" style="top: {{ loop.index * 2 }}vh; left: {{ loop.index * 2 }}vw; animation-duration: {{ 5 + loop.index % 5 }}s;"></div>
+        {% endfor %}
+    </div>
+
     <div class="container">
         <h1>Welcome to Timetable Optimization</h1>
         <form id="algorithmForm" method="POST">
@@ -68,16 +172,15 @@
             <br>
             <button type="submit" class="btn">View Results</button>
         </form>
-
-        <script>
-            // JavaScript to prevent the dropdown selection from triggering any log changes until form submission
-            const form = document.getElementById("algorithmForm");
-
-            form.addEventListener("submit", function() {
-                // Log the selected option on form submission only
-                console.log("Form submitted with algorithm choice:", form.algorithm_choice.value);
-            });
-        </script>
     </div>
+
+    <div class="project-by">
+        <span class="project-title">Project by</span><br>
+        <span class="person-name">Sai Praneeth Ravipati</span><br>
+        <span class="person-name">Kuladeep Pappu</span>
+    </div>
+    
+
+
 </body>
 </html>
