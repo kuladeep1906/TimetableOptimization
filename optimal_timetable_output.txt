@@ -1,14 +1,14 @@
 Results from Unknown Algorithm:
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
+Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 11 AM
 Course: Artificial Intelligence, Room: Room 5, Teacher: Mr. A, Timeslot: 12 PM
-Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 12 PM
-Course: Computer Science, Room: Room 5, Teacher: Mr. C, Timeslot: 9 AM
-Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 2 PM
-Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 9 AM
-Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 9 AM
+Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 10 AM
+Course: Computer Science, Room: Room 2, Teacher: Mr. C, Timeslot: 9 AM
+Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 9 AM
+Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 10 AM
+Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 10 AM
 Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM
-Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM
 
 Fitness Score: 127
-Time taken: 0.24 seconds
+Time taken: 0.39 seconds

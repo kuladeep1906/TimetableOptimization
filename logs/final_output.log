@@ -2,88 +2,88 @@ All Algorithms - Final Comparison Results
 
 Genetic Algorithm - Final Results
 Best Fitness: 127
-Time Taken: 1.14 seconds
+Time Taken: 4.18 seconds
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
+Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 11 AM
 Course: Artificial Intelligence, Room: Room 5, Teacher: Mr. A, Timeslot: 12 PM
-Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 12 PM
-Course: Computer Science, Room: Room 5, Teacher: Mr. C, Timeslot: 9 AM
-Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 2 PM
-Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 9 AM
-Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 9 AM
+Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 10 AM
+Course: Computer Science, Room: Room 2, Teacher: Mr. C, Timeslot: 9 AM
+Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 9 AM
+Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 10 AM
+Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 10 AM
 Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM
-Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM
 
 RTA* Algorithm - Final Results
-Best Fitness: 52
-Time Taken: 0.23 seconds
+Best Fitness: 47
+Time Taken: 0.45 seconds
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 5, Teacher: Mr. A, Timeslot: 11 AM
-Course: Artificial Intelligence, Room: Room 7, Teacher: Mr. A, Timeslot: 12 PM
-Course: Business Analytics, Room: Room 2, Teacher: Ms. B, Timeslot: 1 PM
-Course: Computer Science, Room: Room 3, Teacher: Mr. C, Timeslot: 1 PM
-Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 9 AM
-Course: Data Science, Room: Room 3, Teacher: Ms. D, Timeslot: 9 AM
-Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 2 PM
-Course: Big Data Analytics, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM
-Course: Heuristic Search, Room: Room 7, Teacher: Mr. E, Timeslot: 12 PM
-
-Simulated Annealing - Final Results
-Best Fitness: 75
-Time Taken: 0.26 seconds
-Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 5, Teacher: Mr. A, Timeslot: 9 AM
-Course: Artificial Intelligence, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
-Course: Business Analytics, Room: Room 7, Teacher: Ms. B, Timeslot: 10 AM
-Course: Computer Science, Room: Room 4, Teacher: Mr. C, Timeslot: 12 PM
-Course: Cyber Security, Room: Room 7, Teacher: Mr. C, Timeslot: 12 PM
-Course: Data Science, Room: Room 6, Teacher: Ms. D, Timeslot: 2 PM
-Course: Data Mining & Machine Learning, Room: Room 6, Teacher: Ms. D, Timeslot: 2 PM
-Course: Big Data Analytics, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Advanced Data Analytics, Room: Room 4, Teacher: Mr. A, Timeslot: 11 AM
+Course: Artificial Intelligence, Room: Room 7, Teacher: Mr. A, Timeslot: 10 AM
+Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 12 PM
+Course: Computer Science, Room: Room 6, Teacher: Mr. C, Timeslot: 2 PM
+Course: Cyber Security, Room: Room 4, Teacher: Mr. C, Timeslot: 12 PM
+Course: Data Science, Room: Room 7, Teacher: Ms. D, Timeslot: 1 PM
+Course: Data Mining & Machine Learning, Room: Room 7, Teacher: Ms. D, Timeslot: 1 PM
+Course: Big Data Analytics, Room: Room 4, Teacher: Mr. E, Timeslot: 12 PM
 Course: Heuristic Search, Room: Room 6, Teacher: Mr. E, Timeslot: 12 PM
 
-Hill Climbing - Final Results
-Best Fitness: 67
-Time Taken: 0.02 seconds
+Simulated Annealing - Final Results
+Best Fitness: 97
+Time Taken: 1.61 seconds
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 9 AM
-Course: Artificial Intelligence, Room: Room 6, Teacher: Mr. A, Timeslot: 9 AM
-Course: Business Analytics, Room: Room 1, Teacher: Ms. B, Timeslot: 12 PM
-Course: Computer Science, Room: Room 6, Teacher: Mr. C, Timeslot: 12 PM
-Course: Cyber Security, Room: Room 4, Teacher: Mr. C, Timeslot: 2 PM
+Course: Advanced Data Analytics, Room: Room 7, Teacher: Mr. A, Timeslot: 11 AM
+Course: Artificial Intelligence, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
+Course: Business Analytics, Room: Room 7, Teacher: Ms. B, Timeslot: 10 AM
+Course: Computer Science, Room: Room 4, Teacher: Mr. C, Timeslot: 9 AM
+Course: Cyber Security, Room: Room 3, Teacher: Mr. C, Timeslot: 2 PM
+Course: Data Science, Room: Room 5, Teacher: Ms. D, Timeslot: 1 PM
+Course: Data Mining & Machine Learning, Room: Room 6, Teacher: Ms. D, Timeslot: 10 AM
+Course: Big Data Analytics, Room: Room 6, Teacher: Mr. E, Timeslot: 11 AM
+Course: Heuristic Search, Room: Room 7, Teacher: Mr. E, Timeslot: 1 PM
+
+Hill Climbing - Final Results
+Best Fitness: 59
+Time Taken: 0.62 seconds
+Best Timetable Configuration:
+Course: Advanced Data Analytics, Room: Room 5, Teacher: Mr. A, Timeslot: 9 AM
+Course: Artificial Intelligence, Room: Room 5, Teacher: Mr. A, Timeslot: 9 AM
+Course: Business Analytics, Room: Room 1, Teacher: Ms. B, Timeslot: 11 AM
+Course: Computer Science, Room: Room 4, Teacher: Mr. C, Timeslot: 1 PM
+Course: Cyber Security, Room: Room 4, Teacher: Mr. C, Timeslot: 9 AM
 Course: Data Science, Room: Room 4, Teacher: Ms. D, Timeslot: 9 AM
 Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 9 AM
-Course: Big Data Analytics, Room: Room 6, Teacher: Mr. E, Timeslot: 1 PM
-Course: Heuristic Search, Room: Room 5, Teacher: Mr. E, Timeslot: 1 PM
+Course: Big Data Analytics, Room: Room 6, Teacher: Mr. E, Timeslot: 3 PM
+Course: Heuristic Search, Room: Room 7, Teacher: Mr. E, Timeslot: 3 PM
 
 Tabu Search - Final Results
-Best Fitness: 60
-Time Taken: 0.24 seconds
+Best Fitness: 95
+Time Taken: 0.39 seconds
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 9 AM
-Course: Artificial Intelligence, Room: Room 7, Teacher: Mr. A, Timeslot: 11 AM
-Course: Business Analytics, Room: Room 4, Teacher: Ms. B, Timeslot: 10 AM
-Course: Computer Science, Room: Room 4, Teacher: Mr. C, Timeslot: 2 PM
-Course: Cyber Security, Room: Room 5, Teacher: Mr. C, Timeslot: 2 PM
-Course: Data Science, Room: Room 3, Teacher: Ms. D, Timeslot: 9 AM
-Course: Data Mining & Machine Learning, Room: Room 7, Teacher: Ms. D, Timeslot: 9 AM
-Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM
-Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 12 PM
+Course: Artificial Intelligence, Room: Room 3, Teacher: Mr. A, Timeslot: 11 AM
+Course: Business Analytics, Room: Room 1, Teacher: Ms. B, Timeslot: 1 PM
+Course: Computer Science, Room: Room 7, Teacher: Mr. C, Timeslot: 9 AM
+Course: Cyber Security, Room: Room 3, Teacher: Mr. C, Timeslot: 2 PM
+Course: Data Science, Room: Room 5, Teacher: Ms. D, Timeslot: 1 PM
+Course: Data Mining & Machine Learning, Room: Room 2, Teacher: Ms. D, Timeslot: 1 PM
+Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 1 PM
+Course: Heuristic Search, Room: Room 3, Teacher: Mr. E, Timeslot: 1 PM
 
 --- Best Algorithm ---
 Best Algorithm: Genetic Algorithm
 Best Fitness: 127
-Time Taken: 1.14 seconds
+Time Taken: 4.18 seconds
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 2, Teacher: Mr. A, Timeslot: 10 AM
+Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 11 AM
 Course: Artificial Intelligence, Room: Room 5, Teacher: Mr. A, Timeslot: 12 PM
-Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 12 PM
-Course: Computer Science, Room: Room 5, Teacher: Mr. C, Timeslot: 9 AM
-Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 2 PM
-Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 9 AM
-Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 9 AM
+Course: Business Analytics, Room: Room 3, Teacher: Ms. B, Timeslot: 10 AM
+Course: Computer Science, Room: Room 2, Teacher: Mr. C, Timeslot: 9 AM
+Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 9 AM
+Course: Data Science, Room: Room 2, Teacher: Ms. D, Timeslot: 10 AM
+Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 10 AM
 Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM
-Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM
+Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM
 
 --- Total Comparison Time ---
-Total Time Taken to Compare All Algorithms: 5.10 seconds
+Total Time Taken to Compare All Algorithms: 18.04 seconds
