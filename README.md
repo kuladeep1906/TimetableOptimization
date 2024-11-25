@@ -150,12 +150,14 @@ The UI is designed to be user-friendly and responsive, with dynamic updates and 
 
 This project is licensed under the MIT License.
 
-```
-
 ### Highlights
+
 - Added **loading indicator**, **bar graph comparison**, and **number of entries display** in the features section.
 - Updated project structure to include new files and directories.
 - Explained the process of using the new features in the **How to Use** section.
 
 You can further customize this to align with your specific repository name and URL.
+
+```
+
 ```
