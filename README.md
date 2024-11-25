@@ -62,7 +62,7 @@ The UI is designed to be user-friendly and responsive, with dynamic updates and 
 3. Run the Flask application:
 
    ```bash
-   python src/app.py
+   python3 -m src.app
    ```
 
 4. Open the application in your browser at:
@@ -96,7 +96,7 @@ The UI is designed to be user-friendly and responsive, with dynamic updates and 
 1. Start the application by running:
 
    ```bash
-   python src/app.py
+   python3 -m src.app
    ```
 
 2. Navigate to the **Welcome Page** and select an algorithm from the dropdown menu.
