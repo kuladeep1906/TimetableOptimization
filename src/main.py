@@ -8,6 +8,7 @@ from .simulated_annealing import simulated_annealing
 from .hill_climbing import hill_climbing
 from .tabu_search import tabu_search
 import pandas as pd  # For handling CSV files
+import numpy as np  # For handling data in graphs
 
 # Ensure the logs folder exists
 if not os.path.exists("logs"):
@@ -91,7 +92,9 @@ def plot_progress(csv_path, algorithm_name):
         plt.title(f"Algorithm Progress for {algorithm_name}", fontsize=16, fontweight='bold')
         plt.legend(fontsize=12)
         plt.grid(True, linestyle='--', alpha=0.7)
-        plt.tight_layout()
+
+        # Use constrained layout to avoid tight layout issues
+        plt.gcf().subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.9)
 
         # Construct output path
         sanitized_name = algorithm_name.replace(' ', '_').replace('*', 'star').lower()
@@ -110,6 +113,56 @@ def plot_progress(csv_path, algorithm_name):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         return None
+
+def plot_comparison_bar_graph(results):
+    """
+    Plots a bar graph comparing fitness scores and execution times for all algorithms.
+    """
+    STATIC_DIR = "static"
+    progress_dir = os.path.join(STATIC_DIR, "progress")
+    os.makedirs(progress_dir, exist_ok=True)
+
+    try:
+        # Extract data
+        algo_names = [result[0] for result in results]
+        fitness_scores = [result[2] for result in results]
+        execution_times = [result[3] for result in results]
+
+        x = np.arange(len(algo_names))  # X-axis positions
+
+        # Create bar graph
+        fig, ax1 = plt.subplots(figsize=(14, 8))
+        bar_width = 0.35
+
+        # Bar for fitness scores
+        ax1.bar(x - bar_width/2, fitness_scores, bar_width, label="Fitness Score", color='blue', alpha=0.7)
+
+        # Secondary Y-axis for execution times
+        ax2 = ax1.twinx()
+        ax2.bar(x + bar_width/2, execution_times, bar_width, label="Execution Time (s)", color='orange', alpha=0.7)
+
+        ax1.set_xlabel("Algorithms", fontsize=14)
+        ax1.set_ylabel("Fitness Score", fontsize=14, color='blue')
+        ax2.set_ylabel("Execution Time (s)", fontsize=14, color='orange')
+        ax1.set_title("Comparison of Fitness Scores and Execution Times", fontsize=16, fontweight='bold')
+
+        # Add labels and legend
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(algo_names, fontsize=12)
+        ax1.tick_params(axis='y', labelcolor='blue')
+        ax2.tick_params(axis='y', labelcolor='orange')
+
+        fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9), fontsize=12)
+        fig.tight_layout()
+
+        # Save the graph
+        output_path = os.path.join(progress_dir, "comparison_bar_graph.png")
+        plt.savefig(output_path)
+        plt.close()
+
+        print(f"Comparison bar graph saved to: {output_path}")
+    except Exception as e:
+        print(f"An error occurred while creating the comparison bar graph: {e}")
 
 def main(algorithm_choice=None):
     # If algorithm_choice is None, prompt the user for input
@@ -166,6 +219,9 @@ def main(algorithm_choice=None):
 
             # Plot progress for each algorithm
             plot_progress(csv_path, algo_name)
+
+        # Generate comparison bar graph
+        plot_comparison_bar_graph(all_schedules)
 
         logger.info("\n--- All Algorithms for Comparison Ended ---\n")
 

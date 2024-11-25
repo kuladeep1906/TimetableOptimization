@@ -95,6 +95,51 @@
             outline: none;
         }
 
+       
+        /* Loading spinner container */
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3500;
+        }
+          
+        /* Spinner animation */
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #0044cc;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+          
+        @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+        }
+          
+        /* Loading text styling */
+        .loading-text {
+            margin-top: 20px;
+            font-size: 22px;
+            color: #0044cc;
+            font-weight: bold;
+        }
+
+          
+
         /* Button styling with pulse */
         .btn {
             padding: 12px 24px;
@@ -173,6 +218,20 @@
             <button type="submit" class="btn">View Results</button>
         </form>
     </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <div class="loading-text">Generating Timetable...</div>
+    </div>
+    
+    <script>
+        // Show the loading spinner when the form is submitted
+        document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("loadingSpinner").style.display = "flex";
+        });
+    </script>
+    
 
     <div class="project-by">
         <span class="project-title">Project by</span><br>

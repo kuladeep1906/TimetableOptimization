@@ -67,6 +67,7 @@
         border: 1px solid #ddd;
         overflow-x: auto;
         box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
       }
       /* Graph container styling */
       .graph-container {
@@ -134,12 +135,7 @@
         <a href="{{ url_for('show_logs') }}">go to logs</a> for a detailed
         analysis of this algorithm.
       </div>
-      {% endif %}
-
-      <!-- Render logs only once -->
-      <pre>{{ log_content }}</pre>
-
-      {% if algorithm_choice == "6" %}
+      {% endif %} {% if algorithm_choice == "6" %}
       <div class="graph-container">
         <h2>Progress Graphs for All Algorithms</h2>
         <div class="graphs">
@@ -185,6 +181,19 @@
           </div>
         </div>
       </div>
+
+      <!-- Bar Graph -->
+      <div class="graph-container">
+        <h2>Comparison Bar Graph</h2>
+        <img
+          src="/static/progress/comparison_bar_graph.png"
+          alt="Comparison Bar Graph for Fitness Scores and Execution Times"
+          onerror="this.style.display='none';"
+        />
+      </div>
+
+      <!-- Render logs -->
+      <pre>{{ log_content }}</pre>
       {% endif %}
 
       <button class="back-button" onclick="window.history.back()">

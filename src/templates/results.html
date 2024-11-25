@@ -100,6 +100,40 @@
         color: #004d40;
       }
 
+      /* Number of entries styling */
+      .entries-count {
+        font-size: 18px;
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        border-left: 4px solid #0044cc;
+        padding-left: 10px;
+        background-color: #f4f9ff;
+        padding: 10px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Styling for "Number of Entries" label */
+      .entries-label {
+        color: #444;
+        margin-right: 10px;
+      }
+
+      /* Styling for the count value */
+      .entries-count-value {
+        color: Red;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .entries-count:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
       /* Go home button styling */
       .go-home-btn {
         display: block;
@@ -152,7 +186,7 @@
           class="btn-link"
           >Show Comparison</a
         >
-        <a href="/logs" class="btn-link">Show Logs</a>
+        <a href="/logs" class="btn-link">Show Analysis</a>
       </div>
 
       <!-- Search Bar -->
@@ -166,6 +200,11 @@
       </div>
 
       {% if results %}
+      <!-- Number of Entries -->
+      <div class="entries-count">
+        <span class="entries-label">Number of Entries:</span>
+        <span class="entries-count-value">{{ results|length - 2 }}</span>
+      </div>
       <table id="resultsTable">
         <thead>
           <tr>
