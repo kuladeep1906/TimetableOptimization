@@ -151,7 +151,3 @@ The UI is designed to be user-friendly and responsive, with dynamic updates and 
 This project is licensed under the MIT License.
 
 You can further customize this to align with your specific repository name and URL.
-
-```
-
-```
