@@ -16,7 +16,7 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    csv_path = f"progress/{algorithm_name}_progress.csv"  #  path to "progress" folder
     with open(csv_path, mode="w") as file:
         writer = csv.writer(file)
         writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Average Fitness"])  # Added "Average Fitness"
@@ -26,8 +26,8 @@ def initialize_csv_log(algorithm_name):
 def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness, avg_fitness):
     with open(csv_path, mode="a") as file:
         writer = csv.writer(file)
-        writer.writerow([generation, current_best_fitness, best_fitness, avg_fitness])  # Log average fitness as well
-
+        writer.writerow([generation, current_best_fitness, best_fitness, avg_fitness])  
+        
 def create_initial_population(size):
     population = []
     for _ in range(size):
@@ -71,7 +71,7 @@ def mutate(timetable):
             )
     return timetable
 
-def genetic_algorithm(logger, population_size=50, generations=70):
+def genetic_algorithm(logger, population_size=50, generations=100):
     start_time = time.time()
     population = create_initial_population(population_size)
     

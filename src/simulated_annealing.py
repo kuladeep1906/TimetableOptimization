@@ -25,24 +25,20 @@ def log_progress_csv(csv_path, generation, temperature, current_best_fitness, be
         writer = csv.writer(file)
         writer.writerow([generation, temperature, current_best_fitness, best_fitness, cooling_rate])  # Append data to CSV
 
-def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, max_iterations=1000, stagnation_limit=50):
-    # Start timing
+def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, max_iterations=1000):
     start_time = time.time()
-
-    # Initialize CSV logging
     csv_path = initialize_csv_log("simulated_annealing")
 
-    # Create an initial random solution
+    # Initialize parameters
     current_state = [
         {
             'course': course['name'],
             'room': random.choice(course['preferred_rooms']),
             'teacher': course['teacher'],
-            'timeslot': random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])['availability'])
+            'timeslot': random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])['availability']),
         }
         for course in COURSES
     ]
-    
     current_fitness = calculate_fitness(current_state)
     best_state = current_state
     best_fitness = current_fitness
@@ -50,60 +46,66 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
     cooling_rate = initial_cooling_rate
     stagnation_counter = 0
 
+    # New: Variables for dynamic stagnation handling
+    stagnation_limit = 50  # Initial stagnation limit
+    fitness_history = []  # Track fitness scores over iterations
+    history_limit = 10     # Number of iterations to consider for calculating improvement rate
+
     for iteration in range(max_iterations):
-        # Generate a neighbor state by making slight modifications
+        # Generate a neighbor state
         neighbor = current_state.copy()
         for entry in neighbor:
             entry['room'] = random.choice(
                 [room['name'] for room in ROOMS if room['capacity'] >= next(course['students'] for course in COURSES if course['name'] == entry['course'])]
             )
-            entry['timeslot'] = random.choice(
-                next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])['availability']
-            )
-        
+            entry['timeslot'] = random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])['availability'])
+
         neighbor_fitness = calculate_fitness(neighbor)
 
-        # Handle large exponent issues by clamping the difference
+        # Acceptance decision
         diff = (neighbor_fitness - current_fitness) / max(temperature, 1e-6)
-        clamped_diff = max(min(diff, 700), -700)  # Clamp values to avoid overflow
+        clamped_diff = max(min(diff, 700), -700)
         acceptance_probability = math.exp(clamped_diff)
 
-        # Decide to accept the neighbor state based on fitness or probability
         if neighbor_fitness > current_fitness or random.random() < acceptance_probability:
             current_state, current_fitness = neighbor, neighbor_fitness
-            stagnation_counter = 0  # Reset stagnation counter on improvement
+            stagnation_counter = 0
             if current_fitness > best_fitness:
                 best_state, best_fitness = current_state, current_fitness
         else:
-            stagnation_counter += 1  # Increment stagnation counter if no improvement
+            stagnation_counter += 1
 
-        # Log progress for this iteration
+        # Log fitness history
+        fitness_history.append(current_fitness)
+        if len(fitness_history) > history_limit:
+            fitness_history.pop(0)
+
+        # Adjust stagnation limit dynamically based on fitness improvement
+        if len(fitness_history) == history_limit:
+            fitness_improvement_rate = (fitness_history[-1] - fitness_history[0]) / history_limit
+            if fitness_improvement_rate < 1:  # Low improvement rate
+                stagnation_limit = max(20, stagnation_limit - 5)  # Reduce stagnation limit
+                logger.info(f"Low improvement detected. Decreasing stagnation limit to {stagnation_limit}")
+            elif fitness_improvement_rate > 5:  # High improvement rate
+                stagnation_limit = min(100, stagnation_limit + 5)  # Increase stagnation limit
+                logger.info(f"High improvement detected. Increasing stagnation limit to {stagnation_limit}")
+
+        # Log progress
         logger.info(f"Iteration {iteration + 1}, Temperature: {temperature:.2f}, Current Fitness: {current_fitness}, Best Fitness: {best_fitness}, Cooling Rate: {cooling_rate:.2f}")
         log_progress_csv(csv_path, iteration + 1, temperature, current_fitness, best_fitness, cooling_rate)
 
-        # Adaptive cooling adjustment
-        if stagnation_counter > stagnation_limit:
-            cooling_rate = min(cooling_rate + 0.01, 0.99)  # Slow cooling if stagnant
-            logger.info(f"Stagnation detected. Adjusting cooling rate to {cooling_rate:.2f}")
-        else:
-            cooling_rate = max(cooling_rate - 0.01, 0.90)  # Faster cooling if improving
-
-        # Update temperature based on the adaptive cooling rate
+        # Adjust temperature
         temperature *= cooling_rate
         if temperature < 1e-3:
             logger.info("Temperature dropped below threshold. Stopping iterations.")
             break
 
-        # Introduce diversity by shuffling every 10 iterations
-        if iteration % 10 == 0:
-            random.shuffle(current_state)
-
     elapsed_time = time.time() - start_time
 
-    # Logging final results to the logger
+    # Final results logging
     logger.info("Final Best Timetable Configuration (Simulated Annealing):")
     for entry in best_state:
         logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-    return best_state, best_fitness, elapsed_time, csv_path  # Return CSV path for visualization
+    return best_state, best_fitness, elapsed_time, csv_path

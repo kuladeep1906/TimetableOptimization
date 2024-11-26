@@ -58,35 +58,15 @@ def plot_progress(csv_path, algorithm_name):
             raise ValueError(f"CSV file is missing required columns: {required_columns - set(data.columns)}")
 
         # Plot progress
-        plt.figure(figsize=(14, 8))
+       
         plt.plot(
             data['Generation'], 
-            data['Overall Best Fitness'], 
-            label="Overall Best Fitness", 
-            color='blue',  # Blue for Overall Best Fitness
-            marker='o'
-        )
-        plt.plot(
-            data['Generation'], 
-            data['Current Best Fitness'], 
-            label="Current Best Fitness", 
+            data['Current Best Fitness'],  
             color='green',  # Green for Current Best Fitness
             linestyle='--', 
             marker='x'
         )
-
-        # Add annotations for the highest overall fitness
-        max_fitness = data['Overall Best Fitness'].max()
-        max_gen = data['Generation'][data['Overall Best Fitness'].idxmax()]
-        plt.annotate(
-            f"Best Fitness: {max_fitness:.2f}",
-            xy=(max_gen, max_fitness),
-            xytext=(max_gen + 1, max_fitness - 5),
-            arrowprops=dict(facecolor='black', arrowstyle="->"),
-            fontsize=10,
-            color='black'
-        )
-
+        
         plt.xlabel("Generation", fontsize=14)
         plt.ylabel("Fitness", fontsize=14)
         plt.title(f"Algorithm Progress for {algorithm_name}", fontsize=16, fontweight='bold')
