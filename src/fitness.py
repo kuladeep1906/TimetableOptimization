@@ -14,23 +14,26 @@ def calculate_fitness(timetable):
     score = 0
     # Define penalties and bonuses
     penalties = {
-        'room_capacity': 20,
-        'teacher_availability': 10,
-        'incorrect_teacher': 15,
-        'max_courses': 25,
-        'consecutive_classes': 8,
-        'timeslot_conflict': 20,
-        'program_overlap': 30,
-        'prerequisite_order': 25,
+        'room_capacity': 10,  # Reduced to allow small deviations without severe penalties.
+        'teacher_availability': 8,  # Slightly lower penalty to encourage exploration.
+        'incorrect_teacher': 20,  # Increased to prioritize correct teacher assignment.
+        'max_courses': 15,  # Reduced to avoid stagnation due to small violations.
+        'consecutive_classes': 5,  # Lowered to encourage more flexible assignments.
+        'timeslot_conflict': 15,  # Reduced to allow minor conflicts during exploration.
+        'program_overlap': 25,  # Moderate penalty to avoid overconstraining the algorithm.
+        'prerequisite_order': 20,  # Reduced to allow slight violations for flexibility.
     }
+
     bonuses = {
-        'preferred_room': 5,
-        'primary_preferred_room': 10,
-        'preferred_timeslot': 7,
-        'teacher_efficiency': 5,
-        'room_distribution': 3,
+        'preferred_room': 10,  # Increased to encourage alignment with preferred rooms.
+        'primary_preferred_room': 10,  # Increased to heavily reward ideal room assignments.
+        'preferred_timeslot': 10,  # Slightly increased to favor teacher-preferred slots.
+        'teacher_efficiency': 7,  # Reward more efficient teacher allocations.
+        'room_distribution': 5,  # Reward better room utilization.
     }
-    max_courses_per_teacher = 3
+
+    max_courses_per_teacher = 4  # Increased to provide more flexibility in assignments.
+
 
     teacher_course_count = Counter()
     teacher_timeslots = defaultdict(list)
@@ -97,7 +100,7 @@ def calculate_fitness(timetable):
             score -= penalties['timeslot_conflict']
 
     # HARD: Avoid overlapping programs in the same room and timeslot
-    for key, programs in room_program_timeslot.items():
+    for programs in room_program_timeslot.items():
         if len(programs) != len(set(programs)):
             score -= penalties['program_overlap']
 

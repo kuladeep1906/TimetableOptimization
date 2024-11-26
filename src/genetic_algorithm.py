@@ -71,7 +71,7 @@ def mutate(timetable):
             )
     return timetable
 
-def genetic_algorithm(logger, population_size=50, generations=100):
+def genetic_algorithm(logger, population_size=50, generations=70):
     start_time = time.time()
     population = create_initial_population(population_size)
     
