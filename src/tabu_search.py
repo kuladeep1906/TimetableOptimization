@@ -26,7 +26,7 @@ def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness):
         writer = csv.writer(file)
         writer.writerow([generation, current_best_fitness, best_fitness])  # Append data to CSV
 
-def tabu_search(logger, max_iterations=100, tabu_tenure=10, neighbors_to_generate=5):
+def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generate=5):
     # Start timing
     start_time = time.time()
     
