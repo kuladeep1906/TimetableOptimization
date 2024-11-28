@@ -46,11 +46,11 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
     cooling_rate = initial_cooling_rate
     stagnation_counter = 0
 
-    # New: Variables for dynamic stagnation handling
-    stagnation_limit = 50  # Initial stagnation limit
-    fitness_history = []  # Track fitness scores over iterations
-    history_limit = 10     # Number of iterations to consider for calculating improvement rate
-
+    # Variables for dynamic stagnation handling
+    stagnation_limit = 50  
+    fitness_history = []  
+    history_limit = 10    
+    
     for iteration in range(max_iterations):
         # Generate a neighbor state
         neighbor = current_state.copy()
@@ -95,7 +95,9 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
         log_progress_csv(csv_path, iteration + 1, temperature, current_fitness, best_fitness, cooling_rate)
 
         # Adjust temperature
-        temperature *= cooling_rate
+     #   temperature *= cooling_rate
+        # Logarithmic Cooling Schedule
+        temperature = initial_temp / (1 + math.log(1 + iteration))
         if temperature < 1e-3:
             logger.info("Temperature dropped below threshold. Stopping iterations.")
             break

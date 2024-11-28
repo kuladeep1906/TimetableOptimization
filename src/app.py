@@ -67,7 +67,7 @@ def show_comparison():
         }
     else:
         print("Displaying message for a single algorithm.")  # Debug message
-        graph_paths = None  # No graphs for a single algorithm
+        graph_paths = None  # No graphs for a single algorithm...... will add in future.
 
     with open("logs/final_output.log", "r") as file:
         comparison_log = file.read()
