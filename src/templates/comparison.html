@@ -128,61 +128,31 @@
     <div class="container">
       <h1>{{ title }}</h1>
 
-      {% if algorithm_choice != "6" %}
+      {% if algorithm_choice != "2" %}
       <div class="message">
-        You have selected only one algorithm. For a comparison of algorithms,
-        please select "Optimal of All" on the Home page. Alternatively,
-        <a href="{{ url_for('show_logs') }}">go to logs</a> for a detailed
-        analysis of this algorithm.
+        You have selected a single algorithm. To compare algorithms, please
+        select "Optimal of All" on the Home page or
+        <a href="{{ url_for('show_logs') }}">view detailed logs</a>.
       </div>
-      {% endif %} {% if algorithm_choice == "6" %}
+      {% endif %}
+
+      {% if algorithm_choice == "2" %}
       <div class="graph-container">
         <h2>Progress Graphs for All Algorithms</h2>
         <div class="graphs">
+          {% for algo_name, graph_path in graph_paths.items() %}
           <div class="graph-section">
-            <div class="graph-title">Genetic Algorithm</div>
+            <div class="graph-title">{{ algo_name }}</div>
             <img
-              src="/static/progress/genetic_algorithm_progress.png"
-              alt="Progress Graph for Genetic Algorithm"
+              src="{{ graph_path }}"
+              alt="Progress Graph for {{ algo_name }}"
               onerror="this.style.display='none';"
             />
           </div>
-          <div class="graph-section">
-            <div class="graph-title">RTA*</div>
-            <img
-              src="/static/progress/rtastar_algorithm_progress.png"
-              alt="Progress Graph for RTA*"
-              onerror="this.style.display='none';"
-            />
-          </div>
-          <div class="graph-section">
-            <div class="graph-title">Simulated Annealing</div>
-            <img
-              src="/static/progress/simulated_annealing_progress.png"
-              alt="Progress Graph for Simulated Annealing"
-              onerror="this.style.display='none';"
-            />
-          </div>
-          <div class="graph-section">
-            <div class="graph-title">Hill Climbing</div>
-            <img
-              src="/static/progress/hill_climbing_progress.png"
-              alt="Progress Graph for Hill Climbing"
-              onerror="this.style.display='none';"
-            />
-          </div>
-          <div class="graph-section">
-            <div class="graph-title">Tabu Search</div>
-            <img
-              src="/static/progress/tabu_search_progress.png"
-              alt="Progress Graph for Tabu Search"
-              onerror="this.style.display='none';"
-            />
-          </div>
+          {% endfor %}
         </div>
       </div>
 
-      <!-- Bar Graph -->
       <div class="graph-container">
         <h2>Comparison Bar Graph</h2>
         <img
@@ -192,7 +162,6 @@
         />
       </div>
 
-      <!-- Render logs -->
       <pre>{{ log_content }}</pre>
       {% endif %}
 

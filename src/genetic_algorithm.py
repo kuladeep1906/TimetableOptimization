@@ -2,7 +2,7 @@ import random
 import time
 import csv
 import os
-from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS, DAYS
 from .fitness import calculate_fitness
 
 # Constants
@@ -28,24 +28,30 @@ def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness, a
         writer = csv.writer(file)
         writer.writerow([generation, current_best_fitness, best_fitness, avg_fitness])  
         
+
+
 def create_initial_population(size):
     population = []
     for _ in range(size):
         timetable = []
         for course in COURSES:
             teacher = next(teacher for teacher in TEACHERS if teacher["name"] == course["teacher"])
-            room = random.choice(course["preferred_rooms"])
-            timeslot = random.choice(teacher["availability"])
-            timetable.append(
-                {
-                    "course": course["name"],
-                    "room": room,
-                    "teacher": teacher["name"],
-                    "timeslot": timeslot,
-                }
-            )
+            for _ in range(course["instances_per_week"]):  # Create slots based on instances per week
+                room = random.choice(course["preferred_rooms"])
+                timeslot = random.choice(teacher["availability"])
+                day = random.choice(teacher["preferred_days"])  
+                timetable.append(
+                    {
+                        "course": course["name"],
+                        "room": room,
+                        "teacher": teacher["name"],
+                        "timeslot": timeslot,
+                        "day": day,
+                    }
+                )
         population.append(timetable)
     return population
+
 
 def selection_with_elitism(population, retain_rate=ELITISM_RATE):
     population.sort(key=calculate_fitness, reverse=True)
@@ -69,6 +75,7 @@ def mutate(timetable):
             entry["room"] = random.choice(
                 [room["name"] for room in ROOMS if room["capacity"] >= next(course["students"] for course in COURSES if course["name"] == entry["course"])]
             )
+            entry["day"] = random.choice(teacher["preferred_days"])  # Ensure day is updated
     return timetable
 
 def genetic_algorithm(logger, population_size=50, generations=100):
@@ -122,8 +129,7 @@ def genetic_algorithm(logger, population_size=50, generations=100):
         logger.info(f"Generation {generation + 1}: Best Fitness = {best_fitness}, Avg Fitness = {avg_fitness:.2f}")
         logger.info("Best Timetable Configuration for this Generation:")
         for entry in best_timetable:
-            logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
-
+            logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}")
     # Capture end time and calculate elapsed time
     end_time = time.time()
     elapsed_time = end_time - start_time

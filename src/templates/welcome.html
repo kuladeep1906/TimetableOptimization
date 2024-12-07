@@ -162,26 +162,6 @@
         }
         
         
-        /* Style for "Project by" text in the bottom right corner */
-        .project-by {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            text-align: right;
-            font-size: 16px;
-            font-weight: 500;
-            font-family: 'Roboto', sans-serif;
-            opacity: 0.9;
-        }
-            
-        /* Style for "Project by" title */
-        .project-title {
-            color: #ff6a88; /* Slightly bold, warm color */
-            font-size: 18px;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-            
         /* Style for names with a cooler color and subtle shadow */
         .person-name {
             color: black;
@@ -207,12 +187,13 @@
         <form id="algorithmForm" method="POST">
             <select name="algorithm_choice" required>
                 <option value="choose" {% if algorithm_choice == "choose" %}selected{% endif %}>Choose an Algorithm</option>
-                <option value="1" {% if algorithm_choice == '1' %}selected{% endif %}>Genetic Algorithm</option>
-                <option value="2" {% if algorithm_choice == '2' %}selected{% endif %}>RTA* Algorithm</option>
-                <option value="3" {% if algorithm_choice == '3' %}selected{% endif %}>Simulated Annealing</option>
-                <option value="4" {% if algorithm_choice == '4' %}selected{% endif %}>Hill Climbing</option>
-                <option value="5" {% if algorithm_choice == '5' %}selected{% endif %}>Tabu Search</option>
-                <option value="6" {% if algorithm_choice == '6' %}selected{% endif %}>Optimal Timetable from All Algorithms</option>
+                <option value="1" {% if algorithm_choice == '1' %}selected{% endif %}>CSP</option>
+                <option value="2" {% if algorithm_choice == '2' %}selected{% endif %}>Optimal Timetable from All Algorithms</option>
+                <option value="3" {% if algorithm_choice == '3' %}selected{% endif %}>Genetic Algorithm</option>
+                <option value="4" {% if algorithm_choice == '4' %}selected{% endif %}>A* Algorithm</option>
+                <option value="5" {% if algorithm_choice == '5' %}selected{% endif %}>Simulated Annealing</option>
+                <option value="6" {% if algorithm_choice == '6' %}selected{% endif %}>Hill Climbing</option>
+                <option value="7" {% if algorithm_choice == '7' %}selected{% endif %}>Tabu Search</option>
             </select>
             <br>
             <button type="submit" class="btn">View Results</button>
@@ -231,13 +212,6 @@
         document.getElementById("loadingSpinner").style.display = "flex";
         });
     </script>
-    
-
-    <div class="project-by">
-        <span class="project-title">Project by</span><br>
-        <span class="person-name">Sai Praneeth Ravipati</span><br>
-        <span class="person-name">Kuladeep Pappu</span>
-    </div>
     
 
 

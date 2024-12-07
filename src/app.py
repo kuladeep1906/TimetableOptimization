@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for
 from src.main import main as run_main_algorithm
-from src.main import plot_progress  # Import the plotting function
+from src.main import plot_progress, plot_comparison_bar_graph  # Import plotting functions
 import os
 import matplotlib
 matplotlib.use('Agg')  # Use non-GUI backend for matplotlib
@@ -37,37 +37,74 @@ def welcome():
 @app.route("/results")
 def results():
     algorithm_choice = request.args.get("algorithm")
+    filtered_results = []
+    timeslots = []
+    days = []
+    graph_path = None
+
     if algorithm_choice and algorithm_choice != "choose":
-        # Run the algorithm and generate results
+        # Run the selected algorithm
         csv_path, algo_name = run_main_algorithm(algorithm_choice)
         results = read_output_file()
-        # Generate progress graph
-        plot_progress(csv_path, algo_name)
-        graph_path = f"progress/{algo_name}_progress.png"
+
+        # Filter out fitness score and time from results
+        filtered_results = [entry for entry in results if "Course" in entry]
+
+        # Define timeslots and days for rendering the timetable
+        timeslots = [
+            "9:00 AM - 10:00 AM",
+            "10:00 AM - 11:00 AM",
+            "11:00 AM - 12:00 PM",
+            "12:00 PM - 1:00 PM",
+            "1:00 PM - 2:00 PM",
+            "2:00 PM - 3:00 PM",
+            "3:00 PM - 4:00 PM",
+            "4:00 PM - 5:00 PM",
+            "5:00 PM - 6:00 PM",
+            "6:00 PM - 7:00 PM",
+        ]
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+        # Check and generate progress graph if available
+        if csv_path:
+            plot_progress(csv_path, algo_name)
+            graph_path = f"static/{csv_path}"
+
+        # Debugging: Log the data being passed to the front end
+        print("Filtered Results:", filtered_results)
+        print("Timeslots:", timeslots)
+        print("Days:", days)
     else:
-        results = None
-        graph_path = None
-    return render_template("results.html", results=results, graph_path=graph_path, algorithm_choice=algorithm_choice)
+        print("No valid algorithm choice or results to display.")
+
+    return render_template(
+        "results.html",
+        results=filtered_results,
+        timeslots=timeslots,
+        days=days,
+        graph_path=graph_path,
+        algorithm_choice=algorithm_choice,
+    )
 
 @app.route("/comparison")
 def show_comparison():
     algorithm_choice = request.args.get("algorithm_choice", "none")
     print(f"Algorithm choice received in comparison: {algorithm_choice}")  # Debug print
 
-    if algorithm_choice == "6":
+    if algorithm_choice == "2":
         print("Displaying comparison for all algorithms.")  # Debug message
 
         # Hardcoded graph paths for comparison
         graph_paths = {
             "Genetic Algorithm": "/static/progress/genetic_algorithm_progress.png",
-            "RTA*": "/static/progress/rtastar_algorithm_progress.png",
+            "A*": "/static/progress/astar_algorithm_progress.png",
             "Simulated Annealing": "/static/progress/simulated_annealing_progress.png",
             "Hill Climbing": "/static/progress/hill_climbing_progress.png",
             "Tabu Search": "/static/progress/tabu_search_progress.png",
         }
     else:
         print("Displaying message for a single algorithm.")  # Debug message
-        graph_paths = None  # No graphs for a single algorithm...... will add in future.
+        graph_paths = None  # No graphs for a single algorithm
 
     with open("logs/final_output.log", "r") as file:
         comparison_log = file.read()
@@ -86,23 +123,18 @@ def show_logs():
         detailed_log = file.read()
     return render_template("detailed_logs.html", title="Detailed Logs", log_content=detailed_log)
 
-def read_output_file():
+def read_output_file(csp=False):
     results = []
     with open("optimal_timetable_output.txt", "r") as file:
-        current_algorithm = file.readline().strip()
-        file.readline()
+        current_algorithm = file.readline().strip()  # Skip the algorithm line
+        file.readline()  # Skip the empty line
         for line in file:
             if line.startswith("Course:"):
                 parts = line.strip().split(", ")
                 course_data = {part.split(": ")[0]: part.split(": ")[1] for part in parts}
                 results.append(course_data)
-            elif line.startswith("Fitness Score:"):
-                fitness_score = line.strip().split(": ")[1]
-                results.append({"Fitness Score": fitness_score})
-            elif line.startswith("Time taken:"):
-                time_taken = line.strip().split(": ")[1]
-                results.append({"Time taken": time_taken})
     return results
+
 
 if __name__ == "__main__":
     app.run(debug=True)

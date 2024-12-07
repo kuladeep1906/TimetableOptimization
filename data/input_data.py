@@ -1,40 +1,38 @@
 COURSES = [
-    {'name': 'Advanced Data Analytics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Mr. A'},
-    {'name': 'Artificial Intelligence', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Mr. A'},
-    {'name': 'Computational Logic', 'students': 25, 'preferred_rooms': ['Room 3'], 'teacher': 'Ms. B'},
-    {'name': 'Computer Science', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. C'},
-    {'name': 'Cyber Security', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. C'},
-    {'name': 'Data Science', 'students': 30, 'preferred_rooms': ['Room 2'], 'teacher': 'Ms. D'},
-    {'name': 'Data Mining & Machine Learning', 'students': 30, 'preferred_rooms': ['Room 2'], 'teacher': 'Ms. D'},
-    {'name': 'Big Data Analytics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2', 'Room 4'], 'teacher': 'Mr. E'},
-    {'name': 'Heuristic Search', 'students': 35, 'preferred_rooms': ['Room 4'], 'teacher': 'Mr. E'},
-    {'name': 'Computer Graphics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. F'},
-    {'name': 'Computer Networks', 'students': 35, 'preferred_rooms': ['Room 2'], 'teacher': 'Mr. F'},
-    {'name': 'Natural Language Processing', 'students': 20, 'preferred_rooms': ['Room 5', 'Room 6'], 'teacher': 'Mr. G'},
-    {'name': 'Reinforcement Learning', 'students': 25, 'preferred_rooms': ['Room 1'], 'teacher': 'Mr. F'},
-    {'name': 'Ethical Hacking', 'students': 45, 'preferred_rooms': ['Room 6'], 'teacher': 'Ms. H'},
-    {'name': 'Compiler Design', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. I'},
-
+    {'name': 'Advanced Data Analytics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Mr. A', 'instances_per_week': 2},
+    {'name': 'Artificial Intelligence', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Mr. A', 'instances_per_week': 2},
+    {'name': 'Computational Logic', 'students': 25, 'preferred_rooms': ['Room 3'], 'teacher': 'Ms. B', 'instances_per_week': 2},
+    {'name': 'Computer Science', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. C', 'instances_per_week': 2},
+    {'name': 'Cyber Security', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. C', 'instances_per_week': 2},
+    {'name': 'Data Science', 'students': 30, 'preferred_rooms': ['Room 2'], 'teacher': 'Ms. D', 'instances_per_week': 2},
+    {'name': 'Data Mining & Machine Learning', 'students': 30, 'preferred_rooms': ['Room 2'], 'teacher': 'Ms. D', 'instances_per_week': 2},
+    {'name': 'Big Data Analytics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2', 'Room 4'], 'teacher': 'Mr. E', 'instances_per_week': 2},
+    {'name': 'Heuristic Search', 'students': 35, 'preferred_rooms': ['Room 4'], 'teacher': 'Mr. E', 'instances_per_week': 2},
+    {'name': 'Computer Graphics', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. F', 'instances_per_week': 2},
+    {'name': 'Computer Networks', 'students': 35, 'preferred_rooms': ['Room 2'], 'teacher': 'Mr. F', 'instances_per_week': 2},
+    {'name': 'Natural Language Processing', 'students': 20, 'preferred_rooms': ['Room 5', 'Room 6'], 'teacher': 'Mr. G', 'instances_per_week': 2},
+    {'name': 'Reinforcement Learning', 'students': 25, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. F', 'instances_per_week': 2},
+    {'name': 'Ethical Hacking', 'students': 45, 'preferred_rooms': ['Room 6'], 'teacher': 'Ms. H', 'instances_per_week': 2},
+    {'name': 'Compiler Design', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. I', 'instances_per_week': 2},
 ]
 
 TEACHERS = [
-    {'name': 'Mr. A', 'availability': ['9 AM', '10 AM', '11 AM', '12 PM']},
-    {'name': 'Ms. B', 'availability': ['10 AM', '11 AM', '12 PM', '1 PM']},
-    {'name': 'Mr. C', 'availability': ['9 AM', '12 PM', '1 PM', '2 PM']},
-    {'name': 'Ms. D', 'availability': ['9 AM', '10 AM', '1 PM', '2 PM']},
-    {'name': 'Mr. E', 'availability': ['11 AM', '12 PM', '1 PM', '3 PM']},
-    {'name': 'Mr. F', 'availability': ['9 AM', '12 PM', '1 PM', '6 PM']},
-    {'name': 'Mr. G', 'availability': ['10 AM', '11 AM', '1 PM', '3 PM']},
-    {'name': 'Ms. H', 'availability': ['10 AM', '2 PM', '3 PM', '4 PM']},
-    {'name': 'Mr. I', 'availability': ['9 AM', '2 PM', '3 PM', '4 PM']},
-    {'name': 'Ms. J', 'availability': ['11 AM', '2 PM', '3 PM', '5 PM']},
-    {'name': 'Mr. K', 'availability': ['10 AM', '3 PM', '4 PM', '5 PM']},
-    {'name': 'Ms. L', 'availability': ['9 AM', '4 PM', '5 PM', '6 PM']},
-    {'name': 'Mr. M', 'availability': ['10 AM', '2 PM', '5 PM', '6 PM']},
-    {'name': 'Ms. N', 'availability': ['12 PM', '3 PM', '5 PM', '6 PM']},
-    {'name': 'Mr. O', 'availability': ['1 PM', '2 PM', '4 PM', '6 PM']},
-    {'name': 'Ms. P', 'availability': ['1 PM', '3 PM', '4 PM', '6 PM']},
-    
+    {'name': 'Mr. A', 'availability': ['9 AM', '10 AM', '11 AM', '12 PM'], 'preferred_days': ['Monday', 'Wednesday', 'Friday']},
+    {'name': 'Ms. B', 'availability': ['10 AM', '11 AM', '12 PM', '1 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
+    {'name': 'Mr. C', 'availability': ['9 AM', '12 PM', '1 PM', '2 PM'], 'preferred_days': ['Monday', 'Wednesday']},
+    {'name': 'Ms. D', 'availability': ['9 AM', '10 AM', '1 PM', '2 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
+    {'name': 'Mr. E', 'availability': ['11 AM', '12 PM', '1 PM', '3 PM'], 'preferred_days': ['Monday', 'Wednesday', 'Friday']},
+    {'name': 'Mr. F', 'availability': ['9 AM', '12 PM', '2 PM', '5 PM'], 'preferred_days': ['Monday', 'Thursday']},
+    {'name': 'Mr. G', 'availability': ['10 AM', '11 AM', '1 PM', '3 PM'], 'preferred_days': ['Tuesday', 'Friday']},
+    {'name': 'Ms. H', 'availability': ['10 AM', '2 PM', '3 PM', '4 PM'], 'preferred_days': ['Wednesday', 'Friday']},
+    {'name': 'Mr. I', 'availability': ['9 AM', '2 PM', '3 PM', '4 PM'], 'preferred_days': ['Monday', 'Thursday']},
+    {'name': 'Ms. J', 'availability': ['11 AM', '2 PM', '3 PM', '5 PM'], 'preferred_days': ['Tuesday', 'Friday']},
+    {'name': 'Mr. K', 'availability': ['10 AM', '3 PM', '4 PM', '5 PM'], 'preferred_days': ['Monday', 'Thursday']},
+    {'name': 'Ms. L', 'availability': ['9 AM', '4 PM', '5 PM', '6 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
+    {'name': 'Mr. M', 'availability': ['10 AM', '2 PM', '5 PM', '6 PM'], 'preferred_days': ['Wednesday', 'Friday']},
+    {'name': 'Ms. N', 'availability': ['12 PM', '3 PM', '5 PM', '6 PM'], 'preferred_days': ['Monday', 'Friday']},
+    {'name': 'Mr. O', 'availability': ['1 PM', '2 PM', '4 PM', '6 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
+    {'name': 'Ms. P', 'availability': ['1 PM', '3 PM', '4 PM', '5 PM'], 'preferred_days': ['Monday', 'Wednesday']},
 ]
 
 ROOMS = [
@@ -44,11 +42,11 @@ ROOMS = [
     {'name': 'Room 4', 'capacity': 40},
     {'name': 'Room 5', 'capacity': 35},
     {'name': 'Room 6', 'capacity': 40},
-    {'name': 'Room 7', 'capacity': 50}
+    {'name': 'Room 7', 'capacity': 50},
 ]
 
 TIMESLOTS = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM']
 
 
-
+DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 

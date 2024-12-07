@@ -1,153 +1,170 @@
-# Timetable Optimization System
+```markdown
+# Timetable Scheduling Using Heuristic Algorithms
 
-This project is a comprehensive timetable optimization system that employs various algorithms to generate optimal timetables based on specified constraints. The system is designed to be flexible, user-friendly, and visually informative, providing progress graphs, comparison features, and detailed logging.
+## Overview
+This project implements a **timetable scheduling system** using various heuristic algorithms and **Constraint Satisfaction Problem (CSP)** techniques. It aims to generate optimal timetables for courses, teachers, rooms, and timeslots while adhering to constraints like room capacity, teacher preferences, avoiding consecutive classes, and balancing utilization of resources.
 
-## Features
+### Algorithms Implemented:
+1. **Genetic Algorithm**
+2. **Real-Time A*** (RTA*)
+3. **Simulated Annealing**
+4. **Hill Climbing**
+5. **Tabu Search**
+6. **Constraint Satisfaction Problem (CSP)**
 
-### 1. Algorithm Support
-
-The system supports multiple algorithms for timetable generation:
-
-- **Genetic Algorithm**
-- **RTA\* Algorithm**
-- **Simulated Annealing**
-- **Hill Climbing**
-- **Tabu Search**
-
-### 2. Comparison of Algorithms
-
-- Generates a comparison of fitness scores and execution times for all algorithms.
-- Displays line graphs showing the progress of fitness scores for each algorithm.
-- Displays a bar graph comparing the final fitness scores and execution times of all algorithms.
-- Logs detailed information about the best timetable configuration for each algorithm.
-
-### 3. Progress Graphs
-
-- Line graphs are generated for each algorithm showing the progress of fitness scores across generations or iterations.
-- Bar graphs compare the fitness scores and execution times of all algorithms.
-
-### 4. User Interface Features
-
-- Interactive UI with options to select algorithms and view results.
-- **Loading Indicator**: A loading spinner is displayed while generating the timetable.
-- **Search Functionality**: Search for specific courses or teachers in the generated timetable.
-- **Number of Entries Display**: Shows the total number of entries in the timetable.
-
-### 5. Logging and Analysis
-
-- Detailed logs for each algorithm run.
-- Final comparison results for all algorithms, including the best timetable configuration, fitness scores, and execution times.
-
-### 6. Responsive Design
-
-The UI is designed to be user-friendly and responsive, with dynamic updates and animations for better user experience.
+The system considers penalties for constraint violations and rewards for satisfying preferences, such as teacher-preferred days or times.
 
 ---
 
-## Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-repo/timetable-optimization.git
-   cd timetable-optimization
-   ```
-
-2. Install the required Python packages:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Run the Flask application:
-
-   ```bash
-   python3 -m src.app
-   ```
-
-4. Open the application in your browser at:
-   ```
-   http://127.0.0.1:5000
-   ```
+## Features
+- **Flexible Constraints**: Ensures valid timetables by avoiding room conflicts, teacher conflicts, and consecutive classes.
+- **Balanced Utilization**: Distributes courses evenly across days and rooms to avoid overcrowding or underutilization.
+- **Multiple Heuristic Algorithms**: Supports comparative analysis of results across various algorithms.
+- **Logging**: Tracks the scheduling process, including constraint violations, improvements, and final results.
+- **CSV Output**: Logs progress for each algorithm into CSV files for visualization and debugging.
 
 ---
 
 ## Project Structure
 
-- **src/**: Contains the core application logic.
-  - `genetic_algorithm.py`: Genetic algorithm implementation.
-  - `hill_climbing.py`: Hill climbing algorithm implementation.
-  - `rta_star.py`: RTA\* algorithm implementation.
-  - `simulated_annealing.py`: Simulated annealing implementation.
-  - `tabu_search.py`: Tabu search implementation.
-  - `fitness.py`: Fitness calculation logic.
-  - `app.py`: Flask application logic.
-  - `main.py`: Entry point for running algorithms.
-- **data/**: Contains input data for courses, teachers, rooms, and timeslots.
-- **static/**: Static files for progress graphs.
-- **templates/**: HTML templates for the Flask application.
-- **logs/**: Contains detailed logs and final output logs.
-- **progress/**: Stores progress CSV files for each algorithm.
+```plaintext
+project/
+├── data/
+│   ├── input_data.py         # Contains input datasets (Courses, Teachers, Rooms, Timeslots)
+├── src/
+│   ├── genetic_algorithm.py  # Implementation of Genetic Algorithm
+│   ├── rta_star.py           # Implementation of Real-Time A*
+│   ├── simulated_annealing.py # Implementation of Simulated Annealing
+│   ├── hill_climbing.py      # Implementation of Hill Climbing
+│   ├── tabu_search.py        # Implementation of Tabu Search
+│   ├── csp.py                # CSP-based scheduling algorithm
+│   ├── fitness.py            # Fitness evaluation logic
+│   ├── utils.py              # Utility functions
+├── progress/                 # Folder to store progress logs (CSV files)
+├── README.md                 # Project documentation
+├── requirements.txt          # Python dependencies
+```
 
 ---
 
-## How to Use
+## Getting Started
 
-1. Start the application by running:
+### Prerequisites
+- Python 3.9 or higher
+- A virtual environment (recommended for managing dependencies)
 
+### Setup
+
+1. **Clone the Repository**:
    ```bash
-   python3 -m src.app
+   git clone https://github.com/your-repo/timetable-scheduling.git
+   cd timetable-scheduling
    ```
 
-2. Navigate to the **Welcome Page** and select an algorithm from the dropdown menu.
+2. **Create a Virtual Environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # For Linux/Mac
+   venv\Scripts\activate     # For Windows
+   ```
 
-3. **Loading Spinner**: A loading spinner will appear while the timetable is being generated.
-
-4. View the generated timetable with the following features:
-
-   - **Search Functionality**: Filter results by course or teacher name.
-   - **Number of Entries**: Displays the total number of entries in the timetable.
-
-5. Navigate to the **Comparison Page** to:
-   - View line graphs for the progress of all algorithms.
-   - View a bar graph comparing fitness scores and execution times.
-   - Read detailed logs of the comparison process.
+3. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ---
 
-## Visualization
+## Usage
 
-### Progress Graphs
+### Run a Specific Algorithm
+1. **Run Genetic Algorithm**:
+   ```bash
+   python src/genetic_algorithm.py
+   ```
 
-- **Line Graphs**: Display the progression of fitness scores for each algorithm.
-- **Bar Graph**: Compare fitness scores and execution times across all algorithms.
+2. **Run Real-Time A***:
+   ```bash
+   python src/rta_star.py
+   ```
 
-### Example Graphs:
+3. **Run CSP Algorithm**:
+   ```bash
+   python src/csp.py
+   ```
 
-- Genetic Algorithm Progress
-- RTA\* Algorithm Progress
-- Simulated Annealing Progress
-- Hill Climbing Progress
-- Tabu Search Progress
+### Customize Input Data
+Modify `data/input_data.py` to update:
+- **Courses**: Names, students, preferred rooms, teacher assignments, and instances per week.
+- **Teachers**: Availability, preferred days, and timeslots.
+- **Rooms**: Capacity and names.
+- **Timeslots**: Available times.
 
 ---
 
-## Logs
+## Outputs
 
-- **Detailed Logs**: Available in the `logs/detailed_logs.log` file.
-- **Final Output Logs**: Available in the `logs/final_output.log` file.
+1. **Logs**:
+   Each algorithm logs its progress in the `progress/` folder as a CSV file.
+
+2. **Final Results**:
+   The best timetable configuration is logged, including:
+   - Course
+   - Room
+   - Teacher
+   - Day
+   - Timeslot
+
+3. **Visualization**:
+   Use the logged CSV files to visualize results and compare performance.
 
 ---
 
-## Future Enhancements
+## Constraints Considered
+1. **Room Capacity**: Ensures rooms can accommodate all students.
+2. **Teacher Availability**: Schedules teachers only during their available times.
+3. **Consecutive Classes**: Avoids consecutive classes for teachers.
+4. **Preferred Days/Timeslots**: Rewards schedules that align with teacher preferences.
+5. **Room and Day Balancing**: Evenly distributes courses across all rooms and days.
 
-- Enhance UI responsiveness and interactivity.
-- Add dynamic constraints customization.
+---
+
+## Example Input (data/input_data.py)
+
+```python
+COURSES = [
+    {'name': 'Data Science', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Ms. D', 'instances_per_week': 2},
+    {'name': 'AI', 'students': 35, 'preferred_rooms': ['Room 3'], 'teacher': 'Mr. A', 'instances_per_week': 3},
+    # Add more courses
+]
+
+TEACHERS = [
+    {'name': 'Ms. D', 'availability': ['9 AM', '10 AM', '11 AM'], 'preferred_days': ['Monday', 'Wednesday', 'Friday']},
+    {'name': 'Mr. A', 'availability': ['10 AM', '12 PM', '2 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
+    # Add more teachers
+]
+
+ROOMS = [
+    {'name': 'Room 1', 'capacity': 40},
+    {'name': 'Room 2', 'capacity': 30},
+    # Add more rooms
+]
+
+TIMESLOTS = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM']
+```
 
 ---
 
 ## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-This project is licensed under the MIT License.
+---
 
-You can further customize this to align with your specific repository name and URL.
+## Contributions
+Contributions are welcome! Feel free to fork this repository, create a branch, and submit a pull request.
+
+For questions or issues, open an issue on GitHub or contact [your-email@example.com](mailto:your-email@example.com).
+```
+
+---
+

@@ -5,7 +5,6 @@ from collections import deque
 from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
 from .fitness import calculate_fitness
 
-import csv
 import os
 
 # Ensure the progress folder exists
@@ -34,15 +33,17 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
     csv_path = initialize_csv_log("tabu_search")
     
     # Initialize a random solution
-    current_state = [
-        {
-            'course': course['name'],
-            'room': random.choice(course['preferred_rooms']),
-            'teacher': course['teacher'],
-            'timeslot': random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])['availability'])
-        }
-        for course in COURSES
-    ]
+    current_state = []
+    for course in COURSES:
+        for _ in range(course['instances_per_week']):
+            teacher = next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])
+            current_state.append({
+                'course': course['name'],
+                'room': random.choice(course['preferred_rooms']),
+                'teacher': teacher['name'],
+                'timeslot': random.choice(teacher['availability']),
+                'day': random.choice(teacher['preferred_days']),
+            })
     
     # Calculate fitness of the initial solution
     current_fitness = calculate_fitness(current_state)
@@ -59,14 +60,20 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
         # Generate neighbors and avoid moves in the tabu list
         neighbors = []
         for i in range(neighbors_to_generate):
-            neighbor = current_state.copy()
-            for entry in neighbor:
-                # Randomly assign room and timeslot
-                entry['room'] = random.choice([room['name'] for room in ROOMS if room['capacity'] >= next(course['students'] for course in COURSES if course['name'] == entry['course'])])
-                entry['timeslot'] = random.choice(next(teacher for teacher in TEACHERS if teacher['name'] == entry['teacher'])['availability'])
+            neighbor = []
+            for course in COURSES:
+                for _ in range(course['instances_per_week']):
+                    teacher = next(teacher for teacher in TEACHERS if teacher['name'] == course['teacher'])
+                    neighbor.append({
+                        'course': course['name'],
+                        'room': random.choice(course['preferred_rooms']),
+                        'teacher': teacher['name'],
+                        'timeslot': random.choice(teacher['availability']),
+                        'day': random.choice(teacher['preferred_days']),
+                    })
 
             # Skip neighbors that are in the tabu list
-            neighbor_tuple = tuple((entry['course'], entry['room'], entry['timeslot']) for entry in neighbor)
+            neighbor_tuple = tuple((entry['course'], entry['room'], entry['timeslot'], entry['day']) for entry in neighbor)
             if neighbor_tuple not in tabu_list:
                 neighbors.append((neighbor, calculate_fitness(neighbor)))
 
@@ -81,13 +88,13 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
         # Log details of the best neighbor
         logger.info(f"Best Neighbor Found: Fitness = {best_neighbor_fitness}")
         for entry in best_neighbor:
-            logger.info(f"    Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
+            logger.info(f"    Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}")
 
         # Update the current state to the best neighbor
         current_state, current_fitness = best_neighbor, best_neighbor_fitness
 
         # Update the tabu list with the move just made
-        tabu_list.append(tuple((entry['course'], entry['room'], entry['timeslot']) for entry in current_state))
+        tabu_list.append(tuple((entry['course'], entry['room'], entry['timeslot'], entry['day']) for entry in current_state))
         
         # Update the best global state if an improvement is found
         if current_fitness > best_fitness:
@@ -100,7 +107,7 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
     # Log the final best state
     logger.info("Final Best Timetable Configuration (Tabu Search):")
     for entry in best_state:
-        logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}")
+        logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}")
 
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 

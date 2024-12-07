@@ -1,4 +1,31 @@
-Generation,Current Best Fitness,Overall Best Fitness
-1,170.22321428571428,170.22321428571428
-1,135.22321428571428,170.22321428571428
-1,169.50892857142856,170.22321428571428
+Generation,Current Best Fitness,Overall Best Fitness,Day,Instances
+1,0,0,Thursday,30
+3,0,0,Friday,30
+5,0,0,Friday,30
+7,0,0,Monday,30
+9,0,0,Wednesday,30
+11,0,0,Tuesday,30
+13,0,0,Friday,30
+15,0,0,Wednesday,30
+17,0,0,Friday,30
+19,0,0,Monday,30
+21,0,0,Thursday,30
+23,0,0,Friday,30
+25,0,0,Wednesday,30
+27,0,0,Tuesday,30
+29,0,0,Thursday,30
+31,0,0,Monday,30
+33,0,0,Thursday,30
+35,0,0,Tuesday,30
+37,0,0,Friday,30
+39,0,0,Friday,30
+41,0,0,Monday,30
+43,0,0,Monday,30
+45,0,0,Tuesday,30
+47,0,0,Tuesday,30
+49,0,0,Friday,30
+51,0,0,Tuesday,30
+53,0,0,Wednesday,30
+55,0,0,Friday,30
+57,0,0,Tuesday,30
+59,0,0,Thursday,30
