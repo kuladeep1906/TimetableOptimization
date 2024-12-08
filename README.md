@@ -1,170 +1,164 @@
-```markdown
-# Timetable Scheduling Using Heuristic Algorithms
-
-## Overview
-This project implements a **timetable scheduling system** using various heuristic algorithms and **Constraint Satisfaction Problem (CSP)** techniques. It aims to generate optimal timetables for courses, teachers, rooms, and timeslots while adhering to constraints like room capacity, teacher preferences, avoiding consecutive classes, and balancing utilization of resources.
-
-### Algorithms Implemented:
-1. **Genetic Algorithm**
-2. **Real-Time A*** (RTA*)
-3. **Simulated Annealing**
-4. **Hill Climbing**
-5. **Tabu Search**
-6. **Constraint Satisfaction Problem (CSP)**
-
-The system considers penalties for constraint violations and rewards for satisfying preferences, such as teacher-preferred days or times.
+Here is a detailed **README** file for your project:
 
 ---
 
-## Features
-- **Flexible Constraints**: Ensures valid timetables by avoiding room conflicts, teacher conflicts, and consecutive classes.
-- **Balanced Utilization**: Distributes courses evenly across days and rooms to avoid overcrowding or underutilization.
-- **Multiple Heuristic Algorithms**: Supports comparative analysis of results across various algorithms.
-- **Logging**: Tracks the scheduling process, including constraint violations, improvements, and final results.
-- **CSV Output**: Logs progress for each algorithm into CSV files for visualization and debugging.
+# **Timetable Optimization Project**
+
+## **Overview**
+This project is a sophisticated timetable optimization system that uses advanced algorithms to generate efficient and conflict-free schedules. It is designed to handle complex constraints such as teacher availability, room capacity, course prerequisites, and preferred timeslots. The system provides a user-friendly web interface for selecting optimization algorithms and visualizing results, including progress graphs and algorithm comparisons.
 
 ---
 
-## Project Structure
+## **Features**
+- **Multiple Optimization Algorithms:**
+  - Constraint Satisfaction Problem (CSP)
+  - Genetic Algorithm
+  - A* Algorithm
+  - Simulated Annealing
+  - Hill Climbing
+  - Tabu Search
+- **Interactive Web Interface:**
+  - Select algorithms.
+  - View optimized timetables.
+  - Compare algorithm performances with progress and comparison graphs.
+- **Comprehensive Constraints:**
+  - Room capacities and teacher availability.
+  - Preferred timeslots, rooms, and balanced utilization.
+  - Avoidance of consecutive classes for teachers.
+- **Visualization:**
+  - Progress graphs for algorithm iterations.
+  - Bar graphs comparing fitness scores and execution times across algorithms.
+- **Detailed Logs:**
+  - View algorithm-specific logs and outputs for debugging and analysis.
 
-```plaintext
-project/
+---
+
+## **Project Structure**
+```
+TimetableOptimization/
 ├── data/
-│   ├── input_data.py         # Contains input datasets (Courses, Teachers, Rooms, Timeslots)
+│   ├── input_data.py           # Defines courses, teachers, rooms, days, and timeslots.
 ├── src/
-│   ├── genetic_algorithm.py  # Implementation of Genetic Algorithm
-│   ├── rta_star.py           # Implementation of Real-Time A*
-│   ├── simulated_annealing.py # Implementation of Simulated Annealing
-│   ├── hill_climbing.py      # Implementation of Hill Climbing
-│   ├── tabu_search.py        # Implementation of Tabu Search
-│   ├── csp.py                # CSP-based scheduling algorithm
-│   ├── fitness.py            # Fitness evaluation logic
-│   ├── utils.py              # Utility functions
-├── progress/                 # Folder to store progress logs (CSV files)
-├── README.md                 # Project documentation
-├── requirements.txt          # Python dependencies
+│   ├── genetic_algorithm.py    # Genetic Algorithm implementation.
+│   ├── a_star.py               # A* Algorithm implementation.
+│   ├── simulated_annealing.py  # Simulated Annealing implementation.
+│   ├── hill_climbing.py        # Hill Climbing implementation.
+│   ├── tabu_search.py          # Tabu Search implementation.
+│   ├── csp.py                  # CSP implementation.
+│   ├── fitness.py              # Fitness evaluation for timetables.
+│   ├── main.py                 # Orchestrates algorithm execution and comparison.
+|   ├── app.py                  # Flask application to serve the web interface.
+├── templates/
+│   ├── welcome.html            # Homepage for algorithm selection.
+│   ├── results.html            # Displays optimized timetables.
+│   ├── comparison.html         # Shows progress and comparison graphs.
+│   ├── logs.html               # Displays detailed logs.
+│   ├── detailed_logs.html      # Detailed breakdown of algorithm outputs.  
+├── static/
+│   ├── progress/               # Contains generated progress and comparison graphs.                    
+├── README.md                   # Project documentation.
+├── requirements.txt            # Python dependencies.
 ```
 
 ---
 
-## Getting Started
+## **Installation**
 
-### Prerequisites
-- Python 3.9 or higher
-- A virtual environment (recommended for managing dependencies)
+### **Prerequisites**
+- Python 3.9+
+- pip (Python package manager)
 
-### Setup
-
-1. **Clone the Repository**:
+### **Steps**
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/timetable-scheduling.git
-   cd timetable-scheduling
+   git clone https://github.com/YourUsername/TimetableOptimization.git
+   cd TimetableOptimization
    ```
 
-2. **Create a Virtual Environment**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # For Linux/Mac
-   venv\Scripts\activate     # For Windows
-   ```
-
-3. **Install Dependencies**:
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
----
-
-## Usage
-
-### Run a Specific Algorithm
-1. **Run Genetic Algorithm**:
+3. **Run the application:**
    ```bash
-   python src/genetic_algorithm.py
+   python3 -m src.app
    ```
 
-2. **Run Real-Time A***:
-   ```bash
-   python src/rta_star.py
-   ```
-
-3. **Run CSP Algorithm**:
-   ```bash
-   python src/csp.py
-   ```
-
-### Customize Input Data
-Modify `data/input_data.py` to update:
-- **Courses**: Names, students, preferred rooms, teacher assignments, and instances per week.
-- **Teachers**: Availability, preferred days, and timeslots.
-- **Rooms**: Capacity and names.
-- **Timeslots**: Available times.
+4. **Open the web interface:**
+   Visit `http://127.0.0.1:5000` in your browser.
 
 ---
 
-## Outputs
+## **Usage**
+1. **Home Page:**
+   - Select an algorithm from the dropdown menu.
+   - Click "View Results" to generate an optimized timetable.
 
-1. **Logs**:
-   Each algorithm logs its progress in the `progress/` folder as a CSV file.
+2. **Results Page:**
+   - View the optimized timetable displayed in a grid format.
+   - Access options to compare algorithms or analyze detailed logs.
 
-2. **Final Results**:
-   The best timetable configuration is logged, including:
-   - Course
-   - Room
-   - Teacher
-   - Day
-   - Timeslot
+3. **Comparison Page:**
+   - View progress graphs for all algorithms.
+   - Analyze a bar graph comparing fitness scores and execution times.
 
-3. **Visualization**:
-   Use the logged CSV files to visualize results and compare performance.
-
----
-
-## Constraints Considered
-1. **Room Capacity**: Ensures rooms can accommodate all students.
-2. **Teacher Availability**: Schedules teachers only during their available times.
-3. **Consecutive Classes**: Avoids consecutive classes for teachers.
-4. **Preferred Days/Timeslots**: Rewards schedules that align with teacher preferences.
-5. **Room and Day Balancing**: Evenly distributes courses across all rooms and days.
+4. **Logs Page:**
+   - Access detailed algorithm-specific logs for debugging and analysis.
 
 ---
 
-## Example Input (data/input_data.py)
+## **Algorithms**
+Each algorithm is designed to optimize the timetable by balancing constraints and achieving the highest fitness score.
 
-```python
-COURSES = [
-    {'name': 'Data Science', 'students': 30, 'preferred_rooms': ['Room 1', 'Room 2'], 'teacher': 'Ms. D', 'instances_per_week': 2},
-    {'name': 'AI', 'students': 35, 'preferred_rooms': ['Room 3'], 'teacher': 'Mr. A', 'instances_per_week': 3},
-    # Add more courses
-]
-
-TEACHERS = [
-    {'name': 'Ms. D', 'availability': ['9 AM', '10 AM', '11 AM'], 'preferred_days': ['Monday', 'Wednesday', 'Friday']},
-    {'name': 'Mr. A', 'availability': ['10 AM', '12 PM', '2 PM'], 'preferred_days': ['Tuesday', 'Thursday']},
-    # Add more teachers
-]
-
-ROOMS = [
-    {'name': 'Room 1', 'capacity': 40},
-    {'name': 'Room 2', 'capacity': 30},
-    # Add more rooms
-]
-
-TIMESLOTS = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM']
-```
+1. **Constraint Satisfaction Problem (CSP):**
+   - Uses backtracking to satisfy all constraints.
+2. **Genetic Algorithm:**
+   - Mimics evolutionary processes (selection, crossover, mutation).
+3. **A* Algorithm:**
+   - Explores states using heuristic-driven search.
+4. **Simulated Annealing:**
+   - Escapes local optima using probabilistic decisions.
+5. **Hill Climbing:**
+   - Iteratively improves solutions with restarts to avoid local optima.
+6. **Tabu Search:**
+   - Uses a memory-based mechanism to avoid revisiting solutions.
 
 ---
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## **Constraints**
+1. **Hard Constraints** (must be satisfied):
+   - Room capacity must not be exceeded.
+   - Teachers must be available for their assigned timeslots.
+   - Teachers must only teach assigned courses.
+   - Avoid overlapping timeslots for rooms or teachers.
+
+2. **Soft Constraints** (improved for better schedules):
+   - Assign preferred rooms for courses.
+   - Use teacher-preferred timeslots and days.
+   - Balance room and day utilization.
+   - Avoid consecutive classes for teachers.
 
 ---
 
-## Contributions
-Contributions are welcome! Feel free to fork this repository, create a branch, and submit a pull request.
-
-For questions or issues, open an issue on GitHub or contact [your-email@example.com](mailto:your-email@example.com).
-```
+## **Visualization**
+- **Progress Graphs:** Track fitness scores across iterations for each algorithm.
+- **Comparison Graphs:** Compare fitness scores and execution times across all algorithms.
 
 ---
+
+## **Technologies Used**
+- **Programming Language:** Python
+- **Framework:** Flask
+- **Visualization:** Matplotlib, HTML/CSS
+- **Frontend:** HTML, CSS, JavaScript
+- **Data Management:** pandas, NumPy
+
+---
+
+## **Future Enhancements**
+- Add more advanced algorithms like Particle Swarm Optimization.
+- Enable scheduling for multiple campuses or departments.
+- Provide a downloadable timetable as a PDF or Excel file.
+- Incorporate user-defined constraints via the web interface.
 
