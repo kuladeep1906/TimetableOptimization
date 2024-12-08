@@ -157,8 +157,7 @@ Each algorithm is designed to optimize the timetable by balancing constraints an
 ---
 
 ## **Future Enhancements**
-- Add more advanced algorithms like Particle Swarm Optimization.
 - Enable scheduling for multiple campuses or departments.
 - Provide a downloadable timetable as a PDF or Excel file.
-- Incorporate user-defined constraints via the web interface.
+
 
