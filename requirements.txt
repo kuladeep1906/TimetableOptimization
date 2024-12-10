@@ -1,4 +1,37 @@
-flask==2.3.2             
-matplotlib==3.8.0        
-pandas==2.1.1            
-numpy==1.26.0            
+absl-py==2.1.0
+altgraph @ file:///AppleInternal/Library/BuildRoots/626bfa9c-8221-11ef-b9bf-daac7d5d70b1/Library/Caches/com.apple.xbs/Sources/python3/altgraph-0.17.2-py2.py3-none-any.whl
+blinker==1.9.0
+click==8.1.7
+contourpy==1.3.0
+cycler==0.12.1
+Flask==2.3.2
+fonttools==4.55.0
+future @ file:///AppleInternal/Library/BuildRoots/626bfa9c-8221-11ef-b9bf-daac7d5d70b1/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
+immutabledict==4.2.1
+importlib_metadata==8.5.0
+importlib_resources==6.4.5
+itsdangerous==2.2.0
+Jinja2==3.1.4
+kiwisolver==1.4.7
+macholib @ file:///AppleInternal/Library/BuildRoots/626bfa9c-8221-11ef-b9bf-daac7d5d70b1/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
+MarkupSafe==3.0.2
+matplotlib==3.8.0
+numpy==1.26.0
+opencv-python==4.10.0.84
+opencv-python-headless==4.5.5.64
+ortools==9.11.4210
+packaging==24.2
+pandas==2.1.1
+pillow==11.0.0
+protobuf==5.26.1
+pyparsing==3.2.0
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.15
+PyQt5_sip==12.15.0
+python-constraint==1.4.0
+python-dateutil==2.9.0.post0
+pytz==2024.2
+six @ file:///AppleInternal/Library/BuildRoots/626bfa9c-8221-11ef-b9bf-daac7d5d70b1/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
+tzdata==2024.2
+Werkzeug==3.1.3
+zipp==3.21.0

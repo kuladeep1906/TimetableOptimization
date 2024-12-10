@@ -11,9 +11,6 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    """
-    Initializes a CSV log file for CSP with static headers.
-    """
     csv_path = f"progress/{algorithm_name}_progress.csv"
     with open(csv_path, mode='w', newline='') as file:
         writer = csv.writer(file)
@@ -23,9 +20,6 @@ def initialize_csv_log(algorithm_name):
 
 # Function to log CSP progress to CSV
 def log_progress_csv(csv_path, course, day, room, timeslot, teacher, status):
-    """
-    Appends CSP progress to the CSV log.
-    """
     with open(csv_path, mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([course, day, room, timeslot, teacher, status])  
@@ -47,9 +41,6 @@ def teacher_assigned_correct_course(course, teacher):
     return course['teacher'] == teacher
 
 def avoid_consecutive_classes(timetable, teacher, timeslot, day):
-    """
-    Checks if the teacher has consecutive classes and enforces a gap.
-    """
     for entry in timetable:
         if entry['teacher'] == teacher and entry['day'] == day:
             prev_timeslot = parse_timeslot(entry['timeslot'])
@@ -68,21 +59,12 @@ def required_instances_met(course, instance_count):
     return instance_count[course["name"]] >= course["instances_per_week"]
 
 def balanced_room_utilization(room_usage, room):
-    """
-    Ensures rooms are utilized evenly by penalizing overuse of specific rooms.
-    """
     return room_usage[room] <= max(room_usage.values()) + 1
 
 def balanced_day_utilization(day_usage, day):
-    """
-    Ensures days are utilized evenly across the schedule.
-    """
     return day_usage[day] <= max(day_usage.values()) + 1
 
 def teacher_preference_satisfied(teacher, day, timeslot):
-    """
-    Checks if the assigned day and timeslot align with teacher preferences.
-    """
     return day in teacher.get("preferred_days", []) and timeslot in teacher.get("preferred_timeslots", TIMESLOTS)
 
 

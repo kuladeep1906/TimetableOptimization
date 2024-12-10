@@ -14,6 +14,20 @@ COURSES = [
     {'name': 'Reinforcement Learning', 'students': 25, 'preferred_rooms': ['Room 1', 'Room 3'], 'teacher': 'Mr. F', 'instances_per_week': 2},
     {'name': 'Ethical Hacking', 'students': 45, 'preferred_rooms': ['Room 6'], 'teacher': 'Ms. H', 'instances_per_week': 2},
     {'name': 'Compiler Design', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. I', 'instances_per_week': 2},
+    {'name': 'Compiler Desi', 'students': 45, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. I', 'instances_per_week': 2},
+    {'name': 'Compiler Des', 'students': 30, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Ms. J', 'instances_per_week': 2},
+    {'name': 'Compiler De', 'students': 35, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Ms. L', 'instances_per_week': 2},
+    {'name': 'Compiler D', 'students': 25, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. M', 'instances_per_week': 2},
+    {'name': 'Compilers', 'students': 30, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. I', 'instances_per_week': 2},
+    {'name': 'Compi', 'students': 45, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Ms. N', 'instances_per_week': 2},
+    {'name': 'Com', 'students': 20, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Ms. P', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
+    {'name': 'Kuladeep', 'students': 40, 'preferred_rooms': ['Room 4', 'Room 7'], 'teacher': 'Mr. O', 'instances_per_week': 2},
 ]
 
 TEACHERS = [

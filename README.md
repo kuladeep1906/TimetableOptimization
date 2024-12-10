@@ -1,7 +1,3 @@
-Here is a detailed **README** file for your project:
-
----
-
 # **Timetable Optimization Project**
 
 ## **Overview**
