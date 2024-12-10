@@ -1,7 +1,7 @@
 import logging
 import os
 import time
-import matplotlib.pyplot as plt  # For plotting graphs
+import matplotlib.pyplot as plt  
 from .genetic_algorithm import genetic_algorithm
 from .a_star import a_star_algorithm
 from .simulated_annealing import simulated_annealing
@@ -9,8 +9,8 @@ from .hill_climbing import hill_climbing
 from .tabu_search import tabu_search
 from .csp import solve_scheduling
 
-import pandas as pd  # For handling CSV files
-import numpy as np  # For handling data in graphs
+import pandas as pd  
+import numpy as np 
 
 # Ensure the logs folder exists
 if not os.path.exists("logs"):
@@ -22,9 +22,9 @@ if not os.path.exists("progress"):
 
 # Clear the log files at the start of each run
 with open("logs/detailed_logs.log", "w") as f:
-    f.write("")  # Clears detailed_logs.log
+    f.write("")  
 with open("logs/final_output.log", "w") as f:
-    f.write("")  # Clears final_output.log
+    f.write("") 
 
 # Set up logging for detailed logs
 logging.basicConfig(
@@ -64,7 +64,7 @@ def plot_progress(csv_path, algorithm_name):
         plt.plot(
             data['Generation'], 
             data['Current Best Fitness'],  
-            color='green',  # Green for Current Best Fitness
+            color='green',  
             linestyle='--', 
             marker='x'
         )
@@ -74,15 +74,12 @@ def plot_progress(csv_path, algorithm_name):
         plt.title(f"Algorithm Progress for {algorithm_name}", fontsize=16, fontweight='bold')
         plt.legend(fontsize=12)
         plt.grid(True, linestyle='--', alpha=0.7)
-
-        # Use constrained layout to avoid tight layout issues
         plt.gcf().subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.9)
 
         # Construct output path
         sanitized_name = algorithm_name.replace(' ', '_').replace('*', 'star').lower()
         output_path = os.path.join(progress_dir, f"{sanitized_name}_progress.png")
         
-        # Save the plot
         plt.savefig(output_path)
         plt.close()
 
@@ -110,25 +107,20 @@ def plot_comparison_bar_graph(results):
         fitness_scores = [result[2] for result in results]
         execution_times = [result[3] for result in results]
 
-        x = np.arange(len(algo_names))  # X-axis positions
+        x = np.arange(len(algo_names))  
 
         # Create bar graph
         fig, ax1 = plt.subplots(figsize=(14, 8))
         bar_width = 0.35
 
-        # Bar for fitness scores
         ax1.bar(x - bar_width/2, fitness_scores, bar_width, label="Fitness Score", color='blue', alpha=0.7)
-
-        # Secondary Y-axis for execution times
         ax2 = ax1.twinx()
         ax2.bar(x + bar_width/2, execution_times, bar_width, label="Execution Time (s)", color='orange', alpha=0.7)
-
         ax1.set_xlabel("Algorithms", fontsize=14)
         ax1.set_ylabel("Fitness Score", fontsize=14, color='blue')
         ax2.set_ylabel("Execution Time (s)", fontsize=14, color='orange')
         ax1.set_title("Comparison of Fitness Scores and Execution Times", fontsize=16, fontweight='bold')
 
-        # Add labels and legend
         ax1.set_xticks(x)
         ax1.set_xticklabels(algo_names, fontsize=12)
         ax1.tick_params(axis='y', labelcolor='blue')
@@ -137,7 +129,6 @@ def plot_comparison_bar_graph(results):
         fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.9), fontsize=12)
         fig.tight_layout()
 
-        # Save the graph
         output_path = os.path.join(progress_dir, "comparison_bar_graph.png")
         plt.savefig(output_path)
         plt.close()
@@ -146,11 +137,9 @@ def plot_comparison_bar_graph(results):
     except Exception as e:
         print(f"An error occurred while creating the comparison bar graph: {e}")
 
-from .csp import solve_scheduling  # Assuming the CSP function is defined in csp.py
-
+from .csp import solve_scheduling 
 
 def main(algorithm_choice=None):
-    # If algorithm_choice is None, prompt the user for input
     if algorithm_choice is None:
         print("Choose an option:")
         print("1. Run CSP")
@@ -171,22 +160,18 @@ def main(algorithm_choice=None):
                 print(e)
 
     output_file = "optimal_timetable_output.txt"
-    algorithm_used = "Unknown Algorithm"  # Default initialization
+    algorithm_used = "Unknown Algorithm" 
     best_schedule = []
     best_fitness = 0
     elapsed_time = None
 
-    if algorithm_choice == '2':  # Comparison across all algorithms except CSP
-        logger.info("\n--- Starting All Algorithms for Comparison ---\n")
-
-        # Clear final_output.log once at the beginning
+    if algorithm_choice == '2':  
+        logger.info("\n--- Starting All Algorithms for Comparison ---\n")       
         with open("logs/final_output.log", "w") as log_file:
             log_file.write("All Algorithms - Final Comparison Results\n")
 
-        # Start timing the entire comparison process
         comparison_start_time = time.time()
-
-        # Run each algorithm and log final results for comparison
+    
         algorithms = [
             ("Genetic Algorithm", genetic_algorithm),
             ("A* Algorithm", a_star_algorithm),
@@ -220,7 +205,7 @@ def main(algorithm_choice=None):
 
         logger.info("\n--- All Algorithms for Comparison Ended ---\n")
 
-        # Determine the best algorithm based on fitness score (higher is better)
+        # Determine the best algorithm based on fitness score
         best_algorithm, best_schedule, best_fitness, best_time = max(all_schedules, key=lambda x: (x[2], -x[3]))
 
         # Log the best algorithm
@@ -233,14 +218,11 @@ def main(algorithm_choice=None):
             for entry in best_schedule:
                 log_file.write(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}\n")
 
-    elif algorithm_choice == '1':  # CSP-specific handling
+    elif algorithm_choice == '1':  
         logger.info("\n--- Starting CSP ---\n")
-        
-        # Unpack all four returned values
         best_schedule, schedule_size, elapsed_time, csv_path = solve_scheduling(logger)
         algorithm_used = "CSP"
 
-        # Log CSP-specific results
         with open("logs/final_output.log", "a") as log_file:
             log_file.write("\nResults from CSP:\n")
             log_file.write("Best Timetable Configuration:\n")
@@ -251,7 +233,7 @@ def main(algorithm_choice=None):
 
         logger.info(f"--- CSP Ended ---\nTime Taken: {elapsed_time:.2f} seconds")
 
-    else:  # Individual algorithm handling
+    else: 
         algo_functions = {
             '3': ("Genetic Algorithm", genetic_algorithm),
             '4': ("A* Algorithm", a_star_algorithm),

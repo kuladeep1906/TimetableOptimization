@@ -2,7 +2,7 @@ import random
 import time
 import csv
 import os
-from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+from data.input_data import COURSES, TEACHERS
 from .fitness import calculate_fitness
 
 # Ensure the progress folder exists
@@ -11,17 +11,17 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    csv_path = f"progress/{algorithm_name}_progress.csv"  
     with open(csv_path, mode='w') as file:
         writer = csv.writer(file)
-        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Day", "Instances"])  # Write headers
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Day", "Instances"]) 
     return csv_path
 
 # Function to log progress for each generation to CSV
 def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness, day, instances):
     with open(csv_path, mode='a') as file:
         writer = csv.writer(file)
-        writer.writerow([generation, current_best_fitness, best_fitness, day, instances])  # Append data to CSV
+        writer.writerow([generation, current_best_fitness, best_fitness, day, instances])  
 
 def a_star_algorithm(logger, max_iterations=100):
     # Start timing

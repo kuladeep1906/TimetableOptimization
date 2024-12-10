@@ -1,8 +1,8 @@
 import random
 import time
-import csv  # For progress logging
+import csv  
 from collections import deque
-from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+from data.input_data import COURSES, TEACHERS
 from .fitness import calculate_fitness
 
 import os
@@ -13,17 +13,17 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    csv_path = f"progress/{algorithm_name}_progress.csv"  
     with open(csv_path, mode='w') as file:
         writer = csv.writer(file)
-        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness"])  # Write headers
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness"])  
     return csv_path
 
 # Function to log progress for each generation to CSV
 def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness):
     with open(csv_path, mode='a') as file:
         writer = csv.writer(file)
-        writer.writerow([generation, current_best_fitness, best_fitness])  # Append data to CSV
+        writer.writerow([generation, current_best_fitness, best_fitness])  
 
 def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generate=5):
     # Start timing
@@ -45,12 +45,10 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
                 'day': random.choice(teacher['preferred_days']),
             })
     
-    # Calculate fitness of the initial solution
     current_fitness = calculate_fitness(current_state)
     best_state = current_state
     best_fitness = current_fitness
 
-    # Initialize the tabu list
     tabu_list = deque(maxlen=tabu_tenure)
 
     for iteration in range(max_iterations):
@@ -72,31 +70,23 @@ def tabu_search(logger, max_iterations=300, tabu_tenure=10, neighbors_to_generat
                         'day': random.choice(teacher['preferred_days']),
                     })
 
-            # Skip neighbors that are in the tabu list
             neighbor_tuple = tuple((entry['course'], entry['room'], entry['timeslot'], entry['day']) for entry in neighbor)
             if neighbor_tuple not in tabu_list:
                 neighbors.append((neighbor, calculate_fitness(neighbor)))
 
-        # If no non-tabu neighbors, skip to the next iteration
         if not neighbors:
             logger.info("All neighbors are tabu, moving to next iteration.")
             continue
-
-        # Find the best non-tabu neighbor
+     
         best_neighbor, best_neighbor_fitness = max(neighbors, key=lambda x: x[1])
 
-        # Log details of the best neighbor
         logger.info(f"Best Neighbor Found: Fitness = {best_neighbor_fitness}")
         for entry in best_neighbor:
             logger.info(f"    Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}")
-
-        # Update the current state to the best neighbor
+      
         current_state, current_fitness = best_neighbor, best_neighbor_fitness
-
-        # Update the tabu list with the move just made
         tabu_list.append(tuple((entry['course'], entry['room'], entry['timeslot'], entry['day']) for entry in current_state))
         
-        # Update the best global state if an improvement is found
         if current_fitness > best_fitness:
             best_state, best_fitness = current_state, current_fitness
             logger.info(f"Updated Global Best State with Fitness = {best_fitness}")

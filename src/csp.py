@@ -28,7 +28,7 @@ def log_progress_csv(csv_path, course, day, room, timeslot, teacher, status):
     """
     with open(csv_path, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([course, day, room, timeslot, teacher, status])  # Log CSP-specific details
+        writer.writerow([course, day, room, timeslot, teacher, status])  
 
 # Constraint Functions
 def room_is_valid(timetable, room, timeslot, day):
@@ -52,10 +52,9 @@ def avoid_consecutive_classes(timetable, teacher, timeslot, day):
     """
     for entry in timetable:
         if entry['teacher'] == teacher and entry['day'] == day:
-            # Ensure there's a gap between timeslots
             prev_timeslot = parse_timeslot(entry['timeslot'])
             curr_timeslot = parse_timeslot(timeslot)
-            if abs(curr_timeslot - prev_timeslot) == 1:  # Checks for consecutive classes
+            if abs(curr_timeslot - prev_timeslot) == 1: 
                 return False
     return True
 
@@ -68,9 +67,6 @@ def duplicate_entry_exists(timetable, course, room, timeslot, day):
 def required_instances_met(course, instance_count):
     return instance_count[course["name"]] >= course["instances_per_week"]
 
-
-
-# Enhanced Constraint Functions
 def balanced_room_utilization(room_usage, room):
     """
     Ensures rooms are utilized evenly by penalizing overuse of specific rooms.
@@ -89,8 +85,8 @@ def teacher_preference_satisfied(teacher, day, timeslot):
     """
     return day in teacher.get("preferred_days", []) and timeslot in teacher.get("preferred_timeslots", TIMESLOTS)
 
-# CSP Backtracking Function with Enhanced Constraints
-# Enhanced CSP Backtracking Function with Logging
+
+# CSP Backtracking Function with Logging
 def solve_scheduling(logger):
     csv_path = initialize_csv_log("CSP")
 

@@ -1,40 +1,38 @@
 from data.input_data import COURSES, TEACHERS, ROOMS
 from collections import Counter, defaultdict
 
-
-# Helper function to convert timeslot strings to integers
 def parse_timeslot(timeslot):
     time_mapping = {
         '9 AM': 9, '10 AM': 10, '11 AM': 11, '12 PM': 12,
         '1 PM': 13, '2 PM': 14, '3 PM': 15, '4 PM': 16,
         '5 PM': 17, '6 PM': 18
     }
-    return time_mapping.get(timeslot, -1)  # Returns -1 if timeslot is invalid
+    return time_mapping.get(timeslot, -1)  
 
 def calculate_fitness(timetable):
     score = 0
-    # Define penalties and bonuses
+   
     penalties = {
-        'room_capacity': 10,  # Reduced to allow small deviations without severe penalties.
-        'teacher_availability': 8,  # Slightly lower penalty to encourage exploration.
-        'teacher_preferred_days': 10, #Penalty for scheduling on non-preferred days
-        'incorrect_teacher': 10,  # Increased to prioritize correct teacher assignment.
-        'max_courses': 15,  # Reduced to avoid stagnation due to small violations.
-        'consecutive_classes': 2,  # Lowered to encourage more flexible assignments.
-        'timeslot_conflict': 15,  # Reduced to allow minor conflicts during exploration.
-        'program_overlap': 15,  # Moderate penalty to avoid overconstraining the algorithm.
-        'prerequisite_order': 10,  # Reduced to allow slight violations for flexibility.
+        'room_capacity': 10,  
+        'teacher_availability': 8,  
+        'teacher_preferred_days': 10, 
+        'incorrect_teacher': 10, 
+        'max_courses': 15,  
+        'consecutive_classes': 2,  
+        'timeslot_conflict': 15,  
+        'program_overlap': 15,  
+        'prerequisite_order': 10, 
         'max_courses_penalty': 25, 
     }
 
     bonuses = {
-        'preferred_room': 10,  # Increased to encourage alignment with preferred rooms.
-        'preferred_timeslot': 10,  # Slightly increased to favor teacher-preferred slots.
-        'teacher_efficiency': 7,  # Reward more efficient teacher allocations.
-        'room_distribution': 5,  # Reward better room utilization.
+        'preferred_room': 10,  
+        'preferred_timeslot': 10,  
+        'teacher_efficiency': 7,  
+        'room_distribution': 5,  
     }
 
-    max_courses_per_teacher = 4  # Increased to provide more flexibility in assignments.
+    max_courses_per_teacher = 4  
 
 
     teacher_course_count = Counter()
@@ -79,7 +77,7 @@ def calculate_fitness(timetable):
         if 'preferred_timeslots' in teacher and entry['timeslot'] in teacher['preferred_timeslots']:
             score += bonuses['preferred_timeslot']
 
-        # Update counters for global constraints
+       
         teacher_course_count[entry['teacher']] += 1
         parsed_timeslot = parse_timeslot(entry['timeslot'])
         if parsed_timeslot != -1:
@@ -134,11 +132,8 @@ def calculate_fitness(timetable):
 
     # SOFT: Reward balanced room distribution
     room_usage = Counter(entry['room'] for entry in timetable)
-    ideal_usage = len(COURSES) / len(ROOMS)  # Target is even distribution
+    ideal_usage = len(COURSES) / len(ROOMS)  
     for room_name, usage in room_usage.items():
-        score -= abs(usage - ideal_usage) * bonuses['room_distribution']
-        
-        
-    
+        score -= abs(usage - ideal_usage) * bonuses['room_distribution'] 
 
-    return max(0, score)  # Ensure fitness score is never negativwe
+    return score

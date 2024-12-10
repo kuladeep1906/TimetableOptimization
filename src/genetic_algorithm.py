@@ -5,7 +5,6 @@ import os
 from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS, DAYS
 from .fitness import calculate_fitness
 
-# Constants
 MUTATION_RATE = 0.01
 ELITISM_RATE = 0.15
 STAGNATION_LIMIT = 10
@@ -16,7 +15,7 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    csv_path = f"progress/{algorithm_name}_progress.csv"  #  path to "progress" folder
+    csv_path = f"progress/{algorithm_name}_progress.csv"  
     with open(csv_path, mode="w") as file:
         writer = csv.writer(file)
         writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Average Fitness"]) 
@@ -29,14 +28,13 @@ def log_progress_csv(csv_path, generation, current_best_fitness, best_fitness, a
         writer.writerow([generation, current_best_fitness, best_fitness, avg_fitness])  
         
 
-
 def create_initial_population(size):
     population = []
     for _ in range(size):
         timetable = []
         for course in COURSES:
             teacher = next(teacher for teacher in TEACHERS if teacher["name"] == course["teacher"])
-            for _ in range(course["instances_per_week"]):  # Create slots based on instances per week
+            for _ in range(course["instances_per_week"]):  
                 room = random.choice(course["preferred_rooms"])
                 timeslot = random.choice(teacher["availability"])
                 day = random.choice(teacher["preferred_days"])  
@@ -75,7 +73,7 @@ def mutate(timetable):
             entry["room"] = random.choice(
                 [room["name"] for room in ROOMS if room["capacity"] >= next(course["students"] for course in COURSES if course["name"] == entry["course"])]
             )
-            entry["day"] = random.choice(teacher["preferred_days"])  # Ensure day is updated
+            entry["day"] = random.choice(teacher["preferred_days"])  
     return timetable
 
 def genetic_algorithm(logger, population_size=50, generations=100):
@@ -90,7 +88,6 @@ def genetic_algorithm(logger, population_size=50, generations=100):
     stagnation_counter = 0
 
     for generation in range(generations):
-        # Calculate average fitness for the population
         avg_fitness = sum(calculate_fitness(t) for t in population) / len(population)
         
         # Elitism and reproduction
@@ -105,7 +102,7 @@ def genetic_algorithm(logger, population_size=50, generations=100):
 
         population = new_population
 
-        # Evaluate the new population
+        
         current_best_timetable = max(population, key=calculate_fitness)
         current_best_fitness = calculate_fitness(current_best_timetable)
         

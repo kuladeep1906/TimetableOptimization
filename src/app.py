@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from src.main import main as run_main_algorithm
-from src.main import plot_progress, plot_comparison_bar_graph  # Import plotting functions
+from src.main import plot_progress, plot_comparison_bar_graph  
 import os
 import matplotlib
-matplotlib.use('Agg')  # Use non-GUI backend for matplotlib
+matplotlib.use('Agg') 
 
 app = Flask(__name__, static_folder="../static")
 
@@ -17,7 +17,7 @@ def clear_log_files():
     log_files = ["logs/detailed_logs.log", "logs/final_output.log"]
     for log_file in log_files:
         with open(log_file, "w") as file:
-            file.write("")  # Clear contents by writing an empty string
+            file.write("") 
 
 @app.route("/")
 def home():
@@ -30,7 +30,6 @@ def welcome():
         if selected_algorithm and selected_algorithm != "choose":
             # Clear log files whenever a new selection is made
             clear_log_files()
-            # Redirect to results page with the selected algorithm
             return redirect(url_for("results", algorithm=selected_algorithm))
     return render_template("welcome.html", algorithm_choice="choose")
 
@@ -70,7 +69,7 @@ def results():
             plot_progress(csv_path, algo_name)
             graph_path = f"static/{csv_path}"
 
-        # Debugging: Log the data being passed to the front end
+       
         print("Filtered Results:", filtered_results)
         print("Timeslots:", timeslots)
         print("Days:", days)
@@ -89,12 +88,12 @@ def results():
 @app.route("/comparison")
 def show_comparison():
     algorithm_choice = request.args.get("algorithm_choice", "none")
-    print(f"Algorithm choice received in comparison: {algorithm_choice}")  # Debug print
+    print(f"Algorithm choice received in comparison: {algorithm_choice}")  
 
     if algorithm_choice == "2":
-        print("Displaying comparison for all algorithms.")  # Debug message
+        print("Displaying comparison for all algorithms.")  
 
-        # Hardcoded graph paths for comparison
+       
         graph_paths = {
             "Genetic Algorithm": "/static/progress/genetic_algorithm_progress.png",
             "A*": "/static/progress/astar_algorithm_progress.png",
@@ -103,7 +102,7 @@ def show_comparison():
             "Tabu Search": "/static/progress/tabu_search_progress.png",
         }
     else:
-        print("Displaying message for a single algorithm.")  # Debug message
+        print("Displaying message for a single algorithm.")  
         graph_paths = None  # No graphs for a single algorithm
 
     with open("logs/final_output.log", "r") as file:
@@ -126,8 +125,8 @@ def show_logs():
 def read_output_file(csp=False):
     results = []
     with open("optimal_timetable_output.txt", "r") as file:
-        current_algorithm = file.readline().strip()  # Skip the algorithm line
-        file.readline()  # Skip the empty line
+        current_algorithm = file.readline().strip()  
+        file.readline() 
         for line in file:
             if line.startswith("Course:"):
                 parts = line.strip().split(", ")

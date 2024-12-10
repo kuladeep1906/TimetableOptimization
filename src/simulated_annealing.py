@@ -1,8 +1,8 @@
 import random
 import math
 import time
-import csv  # Import CSV for logging
-from data.input_data import COURSES, TEACHERS, ROOMS, TIMESLOTS
+import csv  
+from data.input_data import COURSES, TEACHERS
 from .fitness import calculate_fitness
 import os
 from collections import Counter
@@ -13,17 +13,17 @@ if not os.path.exists("progress"):
 
 # Function to initialize CSV log
 def initialize_csv_log(algorithm_name):
-    csv_path = f"progress/{algorithm_name}_progress.csv"  # Updated path to "progress" folder
+    csv_path = f"progress/{algorithm_name}_progress.csv"  
     with open(csv_path, mode='w') as file:
         writer = csv.writer(file)
-        writer.writerow(["Generation", "Temperature", "Current Best Fitness", "Overall Best Fitness", "Cooling Rate"])  # Write headers
+        writer.writerow(["Generation", "Temperature", "Current Best Fitness", "Overall Best Fitness", "Cooling Rate"])  
     return csv_path
 
 # Function to log progress for each generation to CSV
 def log_progress_csv(csv_path, generation, temperature, current_best_fitness, best_fitness, cooling_rate):
     with open(csv_path, mode='a') as file:
         writer = csv.writer(file)
-        writer.writerow([generation, temperature, current_best_fitness, best_fitness, cooling_rate])  # Append data to CSV
+        writer.writerow([generation, temperature, current_best_fitness, best_fitness, cooling_rate])  
 
 def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, max_iterations=1000):
     start_time = time.time()
@@ -64,7 +64,6 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
 
         neighbor_fitness = calculate_fitness(neighbor)
 
-        # Acceptance decision
         diff = (neighbor_fitness - current_fitness) / max(temperature, 1e-6)
         clamped_diff = max(min(diff, 700), -700)
         acceptance_probability = math.exp(clamped_diff)
@@ -78,7 +77,6 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
         logger.info(f"Iteration {iteration + 1}, Temperature: {temperature:.2f}, Current Fitness: {current_fitness}, Best Fitness: {best_fitness}, Cooling Rate: {cooling_rate:.2f}")
         log_progress_csv(csv_path, iteration + 1, temperature, current_fitness, best_fitness, cooling_rate)
 
-        # Adjust temperature using logarithmic cooling schedule
         temperature = initial_temp / (1 + math.log(1 + iteration))
         if temperature < 1e-3:
             logger.info("Temperature dropped below threshold. Stopping iterations.")
@@ -86,7 +84,7 @@ def simulated_annealing(logger, initial_temp=1000, initial_cooling_rate=0.95, ma
 
     elapsed_time = time.time() - start_time
 
-    # Final results logging
+   
     logger.info("Final Best Timetable Configuration (Simulated Annealing):")
     for entry in best_state:
         logger.info(f"Course: {entry['course']}, Room: {entry['room']}, Teacher: {entry['teacher']}, Timeslot: {entry['timeslot']}, Day: {entry['day']}")

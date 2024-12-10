@@ -1,4 +1,4 @@
-flask==2.3.2             # For the web framework
-matplotlib==3.8.0        # For generating fitness progress graphs
-pandas==2.1.1            # For handling CSV data
-numpy==1.26.0            # For numerical computations (optional but useful)
+flask==2.3.2             
+matplotlib==3.8.0        
+pandas==2.1.1            
+numpy==1.26.0            
