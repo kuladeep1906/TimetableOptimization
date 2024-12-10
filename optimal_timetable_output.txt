@@ -1,35 +1,35 @@
 Results from Unknown Algorithm:
 Best Timetable Configuration:
-Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 10 AM, Day: Monday
-Course: Advanced Data Analytics, Room: Room 7, Teacher: Mr. A, Timeslot: 10 AM, Day: Friday
-Course: Artificial Intelligence, Room: Room 4, Teacher: Mr. A, Timeslot: 10 AM, Day: Friday
-Course: Artificial Intelligence, Room: Room 4, Teacher: Mr. A, Timeslot: 9 AM, Day: Wednesday
-Course: Computational Logic, Room: Room 3, Teacher: Ms. B, Timeslot: 12 PM, Day: Tuesday
-Course: Computational Logic, Room: Room 6, Teacher: Ms. B, Timeslot: 12 PM, Day: Tuesday
-Course: Computer Science, Room: Room 2, Teacher: Mr. C, Timeslot: 12 PM, Day: Wednesday
-Course: Computer Science, Room: Room 6, Teacher: Mr. C, Timeslot: 2 PM, Day: Wednesday
+Course: Advanced Data Analytics, Room: Room 6, Teacher: Mr. A, Timeslot: 10 AM, Day: Wednesday
+Course: Advanced Data Analytics, Room: Room 5, Teacher: Mr. A, Timeslot: 10 AM, Day: Friday
+Course: Artificial Intelligence, Room: Room 1, Teacher: Mr. A, Timeslot: 10 AM, Day: Wednesday
+Course: Artificial Intelligence, Room: Room 6, Teacher: Mr. A, Timeslot: 11 AM, Day: Friday
+Course: Computational Logic, Room: Room 2, Teacher: Ms. B, Timeslot: 1 PM, Day: Thursday
+Course: Computational Logic, Room: Room 4, Teacher: Ms. B, Timeslot: 12 PM, Day: Thursday
+Course: Computer Science, Room: Room 5, Teacher: Mr. C, Timeslot: 2 PM, Day: Monday
+Course: Computer Science, Room: Room 3, Teacher: Mr. C, Timeslot: 2 PM, Day: Wednesday
+Course: Cyber Security, Room: Room 1, Teacher: Mr. C, Timeslot: 12 PM, Day: Wednesday
 Course: Cyber Security, Room: Room 7, Teacher: Mr. C, Timeslot: 2 PM, Day: Wednesday
-Course: Cyber Security, Room: Room 5, Teacher: Mr. C, Timeslot: 1 PM, Day: Wednesday
-Course: Data Science, Room: Room 1, Teacher: Ms. D, Timeslot: 1 PM, Day: Thursday
-Course: Data Science, Room: Room 3, Teacher: Ms. D, Timeslot: 1 PM, Day: Tuesday
-Course: Data Mining & Machine Learning, Room: Room 4, Teacher: Ms. D, Timeslot: 9 AM, Day: Thursday
-Course: Data Mining & Machine Learning, Room: Room 5, Teacher: Ms. D, Timeslot: 2 PM, Day: Tuesday
-Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM, Day: Friday
-Course: Big Data Analytics, Room: Room 6, Teacher: Mr. E, Timeslot: 11 AM, Day: Friday
-Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM, Day: Friday
-Course: Heuristic Search, Room: Room 7, Teacher: Mr. E, Timeslot: 11 AM, Day: Friday
-Course: Computer Graphics, Room: Room 4, Teacher: Mr. F, Timeslot: 5 PM, Day: Monday
-Course: Computer Graphics, Room: Room 4, Teacher: Mr. F, Timeslot: 2 PM, Day: Monday
-Course: Computer Networks, Room: Room 6, Teacher: Mr. F, Timeslot: 9 AM, Day: Thursday
-Course: Computer Networks, Room: Room 4, Teacher: Mr. F, Timeslot: 2 PM, Day: Thursday
-Course: Natural Language Processing, Room: Room 5, Teacher: Mr. G, Timeslot: 1 PM, Day: Tuesday
-Course: Natural Language Processing, Room: Room 3, Teacher: Mr. G, Timeslot: 3 PM, Day: Friday
-Course: Reinforcement Learning, Room: Room 6, Teacher: Mr. F, Timeslot: 9 AM, Day: Thursday
-Course: Reinforcement Learning, Room: Room 5, Teacher: Mr. F, Timeslot: 5 PM, Day: Thursday
-Course: Ethical Hacking, Room: Room 7, Teacher: Ms. H, Timeslot: 4 PM, Day: Wednesday
-Course: Ethical Hacking, Room: Room 7, Teacher: Ms. H, Timeslot: 10 AM, Day: Wednesday
-Course: Compiler Design, Room: Room 4, Teacher: Mr. I, Timeslot: 4 PM, Day: Thursday
-Course: Compiler Design, Room: Room 7, Teacher: Mr. I, Timeslot: 3 PM, Day: Monday
+Course: Data Science, Room: Room 1, Teacher: Ms. D, Timeslot: 10 AM, Day: Tuesday
+Course: Data Science, Room: Room 7, Teacher: Ms. D, Timeslot: 2 PM, Day: Tuesday
+Course: Data Mining & Machine Learning, Room: Room 6, Teacher: Ms. D, Timeslot: 1 PM, Day: Tuesday
+Course: Data Mining & Machine Learning, Room: Room 4, Teacher: Ms. D, Timeslot: 1 PM, Day: Thursday
+Course: Big Data Analytics, Room: Room 1, Teacher: Mr. E, Timeslot: 12 PM, Day: Friday
+Course: Big Data Analytics, Room: Room 7, Teacher: Mr. E, Timeslot: 12 PM, Day: Wednesday
+Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 1 PM, Day: Monday
+Course: Heuristic Search, Room: Room 4, Teacher: Mr. E, Timeslot: 11 AM, Day: Friday
+Course: Computer Graphics, Room: Room 1, Teacher: Mr. F, Timeslot: 5 PM, Day: Monday
+Course: Computer Graphics, Room: Room 1, Teacher: Mr. F, Timeslot: 5 PM, Day: Thursday
+Course: Computer Networks, Room: Room 3, Teacher: Mr. F, Timeslot: 5 PM, Day: Thursday
+Course: Computer Networks, Room: Room 2, Teacher: Mr. F, Timeslot: 2 PM, Day: Thursday
+Course: Natural Language Processing, Room: Room 5, Teacher: Mr. G, Timeslot: 10 AM, Day: Friday
+Course: Natural Language Processing, Room: Room 7, Teacher: Mr. G, Timeslot: 10 AM, Day: Tuesday
+Course: Reinforcement Learning, Room: Room 3, Teacher: Mr. F, Timeslot: 2 PM, Day: Thursday
+Course: Reinforcement Learning, Room: Room 6, Teacher: Mr. F, Timeslot: 2 PM, Day: Monday
+Course: Ethical Hacking, Room: Room 7, Teacher: Ms. H, Timeslot: 3 PM, Day: Friday
+Course: Ethical Hacking, Room: Room 7, Teacher: Ms. H, Timeslot: 10 AM, Day: Friday
+Course: Compiler Design, Room: Room 4, Teacher: Mr. I, Timeslot: 2 PM, Day: Thursday
+Course: Compiler Design, Room: Room 6, Teacher: Mr. I, Timeslot: 4 PM, Day: Monday
 
-Fitness Score: 98.87499999999999
+Fitness Score: 145.01785714285717
 Time taken: 0.31 seconds

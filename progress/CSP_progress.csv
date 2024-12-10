@@ -1,35 +1,35 @@
 Course,Day,Room,Timeslot,Teacher,Constraint Status
-Advanced Data Analytics,Wednesday,Room 1,5 PM,Mr. A,Scheduled
-Advanced Data Analytics,Friday,Room 1,10 AM,Mr. A,Scheduled
-Artificial Intelligence,Thursday,Room 1,2 PM,Mr. A,Scheduled
-Artificial Intelligence,Thursday,Room 1,9 AM,Mr. A,Scheduled
+Advanced Data Analytics,Wednesday,Room 1,10 AM,Mr. A,Scheduled
+Advanced Data Analytics,Monday,Room 1,12 PM,Mr. A,Scheduled
+Artificial Intelligence,Thursday,Room 1,1 PM,Mr. A,Scheduled
+Artificial Intelligence,Tuesday,Room 1,5 PM,Mr. A,Scheduled
+Computational Logic,Wednesday,Room 3,2 PM,Ms. B,Scheduled
 Computational Logic,Monday,Room 3,2 PM,Ms. B,Scheduled
-Computational Logic,Wednesday,Room 3,5 PM,Ms. B,Scheduled
-Computer Science,Thursday,Room 1,6 PM,Mr. C,Scheduled
-Computer Science,Thursday,Room 1,5 PM,Mr. C,Consecutive Classes Conflict
-Computer Science,Thursday,Room 3,5 PM,Mr. C,Consecutive Classes Conflict
-Computer Science,Thursday,Room 1,12 PM,Mr. C,Scheduled
-Cyber Security,Friday,Room 1,6 PM,Mr. C,Scheduled
-Cyber Security,Friday,Room 1,2 PM,Mr. C,Scheduled
-Data Science,Monday,Room 2,9 AM,Ms. D,Scheduled
-Data Science,Thursday,Room 2,1 PM,Ms. D,Scheduled
-Data Mining & Machine Learning,Friday,Room 2,11 AM,Ms. D,Scheduled
-Data Mining & Machine Learning,Friday,Room 2,9 AM,Ms. D,Scheduled
-Big Data Analytics,Wednesday,Room 1,4 PM,Mr. E,Scheduled
-Big Data Analytics,Wednesday,Room 1,12 PM,Mr. E,Scheduled
-Heuristic Search,Monday,Room 4,2 PM,Mr. E,Scheduled
-Heuristic Search,Monday,Room 4,11 AM,Mr. E,Scheduled
-Computer Graphics,Friday,Room 1,10 AM,Mr. F,Room Conflict
-Computer Graphics,Friday,Room 3,10 AM,Mr. F,Scheduled
-Computer Graphics,Tuesday,Room 1,9 AM,Mr. F,Scheduled
-Computer Networks,Monday,Room 2,9 AM,Mr. F,Room Conflict
-Computer Networks,Monday,Room 2,5 PM,Mr. F,Scheduled
-Computer Networks,Monday,Room 2,10 AM,Mr. F,Scheduled
-Natural Language Processing,Tuesday,Room 5,4 PM,Mr. G,Scheduled
+Computer Science,Tuesday,Room 1,5 PM,Mr. C,Room Conflict
+Computer Science,Tuesday,Room 3,5 PM,Mr. C,Scheduled
+Computer Science,Tuesday,Room 1,9 AM,Mr. C,Scheduled
+Cyber Security,Monday,Room 1,11 AM,Mr. C,Scheduled
+Cyber Security,Friday,Room 1,10 AM,Mr. C,Scheduled
+Data Science,Monday,Room 2,4 PM,Ms. D,Scheduled
+Data Science,Monday,Room 2,2 PM,Ms. D,Scheduled
+Data Mining & Machine Learning,Friday,Room 2,1 PM,Ms. D,Scheduled
+Data Mining & Machine Learning,Tuesday,Room 2,4 PM,Ms. D,Scheduled
+Big Data Analytics,Friday,Room 1,3 PM,Mr. E,Scheduled
+Big Data Analytics,Friday,Room 1,11 AM,Mr. E,Scheduled
+Heuristic Search,Monday,Room 4,9 AM,Mr. E,Scheduled
+Heuristic Search,Thursday,Room 4,1 PM,Mr. E,Scheduled
+Computer Graphics,Tuesday,Room 1,5 PM,Mr. F,Room Conflict
+Computer Graphics,Tuesday,Room 3,5 PM,Mr. F,Room Conflict
+Computer Graphics,Tuesday,Room 1,6 PM,Mr. F,Scheduled
+Computer Graphics,Friday,Room 1,5 PM,Mr. F,Scheduled
+Computer Networks,Thursday,Room 2,4 PM,Mr. F,Scheduled
+Computer Networks,Monday,Room 2,9 AM,Mr. F,Scheduled
+Natural Language Processing,Thursday,Room 5,12 PM,Mr. G,Scheduled
 Natural Language Processing,Tuesday,Room 5,12 PM,Mr. G,Scheduled
-Reinforcement Learning,Wednesday,Room 1,9 AM,Mr. F,Scheduled
-Reinforcement Learning,Friday,Room 1,4 PM,Mr. F,Scheduled
-Ethical Hacking,Friday,Room 6,1 PM,Ms. H,Scheduled
-Ethical Hacking,Monday,Room 6,12 PM,Ms. H,Scheduled
-Compiler Design,Tuesday,Room 4,9 AM,Mr. I,Scheduled
-Compiler Design,Thursday,Room 4,10 AM,Mr. I,Scheduled
+Reinforcement Learning,Wednesday,Room 1,11 AM,Mr. F,Scheduled
+Reinforcement Learning,Friday,Room 1,2 PM,Mr. F,Scheduled
+Ethical Hacking,Monday,Room 6,5 PM,Ms. H,Scheduled
+Ethical Hacking,Monday,Room 6,5 PM,Ms. H,Duplicate Entry
+Ethical Hacking,Monday,Room 6,3 PM,Ms. H,Scheduled
+Compiler Design,Tuesday,Room 4,4 PM,Mr. I,Scheduled
+Compiler Design,Tuesday,Room 4,1 PM,Mr. I,Scheduled

@@ -89,4 +89,4 @@ def a_star_algorithm(logger, max_iterations=100):
 
     logger.info(f"Total Time Elapsed: {elapsed_time:.2f} seconds")
 
-    return best_state, best_fitness, elapsed_time, csv_path  # Return CSV path as part of the results
+    return best_state, best_fitness, elapsed_time, csv_path  

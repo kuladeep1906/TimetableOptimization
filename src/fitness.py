@@ -21,8 +21,8 @@ def calculate_fitness(timetable):
         'incorrect_teacher': 10,  # Increased to prioritize correct teacher assignment.
         'max_courses': 15,  # Reduced to avoid stagnation due to small violations.
         'consecutive_classes': 2,  # Lowered to encourage more flexible assignments.
-        'timeslot_conflict': 25,  # Reduced to allow minor conflicts during exploration.
-        'program_overlap': 25,  # Moderate penalty to avoid overconstraining the algorithm.
+        'timeslot_conflict': 15,  # Reduced to allow minor conflicts during exploration.
+        'program_overlap': 15,  # Moderate penalty to avoid overconstraining the algorithm.
         'prerequisite_order': 10,  # Reduced to allow slight violations for flexibility.
         'max_courses_penalty': 25, 
     }

@@ -19,7 +19,7 @@ def initialize_csv_log(algorithm_name):
     csv_path = f"progress/{algorithm_name}_progress.csv"  #  path to "progress" folder
     with open(csv_path, mode="w") as file:
         writer = csv.writer(file)
-        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Average Fitness"])  # Added "Average Fitness"
+        writer.writerow(["Generation", "Current Best Fitness", "Overall Best Fitness", "Average Fitness"]) 
     return csv_path
 
 # Function to log progress for each generation to CSV
@@ -134,4 +134,4 @@ def genetic_algorithm(logger, population_size=50, generations=100):
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    return best_timetable, best_fitness, elapsed_time, csv_path  # Return CSV path for visualization
+    return best_timetable, best_fitness, elapsed_time, csv_path 
