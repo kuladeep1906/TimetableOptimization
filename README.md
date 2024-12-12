@@ -1,4 +1,4 @@
-# **Timetable Optimization Using Heuristic Search and Constraint Processing**
+# **Timetable Optimization Using Heuristic Search Algorithms and Constraint Processing**
 
 ## **Overview**
 This project is a sophisticated timetable optimization system that uses advanced algorithms to generate efficient and conflict-free schedules. It is designed to handle complex constraints such as teacher availability, room capacity, course prerequisites, and preferred timeslots. The system provides a user-friendly web interface for selecting optimization algorithms and visualizing results, including progress graphs and algorithm comparisons.
